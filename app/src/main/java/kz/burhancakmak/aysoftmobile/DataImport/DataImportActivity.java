@@ -756,7 +756,7 @@ public class DataImportActivity extends AppCompatActivity {
                             toplamlar.setDepoAdi(toplams[3]);
                             toplamlar.setToplam(Double.parseDouble(toplams[4]));
                             toplamlar.setStokKodu(toplams[5]);
-                            if (!toplams[6].isEmpty()) {
+                            if (toplams.length > 6) {
                             toplamlar.setStokYeriKodu(toplams[6]); }
                             databaseHandler.insertToplam(toplamlar);
                         }
