@@ -756,7 +756,8 @@ public class DataImportActivity extends AppCompatActivity {
                             toplamlar.setDepoAdi(toplams[3]);
                             toplamlar.setToplam(Double.parseDouble(toplams[4]));
                             toplamlar.setStokKodu(toplams[5]);
-                            toplamlar.setStokYeriKodu(toplams[6]);
+                            if (!toplams[6].isEmpty()) {
+                            toplamlar.setStokYeriKodu(toplams[6]); }
                             databaseHandler.insertToplam(toplamlar);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_toplamlar), itemsQuery.getItemsToplamlar().size() - 2));
