@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Clients.ClientsDashboardActivity">
+
+    <!--<androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
+        app:titleTextAppearance="@style/ToolbarTitleAppearance" />-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layoutBarChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Aylara gore satis / tahsilat" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutBarChartMiktar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Satilan urun listesi miktara gore" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChartMiktar"
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutBarChartTutar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Satilan urun listesi tutara gore" />
+
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:id="@+id/barChartTutar"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutBarChartMarkaSatisMiktar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Marka bazinda satis miktara gore" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/barChartMarkaSatisMiktar"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/laoutBarChartMarkaSatisTutar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Marka bazinda satis tutara gore" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/barChartMarkaSatisTutar"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutPieChartGrupSatisMiktar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Grup bazinda satis miktara gore" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChartGrupSatisMiktar"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutPieChartGrupSatisTutar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="Grup bazinda satis tutara gore" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChartGrupSatisTutar"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/dashboard_progressBar_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/products_progressbar"
+        android:elevation="8dp"
+        android:padding="5dp"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/products_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

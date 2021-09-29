@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/client_popup_map"
+        android:title="@string/client_popup_show_map" />
+
+    <item
+        android:id="@+id/client_popup_extract"
+        android:title="@string/client_popup_extract" />
+
+    <item
+        android:id="@+id/client_popup_orders"
+        android:title="@string/client_popup_orders" />
+
+    <item
+        android:id="@+id/client_popup_sale_return"
+        android:title="@string/client_popup_sale_return" />
+
+    <item
+        android:id="@+id/client_popup_payment_collection"
+        android:title="@string/client_popup_payment_collection" />
+
+    <item
+        android:id="@+id/client_popup_photos"
+        android:title="@string/client_popup_photos" />
+</menu>

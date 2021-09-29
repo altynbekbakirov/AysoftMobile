@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aysoft Mobile</string>
+
+
+    <!-- Navigation drawer -->
+    <string name="main_nav_home">Главная</string>
+    <string name="main_nav_dashboard">Дашборд</string>
+    <string name="main_nav_product">Товары</string>
+    <string name="main_nav_price">Цены</string>
+    <string name="main_nav_clients">Клиенты</string>
+    <string name="main_nav_orderConfirm">Sipariş Onaylama</string>
+    <string name="main_nav_request">Talep</string>
+    <string name="main_nav_distribution">Доставка</string>
+    <string name="main_nav_reports">Отчеты</string>
+    <string name="main_nav_dataImport">Импорт данных</string>
+    <string name="main_nav_dataExport">Экспорт данных</string>
+    <string name="main_nav_settings">Настройки</string>
+    <string name="main_nav_logout">Выход</string>
+    <string name="navigation_drawer_open">Открыть меню</string>
+    <string name="navigation_drawer_close">Закрыть меню</string>
+
+
+    <!-- Login activity  -->
+    <string name="login_label">Логин</string>
+    <string name="login_enter_username">Пользователь</string>
+    <string name="login_enter_password">Пароль</string>
+    <string name="login_remember">Запомнить</string>
+    <string name="login_button_enter">Вход</string>
+    <string name="login_button_settings">Настройки</string>
+    <string name="login_username_empty_error">Введите имя пользователя</string>
+    <string name="login_validate_error">Имя пользователя или пароль не верны</string>
+    <string name="login_password_empty_error">Введите пароль</string>
+    <string name="login_lang_tr">Türkçe</string>
+    <string name="login_lang_us">English</string>
+    <string name="login_lang_ru">Русский</string>
+    <string name="login_internet_connection_message">Чтобы продолжить подключитесь к интернету</string>
+    <string name="login_internet_connection_btnConnect">Подключиться</string>
+    <string name="login_internet_connection_btnCancel">Отмена</string>
+
+
+    <!-- Settings activity   -->
+    <string name="settings_deviceId">ID устройства</string>
+    <string name="settings_webService">Адрес Веб сервиса</string>
+    <string name="settings_button_save">Сохранить</string>
+    <string name="settings_button_test_connection">Подключиться</string>
+
+    <!-- DataImport activity  -->
+    <string name="dataimport_clients">Клиенты</string>
+    <string name="dataimport_products">Товары</string>
+    <string name="dataimport_pictures">Рисунки товаров</string>
+    <string name="dataimport_button_import">Импорт данных</string>
+
+
+    <!-- Program Exit Alert   -->
+    <string name="alert_exit_title">Закрыть программу</string>
+    <string name="alert_exit_message">Закрыть программу?</string>
+    <string name="alert_exit_yes">Да</string>
+    <string name="alert_exit_no">Нет</string>
+
+
+    <!-- Products activity  -->
+    <string name="product_menu_search">Поиск</string>
+
+
+    <!-- Client RecyclerView Items   -->
+    <string name="client_tel_label">Тел:</string>
+    <string name="client_address_label">Адрес</string>
+    <string name="client_debit_label">Дебит</string>
+    <string name="client_credit_label">Кредит</string>
+    <string name="client_balance_label">Сальдо</string>
+
+
+    <!-- DataExchange    -->
+    <string name="data_exchange_label">Обмен данными</string>
+    <string name="data_btn_send">Экспорт данных</string>
+    <string name="data_btn_receive">Импорт данных</string>
+    <string name="settings_id_copied">ID скопировано</string>
+    <string name="login_web_url_undefined">URL веб сервиса не определен</string>
+    <string name="login_phoneid_is_not_defined">Phone ID не определен</string>
+    <string name="main_nav_language">Изменить язык</string>
+    <string name="alert_change_language_title">Изменить язык</string>
+    <string name="alert_change_language_button_apply">Применить</string>
+    <string name="login_user_is_not_found">Пользователь не найден</string>
+    <string name="login_connection_failed">Не удалось подключиться</string>
+    <string name="dataimport_pictures_if_not_exists">Загрузить новые рисунки</string>
+    <string name="items_kalan1_label">Кол.:</string>
+    <string name="items_kalan2_label">Кол.:</string>
+    <string name="items_fiyat1_label">Цена:</string>
+    <string name="items_fiyat2_label">Цена:</string>
+    <string name="data_import_progressbar_products_dowloading">Скачиваются товары</string>
+    <string name="data_import_progressbar_images_download_count">Скачано файлов</string>
+    <string name="data_import_progressbar_images_downloading">Скачиваются изображения</string>
+    <string name="data_import_progressbar_new_images">Сканирование новых файлов</string>
+    <string name="data_import_progressbar_new_images_count">Скачано новых файлов</string>
+    <string name="data_import_progressbar_clients_dowloading">Скачиваются клиенты</string>
+    <string name="alert_change_price_title1">Выберите цену1</string>
+    <string name="products_menu_list_layout">Показать в виде списка</string>
+    <string name="products_menu_grid_layout">Показать в виде сетки</string>
+    <string name="products_menu_price_group">Группа цен</string>
+    <string name="alert_change_price_title2">Выберите цену2</string>
+    <string name="products_menu_view_layout">Вид списка</string>
+    <string name="alert_change_layout_title">Выберите вид списка</string>
+    <string name="items_barcode_not_found">Штрихкод не найден</string>
+    <string name="products_camera_zoom_flash">Для вспышки используйте клавишу увеличения громкости</string>
+    <string name="data_import_progressbar_products">"Идет загрузка: "</string>
+    <string name="data_import_progressbar_products_items">Товары</string>
+    <string name="data_import_progressbar_products_items_itmunita">Ед. измерения</string>
+    <string name="data_import_progressbar_products_prclist">Цены</string>
+    <string name="data_import_progressbar_products_toplamlar">Итоговые цифры</string>
+    <string name="data_import_progressbar_products_barkod">Штрихкода</string>
+    <string name="alert_select_firm_title">Выберите фирму</string>
+    <string name="data_import_progressbar_clients">Контрагенты</string>
+    <string name="data_import_progressbar_shipinfo">Данные погрузки</string>
+    <string name="client_menu_extract">Выписка</string>
+    <string name="client_popup_show_map">Геолокация</string>
+    <string name="client_popup_show_operations">Задачи</string>
+    <string name="client_maps_title">Местоположение</string>
+    <string name="client_menu_save">Сохранить</string>
+    <string name="login_progress_loading">Идет загрузка</string>
+    <string name="client_popup_extract">Выписка клиента</string>
+    <string name="client_popup_orders">Операции по заказам</string>
+    <string name="client_popup_sale_return">Операции по продажам / возвратам</string>
+    <string name="client_popup_payment_collection">Операции по оплатам / платежам</string>
+    <string name="client_popup_photos">Фото клиента</string>
+    <string name="client_statement_general_tab">Общие данные</string>
+    <string name="client_statement_info_tab">Сведения</string>
+    <string name="client_statement_orders_tab">Заказы</string>
+    <string name="client_statement_sales_tab">Продажи</string>
+    <string name="client_statement_finance_tab">Касса</string>
+    <string name="client_statement_photo_tab">Фото</string>
+    <string name="client_map_save_status_success">Местоположение сохранено</string>
+    <string name="client_map_save_status_failure">Ошибка при сохранении.</string>
+    <string name="alert_confirm_ok">Ок</string>
+    <string name="alert_kasa_title_choose">Выберите операцию</string>
+    <string name="alert_kasa_payment">Расходный КО</string>
+    <string name="alert_kasa_collection">Приходный КО</string>
+    <string name="client_kasa_date_title">Дата</string>
+    <string name="client_kasa_sum_title">Сумма</string>
+    <string name="client_kasa_ficheno_title">Квитанция</string>
+    <string name="client_kasa_definition_title">Описание</string>
+    <string name="client_kasa_empty_value">Пустое значение</string>
+    <string name="alert_kasa_delete_task_title">Предупреждение</string>
+    <string name="alert_kasa_delete_task_message">Удалить запись ?</string>
+    <string name="alert_kasa_menu_edit">Редактировать</string>
+    <string name="alert_kasa_menu_delete">Удалить</string>
+    <string name="alert_kasa_menu_erp_gonder">Выгрузить в сервер</string>
+    <string name="alert_kasa_menu_erp_gerial">Отмена выгрузки</string>
+    <string name="alert_kasa_menu_share">Поделиться</string>
+    <string name="alert_kasa_menu_share_whatsapp">WhatsApp</string>
+    <string name="alert_kasa_menu_share_telegram">Telegram</string>
+    <string name="alert_kasa_menu_share_whatsapp_not_installed">WhatsApp не уставновлен</string>
+    <string name="alert_kasa_menu_share_whatsapp_non_number">Номер не найден</string>
+    <string name="alert_kasa_menu_share_telegram_not_installed">Telegram не установлен</string>
+    <string name="alert_siparis_purchases">Заказы покупателей</string>
+    <string name="alert_siparis_sales">Заказы поставщикам</string>
+    <string name="clients_orders_menu_add">Новый заказ</string>
+    <string name="clients_orders_menu_save">Сохранить</string>
+    <string name="clients_orders_menu_cancel">Отменить</string>
+    <string name="alert_orders_cancel_message">Отменить все изменения?</string>
+    <string name="client_order_toolbar_title">Новый заказ</string>
+    <string name="items_tutar_label">Сумма</string>
+    <string name="client_order_bottom_panel_discount">Скидки</string>
+    <string name="client_order_bottom_panel_net">Чистая сумма</string>
+    <string name="client_order_bottom_panel_rowcount">Кол. позиций</string>
+    <string name="client_order_bottom_panel_count">Количество</string>
+    <string name="alert_kasa_menu_sale">Применить скидку</string>
+    <string name="client_order_status">Статус</string>
+    <string name="client_order_status_pending">В ожидании</string>
+    <string name="client_order_no">№ заказа</string>
+    <string name="client_order_status_sent">Выгружено</string>
+    <string name="client_operation_type_label">Вид операции</string>
+    <string name="data_import_alert_info_title">Всего загружено</string>
+    <string name="client_menu_balance_update">Обновить балансы</string>
+    <string name="products_menu_stock_update">Обновить остатки</string>
+    <string name="products_info_stock_status">Остатки</string>
+    <string name="products_info_stock_specifications">Характеристики</string>
+    <string name="products_info_stock_spec1">1. Свойство</string>
+    <string name="products_info_stock_spec2">2. Свойство</string>
+    <string name="products_info_stock_spec3">3. Свойство</string>
+    <string name="products_info_stock_spec4">4. Свойство</string>
+    <string name="products_info_stock_spec5">5. Свойство</string>
+    <string name="products_info_price_vs_production">Цена и производство</string>
+    <string name="products_info_production_code">Код производителя</string>
+    <string name="products_info_pending_order">Заказы в ожидании</string>
+    <string name="products_info_unit_barcode">Ед. измерения и Штрихкод</string>
+    <string name="products_info_unit">Ед. измерения</string>
+    <string name="products_info_barcode">Штрихкод</string>
+    <string name="products_info_product_code">Код товара</string>
+    <string name="products_info_product_name">Наименование товара</string>
+    <string name="products_info_toolbar_title">Свойства товара</string>
+    <string name="products_stock_ambar_no">№</string>
+    <string name="products_stock_ambar_name">Имя склада</string>
+    <string name="products_stock_physical_inventory">Остаток</string>
+    <string name="products_stock_actual_inventory">Актуаль. остаток</string>
+    <string name="products_stock_reserve">Бронь</string>
+    <string name="products_pending_production">Ожид. произв.</string>
+    <string name="products_stock_total">Итого:</string>
+    <string name="products_stock_documents">Документы</string>
+    <string name="login_password_notcorrect_error">Пароль не верный</string>
+    <string name="settings_drop_table_title">Очистка базы данных</string>
+    <string name="settings_drop_table_toast">Очистка базы данных завершена</string>
+    <string name="info_warning_title">Предупреждение</string>
+    <string name="info_warning_message">Данные уже выгружены в сервер!</string>
+    <string name="clients_orders_menu_change_order_info">Редактировать заказ</string>
+    <string name="main_nav_shipping_management">Управление доставками</string>
+    <string name="client_order_shipping_address">Адрес доставки</string>
+    <string name="client_order_shipping_delivery_date">Дата доставки</string>
+    <string name="client_order_shipping_payment_type">Вид оплаты</string>
+    <string name="client_order_shipping_payment_cash">Наличными</string>
+    <string name="client_order_shipping_payment_charge">В долг</string>
+    <string name="client_order_discount_type">Вид скидки</string>
+    <string name="client_order_discount_value">Значение скидки</string>
+    <string name="client_order_discount_total">Сумма заказа</string>
+    <string name="client_order_discount_percent">Проценты</string>
+    <string name="client_order_discount_number">Значение</string>
+    <string name="client_order_discount_cart_empty">Ваша корзина пуста!</string>
+    <string name="client_order_discount_net_total">Чистая сумма</string>
+    <string name="info_warning_sendto_server_fail">Не удалось отправить данные!</string>
+    <string name="data_export_client">Клиент</string>
+    <string name="data_export_fiche_type_order">Заказ</string>
+    <string name="data_export_fiche_type_finance">Кассовый ордер</string>
+    <string name="data_export_filter">Фильтр</string>
+    <string name="data_export_fiche_type_all">Все</string>
+    <string name="data_export_show_not_uploaded">Показать не выгруженные</string>
+    <string name="data_export_title">Выберите операцию</string>
+    <string name="items_miktar_label">Кол.</string>
+    <string name="client_extract_menu_begdate">Начальная дата</string>
+    <string name="client_extract_menu_enddate">Конечная дата</string>
+    <string name="client_popup_info">Сведения о клиенте</string>
+    <string name="client_popup_analyze">Анализ</string>
+    <string name="client_info_name">Наименование</string>
+    <string name="client_info_code">Код контрагента</string>
+    <string name="client_info_communication">Контактная информация</string>
+    <string name="client_info_address">Адрес</string>
+    <string name="client_info_telephone">Телефон</string>
+    <string name="client_info_business_info">Торговые сведения</string>
+    <string name="client_info_warrantor">Поручитель</string>
+    <string name="client_info_trade_info">Торговые сведения</string>
+    <string name="client_info_trade_collection">Приходные КО</string>
+    <string name="client_info_trade_sale">Продажи</string>
+    <string name="client_info_balance">Сальдо</string>
+    <string name="data_import_progressbar_parametre_downloading">Скачиваются параметры</string>
+    <string name="dataimport_params">Параметры</string>
+    <string name="client_update_balance_failed">Данные не загружены</string>
+    <string name="main_click_again_to_exit">Нажмите еще раз, чтобы выйти</string>
+    <string name="client_menu_draw_route">Проложить маршрут</string>
+    <string name="client_maps_finding_route">Прокладывается маршрут...</string>
+    <string name="client_maps_my_location">Мое местонахождение</string>
+    <string name="client_maps_destination_location">Пункт назначения</string>
+    <string name="client_maps_unable_get_location">Невозможно определить местоположение</string>
+    <string name="client_maps_destination_not_defined">Пункт назначения не определен</string>
+    <string name="client_statement_visit_tab">Визит</string>
+    <string name="client_visit_start">Начать</string>
+    <string name="client_visit_finish">Закончить</string>
+    <string name="client_visit_begin_date">Дата начала</string>
+    <string name="client_visit_end_date">Дата окончания</string>
+    <string name="client_visit_begin_time">Время начала</string>
+    <string name="client_visit_end_time">Время окончания</string>
+    <string name="client_visit_end_session">Завершить визит</string>
+    <string name="client_visit_add_fail_info">Завершите предыдующий визит чтобы начать новый визит.</string>
+    <string name="client_visit_no">Визит №</string>
+    <string name="client_visit_location_enable_message">Включите геолокацию и попробуйте еще раз</string>
+    <string name="client_visit_close_visit_before_send">Завершите визит перед выгрузкой на сервер</string>
+    <string name="client_visit_start_visit_before_adding">Начните визит и попробуйте сзаново.</string>
+    <string name="client_visit_end_visit_message">Выгрузка на сервер осуществляется только после закрытия визита.</string>
+    <string name="products_stock_ambar_shelf">Полка</string>
+
+
+</resources>

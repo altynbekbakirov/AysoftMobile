@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@drawable/menu_ic_products"
+            android:title="@string/main_nav_product" />
+
+        <item
+            android:id="@+id/nav_clients"
+            android:icon="@drawable/menu_ic_clients"
+            android:title="@string/main_nav_clients" />
+
+        <item
+            android:id="@+id/nav_shipping"
+            android:icon="@drawable/menu_ic_shipping"
+            android:title="@string/main_nav_shipping_management" />
+
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/menu_ic_reports"
+            android:title="@string/main_nav_reports" />
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/menu_ic_dashboard"
+            android:title="@string/main_nav_dashboard" />
+
+        <item
+            android:id="@+id/nav_dataIn"
+            android:icon="@drawable/menu_ic_import"
+            android:title="@string/main_nav_dataImport" />
+
+        <item
+            android:id="@+id/nav_dataOut"
+            android:icon="@drawable/menu_ic_export"
+            android:title="@string/main_nav_dataExport" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/login_button_settings" />
+
+        <item
+            android:id="@+id/nav_changeLang"
+            android:icon="@drawable/menu_ic_language"
+            android:title="@string/main_nav_language" />
+
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/menu_ic_exit"
+            android:title="@string/main_nav_logout" />
+
+    </group>
+
+</menu>

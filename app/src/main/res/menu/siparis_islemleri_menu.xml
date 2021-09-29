@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/product_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/product_menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/product_barcode_scan"
+        android:icon="@drawable/menu_ic_products"
+        android:title="Barcode scan"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/product_view_type"
+        android:icon="@drawable/ic_view_grid"
+        android:title="@string/products_menu_view_layout"
+        app:showAsAction="never" />
+</menu>

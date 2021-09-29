@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/client_maps_save"
+        android:title="@string/client_menu_save"
+        android:icon="@drawable/ic_save"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/client_maps_route"
+        android:title="@string/client_menu_draw_route"
+        android:icon="@drawable/ic_directions"
+        app:showAsAction="ifRoom" />
+
+</menu>

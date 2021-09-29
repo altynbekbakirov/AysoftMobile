@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aysoft Mobile</string>
+
+
+    <!-- Navigation drawer -->
+    <string name="main_nav_home">Ana Sayfa</string>
+    <string name="main_nav_dashboard">Dashboard</string>
+    <string name="main_nav_product">Stok Listesi</string>
+    <string name="main_nav_price">Fiyat Gör</string>
+    <string name="main_nav_clients">Müşteriler</string>
+    <string name="main_nav_orderConfirm">Sipariş Onaylama</string>
+    <string name="main_nav_request">Talep</string>
+    <string name="main_nav_distribution">Dağıtım</string>
+    <string name="main_nav_reports">Raporlar</string>
+    <string name="main_nav_dataImport">Verileri Al</string>
+    <string name="main_nav_dataExport">Verileri Gonder</string>
+    <string name="main_nav_settings">Ayarlar</string>
+    <string name="main_nav_logout">Çıkış</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <!-- Login activity  -->
+    <string name="login_label">Login</string>
+    <string name="login_enter_username">Kullanıcı Adı</string>
+    <string name="login_enter_password">Şifre</string>
+    <string name="login_remember">Hatırla</string>
+    <string name="login_button_enter">Giriş</string>
+    <string name="login_button_settings">Ayarlar</string>
+    <string name="login_username_empty_error">Kullanıcı adı boş olamaz!!!</string>
+    <string name="login_validate_error">Kullanıcı adı yada parola yalnış!!!</string>
+    <string name="login_password_empty_error">Parola boş olamaz!!!</string>
+    <string name="login_lang_tr">Türkçe</string>
+    <string name="login_lang_us">English</string>
+    <string name="login_lang_ru">Русский</string>
+    <string name="login_internet_connection_message">Please connect to the internet to proceed further</string>
+    <string name="login_internet_connection_btnConnect">Connect</string>
+    <string name="login_internet_connection_btnCancel">Cancel</string>
+
+
+    <!-- Settings activity   -->
+    <string name="settings_deviceId">Cihaz ID</string>
+    <string name="settings_webService">Web Servis Bilgileri</string>
+    <string name="settings_button_save">Kaydet</string>
+    <string name="settings_button_test_connection">Bağlan</string>
+
+    <!-- DataImport activity  -->
+    <string name="dataimport_clients">Müşteriler</string>
+    <string name="dataimport_products">Stok Listesi</string>
+    <string name="dataimport_pictures">Stok Resimleri</string>
+    <string name="dataimport_button_import">Içeri Aktar</string>
+
+
+    <!-- Program Exit Alert   -->
+    <string name="alert_exit_title">Program Kapatılacak</string>
+    <string name="alert_exit_message">Çıkmak istediginizden emin misiniz?</string>
+    <string name="alert_exit_yes">Evet</string>
+    <string name="alert_exit_no">Hayır</string>
+
+
+    <!-- Products activity  -->
+    <string name="product_menu_search">Arama</string>
+
+
+    <!-- Client RecyclerView Items   -->
+    <string name="client_tel_label">Tel:</string>
+    <string name="client_address_label">Adres</string>
+    <string name="client_debit_label">Deposit</string>
+    <string name="client_credit_label">Credit</string>
+    <string name="client_balance_label">Balance</string>
+
+
+    <!-- DataExchange    -->
+    <string name="data_exchange_label">Veri aktarimi</string>
+    <string name="data_btn_send">Verileri Gonder</string>
+    <string name="data_btn_receive">Verileri Al</string>
+    <string name="settings_id_copied">ID copied</string>
+    <string name="login_web_url_undefined">Web URL is undefined</string>
+    <string name="login_phoneid_is_not_defined">Phone ID is undefined</string>
+    <string name="main_nav_language">Change language</string>
+    <string name="alert_change_language_title">Change language</string>
+    <string name="alert_change_language_button_apply">Apply</string>
+    <string name="login_user_is_not_found">User is not exists</string>
+    <string name="login_connection_failed">Connection failed</string>
+    <string name="dataimport_pictures_if_not_exists">Import new pictures</string>
+    <string name="items_kalan1_label">Stock:</string>
+    <string name="items_kalan2_label">Stock:</string>
+    <string name="items_fiyat1_label">Price:</string>
+    <string name="items_fiyat2_label">Price:</string>
+    <string name="data_import_progressbar_products_dowloading">Products downloading</string>
+    <string name="data_import_progressbar_images_download_count">Downloaded images</string>
+    <string name="data_import_progressbar_images_downloading">Images downloading</string>
+    <string name="data_import_progressbar_new_images">Checking for new images</string>
+    <string name="data_import_progressbar_new_images_count">Downloaded new images</string>
+    <string name="data_import_progressbar_clients_dowloading">Clients downloading</string>
+    <string name="alert_change_price_title1">Select price1</string>
+    <string name="products_menu_list_layout">List view</string>
+    <string name="products_menu_grid_layout">Grid view</string>
+    <string name="products_menu_price_group">Price group</string>
+    <string name="alert_change_price_title2">Select price2</string>
+    <string name="products_menu_view_layout">Layout view</string>
+    <string name="alert_change_layout_title">Select view layout</string>
+    <string name="items_barcode_not_found">Barcode not found</string>
+    <string name="products_camera_zoom_flash">For flash use volume up key</string>
+    <string name="data_import_progressbar_products">Downloading:</string>
+    <string name="data_import_progressbar_products_items">Items</string>
+    <string name="data_import_progressbar_products_items_itmunita">Items units</string>
+    <string name="data_import_progressbar_products_prclist">Prices</string>
+    <string name="data_import_progressbar_products_toplamlar">Sums</string>
+    <string name="data_import_progressbar_products_barkod">Barcodes</string>
+    <string name="alert_select_firm_title">Choose company</string>
+    <string name="data_import_progressbar_clients">Clients</string>
+    <string name="data_import_progressbar_shipinfo">Shipping info</string>
+    <string name="client_menu_extract">Extract</string>
+    <string name="client_popup_show_map">Location</string>
+    <string name="client_popup_show_operations">Tasks</string>
+    <string name="client_maps_title">Location</string>
+    <string name="client_menu_save">Save</string>
+    <string name="login_progress_loading">Loading please wait</string>
+    <string name="client_popup_extract">Client extract</string>
+    <string name="client_popup_orders">Order operations</string>
+    <string name="client_popup_sale_return">Sale / Return operations</string>
+    <string name="client_popup_payment_collection">Payment / Collection operations</string>
+    <string name="client_popup_photos">Client photos</string>
+    <string name="client_statement_general_tab">General</string>
+    <string name="client_statement_info_tab">Info</string>
+    <string name="client_statement_orders_tab">Orders</string>
+    <string name="client_statement_sales_tab">Sales</string>
+    <string name="client_statement_finance_tab">Finance</string>
+    <string name="client_statement_photo_tab">Photos</string>
+    <string name="client_map_save_status_success">Geolocation saved successfully</string>
+    <string name="client_map_save_status_failure">Save failed</string>
+    <string name="alert_confirm_ok">Ok</string>
+    <string name="alert_kasa_title_choose">Choose task</string>
+    <string name="alert_kasa_payment">Payment</string>
+    <string name="alert_kasa_collection">Collection</string>
+    <string name="client_kasa_date_title">Date</string>
+    <string name="client_kasa_sum_title">Sum</string>
+    <string name="client_kasa_ficheno_title">Fiche No</string>
+    <string name="client_kasa_definition_title">Definition</string>
+    <string name="client_kasa_empty_value">Empty value</string>
+    <string name="alert_kasa_delete_task_title">Delete confirmation</string>
+    <string name="alert_kasa_delete_task_message">Delete record permanently?</string>
+    <string name="alert_kasa_menu_edit">Edit</string>
+    <string name="alert_kasa_menu_delete">Delete</string>
+    <string name="alert_kasa_menu_erp_gonder">Send data to server</string>
+    <string name="alert_kasa_menu_erp_gerial">Cancel send data</string>
+    <string name="alert_kasa_menu_share">Share</string>
+    <string name="alert_kasa_menu_share_whatsapp">WhatsApp</string>
+    <string name="alert_kasa_menu_share_telegram">Telegram</string>
+    <string name="alert_kasa_menu_share_whatsapp_not_installed">WhatsApp not installed</string>
+    <string name="alert_kasa_menu_share_whatsapp_non_number">Contact not found</string>
+    <string name="alert_kasa_menu_share_telegram_not_installed">Telegram not installed</string>
+    <string name="alert_siparis_purchases">Purchases order</string>
+    <string name="alert_siparis_sales">Sales order</string>
+    <string name="clients_orders_menu_add">Add order</string>
+    <string name="clients_orders_menu_save">Save</string>
+    <string name="clients_orders_menu_cancel">Cancel</string>
+    <string name="alert_orders_cancel_message">Cancel all changes?</string>
+    <string name="client_order_toolbar_title">New order</string>
+    <string name="items_tutar_label">Sum</string>
+    <string name="client_order_bottom_panel_discount">Discount</string>
+    <string name="client_order_bottom_panel_net">Net</string>
+    <string name="client_order_bottom_panel_rowcount">Row count</string>
+    <string name="client_order_bottom_panel_count">Count</string>
+    <string name="alert_kasa_menu_sale">Apply discount</string>
+    <string name="client_order_status">Status</string>
+    <string name="client_order_status_pending">Pending</string>
+    <string name="client_order_no">Order no</string>
+    <string name="client_order_status_sent">Sent</string>
+    <string name="client_operation_type_label">Operation type</string>
+    <string name="data_import_alert_info_title">Total downloaded</string>
+    <string name="client_menu_balance_update">Balance update</string>
+    <string name="products_menu_stock_update">Stock update</string>
+    <string name="products_info_stock_status">Product status</string>
+    <string name="products_info_stock_specifications">Product specifications</string>
+    <string name="products_info_stock_spec1">1. Specification</string>
+    <string name="products_info_stock_spec2">2. Specification</string>
+    <string name="products_info_stock_spec3">3. Specification</string>
+    <string name="products_info_stock_spec4">4. Specification</string>
+    <string name="products_info_stock_spec5">5. Specification</string>
+    <string name="products_info_price_vs_production">Price and Production</string>
+    <string name="products_info_production_code">Production code</string>
+    <string name="products_info_pending_order">Pending orders</string>
+    <string name="products_info_unit_barcode">Unit and Barcode</string>
+    <string name="products_info_unit">Unit</string>
+    <string name="products_info_barcode">Barcode</string>
+    <string name="products_info_product_code">Product code</string>
+    <string name="products_info_product_name">Product name</string>
+    <string name="products_info_toolbar_title">Product properties</string>
+    <string name="products_stock_ambar_no">No</string>
+    <string name="products_stock_ambar_name">Warehouse Name</string>
+    <string name="products_stock_physical_inventory">Physical Inventory</string>
+    <string name="products_stock_actual_inventory">Actual Inventory</string>
+    <string name="products_stock_reserve">Reserve</string>
+    <string name="products_pending_production">Pending production</string>
+    <string name="products_stock_total">Total:</string>
+    <string name="products_stock_documents">Documents</string>
+    <string name="login_password_notcorrect_error">Password is not correct</string>
+    <string name="settings_drop_table_title">Drop database</string>
+    <string name="settings_drop_table_toast">Drop database successful</string>
+    <string name="info_warning_title">Warning</string>
+    <string name="info_warning_message">Record has already sent to server!</string>
+    <string name="clients_orders_menu_change_order_info">Edit order information</string>
+    <string name="main_nav_shipping_management">Shipping management</string>
+    <string name="client_order_shipping_address">Delivery address</string>
+    <string name="client_order_shipping_delivery_date">Delivery date</string>
+    <string name="client_order_shipping_payment_type">Payment type</string>
+    <string name="client_order_shipping_payment_cash">Cash</string>
+    <string name="client_order_shipping_payment_charge">Charge</string>
+    <string name="client_order_discount_type">Discount type</string>
+    <string name="client_order_discount_value">Discount value</string>
+    <string name="client_order_discount_total">Order total</string>
+    <string name="client_order_discount_percent">Percent</string>
+    <string name="client_order_discount_number">Value</string>
+    <string name="client_order_discount_cart_empty">Your cart is empty!</string>
+    <string name="client_order_discount_net_total">Net total</string>
+    <string name="info_warning_sendto_server_fail">Send data to server failed!</string>
+    <string name="data_export_client">Client</string>
+    <string name="data_export_fiche_type_order">Order</string>
+    <string name="data_export_fiche_type_finance">Finance operation</string>
+    <string name="data_export_filter">Filter</string>
+    <string name="data_export_fiche_type_all">All</string>
+    <string name="data_export_show_not_uploaded">Show not uploaded</string>
+    <string name="data_export_title">Choose an option to proceed</string>
+    <string name="items_miktar_label">Quantity</string>
+    <string name="client_extract_menu_begdate">Begin date</string>
+    <string name="client_extract_menu_enddate">End date</string>
+    <string name="client_popup_info">Client info</string>
+    <string name="client_popup_analyze">Analysis</string>
+    <string name="client_info_name">Client name</string>
+    <string name="client_info_code">Client code</string>
+    <string name="client_info_communication">Communication</string>
+    <string name="client_info_address">Address</string>
+    <string name="client_info_telephone">Telephone</string>
+    <string name="client_info_business_info">Business info</string>
+    <string name="client_info_warrantor">Warrantor</string>
+    <string name="client_info_trade_info">Trading info</string>
+    <string name="client_info_trade_collection">Collection</string>
+    <string name="client_info_trade_sale">Sale</string>
+    <string name="client_info_balance">Balance</string>
+    <string name="data_import_progressbar_parametre_downloading">Parameters downloading</string>
+    <string name="dataimport_params">Parameters</string>
+    <string name="client_update_balance_failed">Update balance failed</string>
+    <string name="main_click_again_to_exit">Press back again to exit</string>
+    <string name="client_menu_draw_route">Draw route</string>
+    <string name="client_maps_finding_route">Finding Route...</string>
+    <string name="client_maps_my_location">My location</string>
+    <string name="client_maps_destination_location">Destination</string>
+    <string name="client_maps_unable_get_location">Unable to get location</string>
+    <string name="client_maps_destination_not_defined">Destination not defined</string>
+    <string name="client_statement_visit_tab">Visit</string>
+    <string name="client_visit_start">Start</string>
+    <string name="client_visit_finish">Finish</string>
+    <string name="client_visit_begin_date">Begin date</string>
+    <string name="client_visit_end_date">End date</string>
+    <string name="client_visit_begin_time">Begin time</string>
+    <string name="client_visit_end_time">End time</string>
+    <string name="client_visit_end_session">End visit</string>
+    <string name="client_visit_add_fail_info">To add new visit end previous visit before</string>
+    <string name="client_visit_no">Visit NO</string>
+    <string name="client_visit_location_enable_message">Please enable location and try again</string>
+    <string name="client_visit_close_visit_before_send">You should close visit before sending data to server</string>
+    <string name="client_visit_start_visit_before_adding">Start visit before and try again</string>
+    <string name="client_visit_end_visit_message">Close visit to send to server</string>
+    <string name="products_stock_ambar_shelf">Shelf</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+</resources>

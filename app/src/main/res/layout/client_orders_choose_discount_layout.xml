@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/client_order_discount_total"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/priceOrderTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_border_square"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:text="0.0"
+            android:ems="11"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/client_order_discount_net_total"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/priceOrderNetTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_border_square"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:text="0.0"
+            android:ems="11"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/client_order_discount_type"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <Spinner
+            android:id="@+id/priceType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:ems="11"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/client_order_discount_value"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/priceTypeValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_border_square"
+            android:ems="11"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="10"
+            android:padding="5dp"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

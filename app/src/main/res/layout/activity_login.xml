@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <ImageView
+            android:id="@+id/login_image_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/aysoft_logo" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxStrokeColor="@color/green_light"
+            app:hintTextColor="@color/wisteria">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_clients"
+                android:drawablePadding="5dp"
+                android:hint="@string/login_enter_username"
+                android:inputType="textPersonName"
+                android:padding="15dp"
+                android:textSize="14sp" />
+
+            <requestFocus />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:boxStrokeColor="@color/green_light"
+            app:hintTextColor="@color/wisteria"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="5dp"
+                android:hint="@string/login_enter_password"
+                android:inputType="textPassword"
+                android:padding="15dp"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal">
+
+            <ImageButton
+                android:id="@+id/login_button_settings"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="0dp"
+                android:background="?android:selectableItemBackground"
+                android:src="@drawable/ic_settings"
+                android:text="@string/login_button_settings"
+                android:textAllCaps="true" />
+
+            <Spinner
+                android:id="@+id/login_country"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@id/login_button_settings"
+                android:background="@drawable/spinner_countries" />
+
+            <Button
+                android:id="@+id/login_button_enter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button_style2"
+                android:padding="5dp"
+                android:text="@string/login_button_enter"
+                android:textAllCaps="true"
+                android:textColor="@color/blue_web"
+                android:textSize="14sp"
+                app:backgroundTint="@null" />
+
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/login_remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:text="@string/login_remember"
+            android:textColor="@color/blue_web"
+            android:textSize="15sp"
+            app:buttonTint="@color/blue_web" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

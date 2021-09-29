@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="5dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="5dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/orderImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/items_kalan1_label"
+            android:src="@drawable/aysoft_logo" />
+
+        <TextView
+            android:id="@+id/orderDefinition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/orderImage"
+            android:fontFamily="@font/open_sans_semibold"
+            android:maxLines="2"
+            android:text="@string/client_kasa_date_title"
+            android:textColor="@color/blue"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/orderCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/orderDefinition"
+            android:layout_toEndOf="@id/orderImage"
+            android:fontFamily="@font/open_sans"
+            android:text="24.06.2021"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/orderInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/orderCode"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/orderImage"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="@string/client_kasa_ficheno_title"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/orderTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/orderInfo"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="@string/client_kasa_ficheno_title"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_arrow_forward" />
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

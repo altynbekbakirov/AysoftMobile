@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".Settings.SettingsActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/settings_textLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/green_light"
+        app:endIconDrawable="@drawable/ic_copy"
+        app:endIconMode="custom"
+        app:hintTextColor="@color/wisteria">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/settings_phoneId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:focusable="false"
+            android:hint="@string/settings_deviceId"
+            android:inputType="textPersonName"
+            android:padding="12dp"
+            android:textSize="15sp">
+
+            <requestFocus />
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:boxStrokeColor="@color/green_light"
+        app:hintTextColor="@color/wisteria">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/settings_webService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_web"
+            android:ems="15"
+            android:hint="@string/settings_webService"
+            android:inputType="textPersonName"
+            android:padding="15dp"
+            android:text="http://89.163.142.197:34444/NewMobil/"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <!--<ImageView
+            android:id="@+id/back_image"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_arrow_back" />-->
+
+        <ImageView
+            android:id="@+id/settings_data_drop"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:clickable="true"
+            android:contentDescription="@string/app_name"
+            android:focusable="true"
+            android:src="@drawable/ic_database" />
+
+        <Button
+            android:id="@+id/settings_button_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/button_style2"
+            android:padding="5dp"
+            android:text="@string/settings_button_save"
+            android:textAllCaps="true"
+            android:textColor="@color/blue_web"
+            android:textSize="14sp"
+            app:backgroundTint="@null" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

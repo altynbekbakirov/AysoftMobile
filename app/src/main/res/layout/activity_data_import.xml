@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DataImport.DataImportActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/dataimport_params"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:enabled="false"
+                android:text="@string/dataimport_params"
+                android:textColor="@color/blue_web"
+                android:textSize="15sp"
+                app:buttonTint="@color/blue_web" />
+
+            <CheckBox
+                android:id="@+id/dataimport_clients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/dataimport_clients"
+                android:textColor="@color/blue_web"
+                android:textSize="15sp"
+                app:buttonTint="@color/blue_web" />
+
+            <CheckBox
+                android:id="@+id/dataimport_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/dataimport_products"
+                android:textColor="@color/blue_web"
+                android:textSize="15sp"
+                app:buttonTint="@color/blue_web" />
+
+            <CheckBox
+                android:id="@+id/dataimport_pictures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/dataimport_pictures"
+                android:textColor="@color/blue_web"
+                android:textSize="15sp"
+                app:buttonTint="@color/blue_web" />
+
+            <CheckBox
+                android:id="@+id/dataimport_pictures_not_existed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/dataimport_pictures_if_not_exists"
+                android:textColor="@color/blue_web"
+                android:textSize="15sp"
+                app:buttonTint="@color/blue_web" />
+
+            <Button
+                android:id="@+id/dataimport_button_import"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_style2"
+                android:text="@string/dataimport_button_import"
+                android:textAllCaps="false"
+                android:textColor="@color/blue_web"
+                android:textSize="14sp"
+                app:backgroundTint="@null" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/progressBar_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/products_progressbar"
+            android:elevation="8dp"
+            android:padding="5dp"
+            android:visibility="invisible">
+
+            <ProgressBar
+                android:id="@+id/products_progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>

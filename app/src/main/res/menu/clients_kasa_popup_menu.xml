@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/kasaDegistir"
+        android:title="Degistir" />
+    <item
+        android:id="@+id/kasaSil"
+        android:title="Sil" />
+    <item
+        android:id="@+id/kasaErpSend"
+        android:title="Erp gonder" />
+    <item
+        android:id="@+id/kasaErpGeriAl"
+        android:title="Erp geri al" />
+    <item
+        android:id="@+id/kasaPaylas"
+        android:title="Whatsapp ta paylas" />
+
+</menu>
