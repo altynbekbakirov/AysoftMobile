@@ -881,6 +881,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put("DepoNo", toplamlar.getDepoNo());
         cv.put("DepoAdi", toplamlar.getDepoAdi());
         cv.put("Toplam", toplamlar.getToplam());
+        cv.put("StokKodu", toplamlar.getStokKodu());
         cv.put("StokYeriKodu", toplamlar.getStokYeriKodu());
         db.insert("AY_" + FIRMA_NO + "_ItemsToplamlar", null, cv);
         db.close();
