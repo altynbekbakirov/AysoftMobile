@@ -180,7 +180,7 @@
     <string name="products_info_stock_spec3">3. Свойство</string>
     <string name="products_info_stock_spec4">4. Свойство</string>
     <string name="products_info_stock_spec5">5. Свойство</string>
-    <string name="products_info_price_vs_production">Цена и производство</string>
+    <string name="products_info_price_vs_production">Цены</string>
     <string name="products_info_production_code">Код производителя</string>
     <string name="products_info_pending_order">Заказы в ожидании</string>
     <string name="products_info_unit_barcode">Ед. измерения и Штрихкод</string>

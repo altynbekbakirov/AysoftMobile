@@ -157,7 +157,7 @@
     <string name="products_info_stock_spec3">3. Özellik</string>
     <string name="products_info_stock_spec4">4. Özellik</string>
     <string name="products_info_stock_spec5">5. Özellik</string>
-    <string name="products_info_price_vs_production">Fiyat ve Üretim</string>
+    <string name="products_info_price_vs_production">Fiyatlar</string>
     <string name="products_info_production_code">Üretim kodu</string>
     <string name="products_info_pending_order">Bekleyen siparişler</string>
     <string name="products_info_unit_barcode">Birim ve Barkod</string>

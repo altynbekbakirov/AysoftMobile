@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,8 +19,10 @@
         app:titleTextAppearance="@style/ToolbarTitleAppearance" />
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:padding="10dp">
 
         <ImageView
@@ -83,8 +85,10 @@
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/netScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/relativeLayout"
         android:scrollbars="vertical">
 
         <LinearLayout
@@ -325,6 +329,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/infoFiyatTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/lightWhite"
@@ -335,9 +340,11 @@
                 android:text="@string/products_info_price_vs_production"
                 android:textAllCaps="true"
                 android:textColor="@color/blue"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <LinearLayout
+                android:id="@+id/infoFiyatLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/linearlayout_border_line"
@@ -345,9 +352,11 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
+                android:visibility="gone"
                 tools:ignore="RtlSymmetry">
 
                 <TextView
+                    android:id="@+id/infoFiyatLabel1"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_condensed_bold"
@@ -366,7 +375,8 @@
 
             </LinearLayout>
 
-            <!--<LinearLayout
+            <LinearLayout
+                android:id="@+id/infoFiyatLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/linearlayout_border_line"
@@ -374,10 +384,12 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
+                android:visibility="gone"
                 tools:ignore="RtlSymmetry">
 
                 <TextView
-                    android:layout_width="120dp"
+                    android:id="@+id/infoFiyatLabel2"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:text="@string/items_fiyat1_label"
@@ -393,9 +405,10 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
-            </LinearLayout>-->
+            </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/infoFiyatLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/linearlayout_border_line"
@@ -403,18 +416,84 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
+                android:visibility="gone"
                 tools:ignore="RtlSymmetry">
 
                 <TextView
+                    android:id="@+id/infoFiyatLabel3"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/products_info_production_code"
+                    android:text="@string/items_fiyat1_label"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/infoUretim"
+                    android:id="@+id/infoFiyat3"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/infoFiyatLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/linearlayout_border_line"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"
+                tools:ignore="RtlSymmetry">
+
+                <TextView
+                    android:id="@+id/infoFiyatLabel4"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:text="@string/items_fiyat1_label"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/infoFiyat4"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/infoFiyatLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/linearlayout_border_line"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:visibility="gone"
+                tools:ignore="RtlSymmetry">
+
+                <TextView
+                    android:id="@+id/infoFiyatLabel5"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:text="@string/items_fiyat1_label"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/infoFiyat5"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans_condensed_bold"
@@ -597,7 +676,6 @@
 
             <LinearLayout
                 android:id="@+id/layoutBarcode2"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/linearlayout_border_line"
@@ -605,6 +683,7 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
+                android:visibility="gone"
                 tools:ignore="RtlSymmetry">
 
                 <TextView
@@ -626,8 +705,56 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/linearlayout_border_line"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:ignore="RtlSymmetry">
+
+                <TextView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:text="@string/products_info_production_code"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/infoUretim"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/products_progressbar"
+        android:elevation="8dp"
+        android:padding="5dp"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:id="@+id/products_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

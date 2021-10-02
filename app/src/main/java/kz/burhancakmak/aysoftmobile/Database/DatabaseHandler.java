@@ -1366,7 +1366,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "items.ResimDosyasiKucuk, items.ResimDosyasiBuyuk1, items.ResimDosyasiBuyuk2, " +
                 "items.ResimDosyasiBuyuk3, items.OzelKod1, items.OzelKod2, " +
                 "items.OzelKod3, items.OzelKod4, items.OzelKod5, items.Kalan1, items.Kalan2, " +
-                "unt1.Birim, unt2.Birim AS birim2, unt2.Carpan2, prc1.Fiyat, brk1.Barkod AS barkod1, brk2.Barkod AS barkod2, " +
+                "unt1.Birim, unt2.Birim AS birim2, unt2.Carpan2, brk1.Barkod AS barkod1, brk2.Barkod AS barkod2, " +
                 "(SELECT sum(sep.StokMiktar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " sip LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_Sepet" + " AS sep ON sip.KayitNo = sep.SiparisKayitNo AND sip.IslemTipi = 1 " +
                 "AND sep.StokKodu = items.StokKodu) as SiparisSatinalma, " +
                 "(SELECT sum(sep.StokMiktar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " sip LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_Sepet" + " AS sep ON sip.KayitNo = sep.SiparisKayitNo AND sip.IslemTipi = 2 " +
@@ -1376,7 +1376,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt2 ON unt2.StokKayitNo = items.KayitNo AND unt2.SiraNo = 2 " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsUnitBarcode" + " brk1 ON brk1.StokKayitNo = items.KayitNo AND brk1.Itmunitaref = unt1.KayitNo AND brk1.SatirNo = 1 " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsUnitBarcode" + " brk2 ON brk2.StokKayitNo = items.KayitNo AND brk2.Itmunitaref = unt2.KayitNo AND brk2.SatirNo = 1 " +
-                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.BirimKayitNo = unt1.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' " +
                 "WHERE items.KayitNo = " + kayitNo + " " +
                 "ORDER BY items.StokKodu";
         Cursor cursor = db.rawQuery(sql, null);
@@ -1399,15 +1398,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             items.setBirim(cursor.getString(15));
             items.setBirim2(cursor.getString(16));
             items.setCarpan2(cursor.getInt(17));
-            items.setFiyat1(cursor.getDouble(18));
-            items.setBarkod(cursor.getString(19));
-            items.setBarkod2(cursor.getString(20));
-            items.setSiparisSatinalma(cursor.getInt(21));
-            items.setSiparisSatis(cursor.getInt(22));
+            items.setBarkod(cursor.getString(18));
+            items.setBarkod2(cursor.getString(19));
+            items.setSiparisSatinalma(cursor.getInt(20));
+            items.setSiparisSatis(cursor.getInt(21));
         }
         cursor.close();
         db.close();
         return items;
+    }
+
+    public List<ItemsPrclist> selectProductPrices(int kayitNo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ItemsPrclist> prclists = new ArrayList<>();
+        String sql = "SELECT prc.Fiyat, prc.FiyatGrubu, prc.DovizIsareti, unt.Birim " +
+                "FROM AY_842_ItemsPrclist prc INNER JOIN AY_842_ItemsItmunita AS unt ON prc.BirimKayitNo = unt.KayitNo " +
+                "WHERE prc.StokKayitNo = " + kayitNo + " " +
+                "ORDER BY prc.StokKayitNo";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ItemsPrclist price = new ItemsPrclist();
+                price.setFiyat(cursor.getDouble(0));
+                price.setFiyatGrubu(cursor.getString(1));
+                price.setDovizIsareti(cursor.getString(2));
+                price.setBaslangicTarih(cursor.getString(3));
+                prclists.add(price);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return prclists;
     }
 
     public List<ClCard> selectAllClients(String filter, String order) {

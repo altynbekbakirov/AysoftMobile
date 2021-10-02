@@ -1,12 +1,7 @@
 package kz.burhancakmak.aysoftmobile.Models.Products;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity
 public class ItemsPrclist {
 
-    @PrimaryKey
     private Integer KayitNo;
     private Integer StokKayitNo;
     private Integer BirimKayitNo;

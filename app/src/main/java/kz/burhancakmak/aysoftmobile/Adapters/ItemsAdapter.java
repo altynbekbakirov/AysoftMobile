@@ -113,12 +113,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 if (!fiyat1.isEmpty()) {
                     linearHolder.Fiyat1Label.setText(fiyat1);
-                    linearHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + itemsList.get(position).getDoviz1() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                    linearHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " " + itemsList.get(position).getDoviz1() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
                 }
 
                 if (!fiyat2.isEmpty()) {
                     linearHolder.Fiyat2Label.setText(fiyat2);
-                    linearHolder.Fiyat2.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat2()) + itemsList.get(position).getDoviz2() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                    linearHolder.Fiyat2.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat2()) + " " + itemsList.get(position).getDoviz2() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
                 }
 
                 if (!itemsList.get(position).getStokResim().isEmpty()) {
@@ -179,12 +179,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
                 if (!fiyat1.isEmpty()) {
                     gridHolder.Fiyat1Label.setText(fiyat1);
-                    gridHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + itemsList.get(position).getDoviz1() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                    gridHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " " + itemsList.get(position).getDoviz1() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
                 }
 
                 if (!fiyat2.isEmpty()) {
                     gridHolder.Fiyat2Label.setText(fiyat2);
-                    gridHolder.Fiyat2.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat2()) + itemsList.get(position).getDoviz2() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                    gridHolder.Fiyat2.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat2()) + " " + itemsList.get(position).getDoviz2() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
                 }
 
                 if (!itemsList.get(position).getStokResim().isEmpty()) {

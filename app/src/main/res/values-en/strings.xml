@@ -180,7 +180,7 @@
     <string name="products_info_stock_spec3">3. Specification</string>
     <string name="products_info_stock_spec4">4. Specification</string>
     <string name="products_info_stock_spec5">5. Specification</string>
-    <string name="products_info_price_vs_production">Price and Production</string>
+    <string name="products_info_price_vs_production">Prices</string>
     <string name="products_info_production_code">Production code</string>
     <string name="products_info_pending_order">Pending orders</string>
     <string name="products_info_unit_barcode">Unit and Barcode</string>
