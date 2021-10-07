@@ -2,15 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="176dp"
+    android:layout_height="186dp"
     android:background="@color/green_light"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="0dp"
+    android:paddingStart="15dp"
+    android:paddingTop="15dp"
+    android:paddingEnd="15dp">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
+        android:layout_marginTop="15dp"
         android:contentDescription="TODO"
         android:src="@drawable/aysoft_logo" />
 
@@ -27,15 +31,26 @@
     <TextView
         android:id="@+id/menu_nav_header_firma"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_marginTop="5dp"
         android:clickable="true"
-        android:drawablePadding="10dp"
+        android:drawablePadding="5dp"
+        android:focusable="true"
         android:fontFamily="@font/open_sans_condensed_bold"
         android:text="842 - BISHKEK"
         android:textColor="@color/banana"
         android:textSize="18sp"
-        android:focusable="true"
         app:drawableEndCompat="@drawable/ic_expand" />
+
+    <TextView
+        android:id="@+id/menu_nav_header_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/open_sans_condensed_bold"
+        android:text="V 1.0 (07.10.2021)"
+        android:textAllCaps="true"
+        android:textColor="@color/gold"
+        android:textSize="12sp" />
 
 </LinearLayout>

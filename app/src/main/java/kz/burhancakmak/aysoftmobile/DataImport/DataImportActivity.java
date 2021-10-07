@@ -130,12 +130,12 @@ public class DataImportActivity extends AppCompatActivity {
                     new DownloadProducts().execute();
                 } else if (dataimport_pictures.isChecked()) {
                     if (dataimport_pictures_not_existed.isChecked()) {
-                        new DownloadNewImages().execute();
+                        new DownloadNewImagesRetrofit().execute();
                     } else {
-                        new DownloadAllImages().execute();
+                        new DownloadAllImagesRetrofit().execute();
                     }
                 } else if (dataimport_pictures_not_existed.isChecked()) {
-                    new DownloadNewImages().execute();
+                    new DownloadNewImagesRetrofit().execute();
                 }
             }
         });
@@ -555,12 +555,12 @@ public class DataImportActivity extends AppCompatActivity {
                 new DownloadProducts().execute();
             } else if (dataimport_pictures.isChecked()) {
                 if (dataimport_pictures_not_existed.isChecked()) {
-                    new DownloadNewImages().execute();
+                    new DownloadNewImagesRetrofit().execute();
                 } else {
-                    new DownloadAllImages().execute();
+                    new DownloadAllImagesRetrofit().execute();
                 }
             } else if (dataimport_pictures_not_existed.isChecked()) {
-                new DownloadNewImages().execute();
+                new DownloadNewImagesRetrofit().execute();
             } else {
                 showInfo();
             }
@@ -775,12 +775,12 @@ public class DataImportActivity extends AppCompatActivity {
             pd.dismiss();
             if (dataimport_pictures.isChecked()) {
                 if (dataimport_pictures_not_existed.isChecked()) {
-                    new DownloadNewImages().execute();
+                    new DownloadNewImagesRetrofit().execute();
                 } else {
-                    new DownloadAllImages().execute();
+                    new DownloadAllImagesRetrofit().execute();
                 }
             } else if (dataimport_pictures_not_existed.isChecked()) {
-                new DownloadNewImages().execute();
+                new DownloadNewImagesRetrofit().execute();
             } else {
                 showInfo();
             }
@@ -853,7 +853,7 @@ public class DataImportActivity extends AppCompatActivity {
             infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_images_download_count), counter));
             progressDialog.dismiss();
             if (dataimport_pictures_not_existed.isChecked()) {
-                new DownloadNewImages().execute();
+                new DownloadNewImagesRetrofit().execute();
             } else {
                 showInfo();
             }
@@ -989,7 +989,7 @@ public class DataImportActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
             if (dataimport_pictures_not_existed.isChecked()) {
-                new DownloadNewImages().execute();
+                new DownloadNewImagesRetrofit().execute();
             } else {
                 showInfo();
             }
@@ -1038,6 +1038,10 @@ public class DataImportActivity extends AppCompatActivity {
                 try {
                     Response<ResponseBody> response = call.execute();
                     if (response.isSuccessful()) {
+                        File file = new File(getExternalFilesDir("/aysoft") + File.separator + imagesList.get(i));
+                        if (file.exists()) {
+                            continue;
+                        }
                         writeResponseBodyToDisk(response.body(), imagesList.get(i));
                         publishProgress(++counter);
                     }
@@ -1052,6 +1056,7 @@ public class DataImportActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
+            showInfo();
         }
     }
 

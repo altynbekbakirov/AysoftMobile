@@ -91,7 +91,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return new LinearHolder(view, listener);
     }
 
-
     @Override
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final int itemType = VIEW_TYPE;
@@ -230,12 +229,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
     @Override
     public int getItemCount() {
         return itemsList.size();
     }
-
 
     public class LinearHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView StokKodu;
@@ -299,7 +296,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             listener.onItemListener(getAbsoluteAdapterPosition());
         }
     }
-
 
     public class GridHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView StokKodu;
@@ -366,12 +362,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-
     @Override
     public Filter getFilter() {
         return searchFilter;
     }
-
 
     private final Filter searchFilter = new Filter() {
         @Override

@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Spinner_Country_Adapter spinnerCountryAdapter;
     private static final String KEY_NAME = "name";
     private static final String KEY_LANG = "language";
-    private static final String KEY_FIRMA_NO = "firmano";
     public static String FIRMA_NO = null;
     public static String DONEM_NO = null;
     public static String ondegerFiyatGrubu1 = null;
