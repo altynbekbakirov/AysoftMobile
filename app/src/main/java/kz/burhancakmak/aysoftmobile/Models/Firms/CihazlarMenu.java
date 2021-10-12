@@ -1,12 +1,8 @@
 package kz.burhancakmak.aysoftmobile.Models.Firms;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = "cihazlarMenu")
 public class CihazlarMenu {
 
-    @PrimaryKey
+
     private Integer KayitNo;
     private Integer MenuGrupKayitNo;
     private Integer Tip;
@@ -19,9 +15,6 @@ public class CihazlarMenu {
     private String SiraNo;
     private Integer UstMenuKayitNo;
     private Integer MenuTipi;
-
-    public CihazlarMenu() {
-    }
 
     public String getSiraNo() {
         return SiraNo;

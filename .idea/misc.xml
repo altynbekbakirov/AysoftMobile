@@ -21,13 +21,15 @@
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/fragment_satis.xml" value="0.36102564102564105" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/fragment_visit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/fragment_ziyaret_recyclerview_layout.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/main_nav_header.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/main_nav_header.xml" value="0.25" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/product_image_slider_layout.xml" value="0.36102564102564105" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/products_recyclerview_grid_layout.xml" value="0.36102564102564105" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/products_recyclerview_linear_layout.xml" value="0.36102564102564105" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/products_stock_recyclerview_layout.xml" value="0.36102564102564105" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/clients_maps_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/clients_visit_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/main_nav_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/products_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

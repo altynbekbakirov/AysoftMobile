@@ -50,7 +50,8 @@
         android:fontFamily="@font/open_sans_condensed_bold"
         android:text="V 1.0 (07.10.2021)"
         android:textAllCaps="true"
-        android:textColor="@color/gold"
-        android:textSize="12sp" />
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

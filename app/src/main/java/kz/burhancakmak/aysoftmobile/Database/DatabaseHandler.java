@@ -1302,6 +1302,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
+
     public List<ItemsToplamlar> selectAllItemsByAmbar(int kayitno) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsToplamlar> toplamList = new ArrayList<>();
@@ -1788,7 +1789,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<CihazlarMenu> selectCihazlarMenu(int tip, int menuGrupKayitNo) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<CihazlarMenu> menus = new ArrayList<>();
+        List<CihazlarMenu> menuList = new ArrayList<>();
         String sql = "SELECT KayitNo, MenuGrupKayitNo, Tip, " +
                 "Aciklama1, Aciklama2, Filtre, Siralama, " +
                 "Ondeger, Kullanim, SiraNo, UstMenuKayitNo, MenuTipi " +
@@ -1810,12 +1811,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 menu.setSiraNo(cursor.getString(9));
                 menu.setUstMenuKayitNo(cursor.getInt(10));
                 menu.setMenuTipi(cursor.getInt(11));
-                menus.add(menu);
+                menuList.add(menu);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return menus;
+        return menuList;
     }
 
     public List<ClientZiyaret> selectAllZiyaret(int CariKayitNo, String date1, String date2) {

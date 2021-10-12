@@ -16,7 +16,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -143,6 +142,21 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 return true;
             }
         });
+
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                invalidateOptionsMenu();
+                return true;
+            }
+        });
+
         return true;
     }
 
@@ -170,19 +184,15 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int index = 0;
+
         for (int i = 0; i < menuList.size(); i++) {
             if (menuList.get(i).getKayitNo() == item.getItemId()) {
-                index = i;
+                navigationView.getMenu().getItem(i).setChecked(true);
                 NAV_FILTER = menuList.get(i).getFiltre();
-                Log.d("kayitNo", "onNavigationItemSelected: " + NAV_FILTER);
-                break;
+            } else {
+                navigationView.getMenu().getItem(i).setChecked(false);
             }
         }
-        for (int i = 0; i < menuList.size(); i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
-        navigationView.getMenu().getItem(index).setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
         new GetDataFromDatabase().execute();
         return true;
@@ -254,12 +264,16 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         }
 
         if (menuList.size() > 0) {
+            Menu menu = navigationView.getMenu();
             for (int i = 0; i < menuList.size(); i++) {
-                CihazlarMenu menu = menuList.get(i);
-                int sayi = databaseHandler.selectCihazlarUrunSayisi(menu.getFiltre());
-                navigationView.getMenu().add(menu.getKayitNo(), menu.getKayitNo(), menu.getKayitNo(), menu.getAciklama1() + " (" + sayi + ")").setIcon(R.drawable.menu_ic_reports);
-                if (menu.getOndeger() == 1) {
-                    NAV_FILTER = menu.getFiltre();
+                int sayi = databaseHandler.selectCihazlarUrunSayisi(menuList.get(i).getFiltre());
+                menu.add(
+                        i,
+                        menuList.get(i).getKayitNo(),
+                        i,
+                        menuList.get(i).getAciklama1() + " (" + sayi + ") ").setIcon(R.drawable.menu_ic_reports);
+                if (menuList.get(i).getOndeger() == 1) {
+                    NAV_FILTER = menuList.get(i).getFiltre();
                 }
             }
             navigationView.getMenu().getItem(0).setChecked(true);

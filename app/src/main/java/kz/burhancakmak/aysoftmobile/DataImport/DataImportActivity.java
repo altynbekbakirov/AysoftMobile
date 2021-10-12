@@ -757,7 +757,8 @@ public class DataImportActivity extends AppCompatActivity {
                             toplamlar.setToplam(Double.parseDouble(toplams[4]));
                             toplamlar.setStokKodu(toplams[5]);
                             if (toplams.length > 6) {
-                            toplamlar.setStokYeriKodu(toplams[6]); }
+                                toplamlar.setStokYeriKodu(toplams[6]);
+                            }
                             databaseHandler.insertToplam(toplamlar);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_toplamlar), itemsQuery.getItemsToplamlar().size() - 2));
@@ -1029,24 +1030,23 @@ public class DataImportActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
 
             for (int i = 0; i < imagesList.size(); i++) {
-                Call<ResponseBody> call = retrofitApi.downloadFileWithDynamicUrlSync(phoneId,
-                        userSettingMap.get(KEY_NAME),
-                        userSettingMap.get(KEY_PASSWORD),
-                        DONEM_NO,
-                        FIRMA_NO,
-                        webAddress + firma.getResimAdresi() + imagesList.get(i));
-                try {
-                    Response<ResponseBody> response = call.execute();
-                    if (response.isSuccessful()) {
-                        File file = new File(getExternalFilesDir("/aysoft") + File.separator + imagesList.get(i));
-                        if (file.exists()) {
-                            continue;
+                File file = new File(getExternalFilesDir("/aysoft") + File.separator + imagesList.get(i));
+                if (!file.exists()) {
+                    Call<ResponseBody> call = retrofitApi.downloadFileWithDynamicUrlSync(phoneId,
+                            userSettingMap.get(KEY_NAME),
+                            userSettingMap.get(KEY_PASSWORD),
+                            DONEM_NO,
+                            FIRMA_NO,
+                            webAddress + firma.getResimAdresi() + imagesList.get(i));
+                    try {
+                        Response<ResponseBody> response = call.execute();
+                        if (response.isSuccessful()) {
+                            writeResponseBodyToDisk(response.body(), imagesList.get(i));
+                            publishProgress(++counter);
                         }
-                        writeResponseBodyToDisk(response.body(), imagesList.get(i));
-                        publishProgress(++counter);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
             return null;
