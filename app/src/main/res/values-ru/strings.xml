@@ -265,6 +265,16 @@
     <string name="client_visit_start_visit_before_adding">Начните визит и попробуйте сзаново.</string>
     <string name="client_visit_end_visit_message">Выгрузка на сервер осуществляется только после закрытия визита.</string>
     <string name="products_stock_ambar_shelf">Полка</string>
+    <string name="alert_siparis_purchase_invoice">Приходная накладная</string>
+    <string name="alert_siparis_purchase_return_invoice">Возвратная накладная поставщику</string>
+    <string name="alert_siparis_sale_invoice">Оптовая расходная накладная</string>
+    <string name="alert_siparis_sale_return_invoice">Оптовая возвратная накладная от покупателя</string>
+    <string name="alert_siparis_request_slip">Бланк запроса</string>
+    <string name="alert_siparis_inventory">Инвентаризация</string>
+    <string name="alert_siparis_sale_retail">Розничная расходная накладная</string>
+    <string name="alert_siparis_sale_retail_return">Возвратная расходная накладная от покупателя</string>
+    <string name="alert_kasa_payment_expense">Расходный КО издержек</string>
+    <string name="alert_kasa_collection_expense">Приходный КО издержек</string>
 
 
 </resources>

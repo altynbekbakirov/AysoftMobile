@@ -136,7 +136,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
             for (int i = 0; i < menuList.size(); i++) {
                 CihazlarMenu menu = menuList.get(i);
                 int sayi = databaseHandler.selectCihazlarCariSayisi(menu.getFiltre());
-                navigationView.getMenu().add(menu.getKayitNo(), menu.getKayitNo(), menu.getKayitNo(), menu.getAciklama1() + " (" + sayi + ")").setIcon(R.drawable.menu_ic_reports);
+                navigationView.getMenu().add(i, menu.getKayitNo(), i, menu.getAciklama1() + " (" + sayi + ")").setIcon(R.drawable.menu_ic_reports);
                 if (menu.getOndeger() == 1) {
                     NAV_FILTER = menu.getFiltre();
                     NAV_ORDER = menu.getSiralama();

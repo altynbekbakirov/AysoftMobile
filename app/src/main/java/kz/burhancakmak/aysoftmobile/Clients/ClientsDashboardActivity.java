@@ -52,6 +52,7 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsDashboardQuery;
 import kz.burhancakmak.aysoftmobile.Models.Clients.GrupBazindaSatis;
 import kz.burhancakmak.aysoftmobile.Models.Clients.MarkaBazindaSatisMiktarTutarGore;
+import kz.burhancakmak.aysoftmobile.Models.Clients.SatilanMalListesi;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
@@ -439,7 +440,6 @@ public class ClientsDashboardActivity extends AppCompatActivity {
             lineChart.setData(lineData);
             lineChart.invalidate();
         }
-
     }
 
     private void grupBazindaSatisMiktar(List<GrupBazindaSatis> list) {

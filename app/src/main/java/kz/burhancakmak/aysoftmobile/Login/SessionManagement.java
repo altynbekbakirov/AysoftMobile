@@ -90,8 +90,14 @@ public class SessionManagement {
         editor.commit();
     }
 
+    public void removeWebSettings() {
+        editor.remove(KEY_UUID);
+        editor.remove(KEY_WEB);
+        editor.commit();
+    }
+
     public void removeKeyFirmaNo() {
-        editor.remove(KEY_VISIT);
+        editor.remove(KEY_FIRMA_NO);
         editor.commit();
     }
 

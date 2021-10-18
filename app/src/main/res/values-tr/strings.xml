@@ -242,5 +242,15 @@
     <string name="client_visit_start_visit_before_adding">Ziyaret başlatın ve tekrar deneyin.</string>
     <string name="client_visit_end_visit_message">Servere göndermek icin ziyareti kapatın.</string>
     <string name="products_stock_ambar_shelf">Stok yeri kodu</string>
+    <string name="alert_siparis_purchase_invoice">Alım faturası</string>
+    <string name="alert_siparis_purchase_return_invoice">Alım iade faturası</string>
+    <string name="alert_siparis_sale_invoice">Toptan satış faturası</string>
+    <string name="alert_siparis_sale_return_invoice">Toptan satış iade faturası</string>
+    <string name="alert_siparis_request_slip">Talep fişi</string>
+    <string name="alert_siparis_inventory">Sayım  fişi</string>
+    <string name="alert_siparis_sale_retail">Perakende satış faturası</string>
+    <string name="alert_siparis_sale_retail_return">Perakende satış iade faturası</string>
+    <string name="alert_kasa_payment_expense">Masraf ödeme</string>
+    <string name="alert_kasa_collection_expense">Masraf tahsilat</string>
 
 </resources>

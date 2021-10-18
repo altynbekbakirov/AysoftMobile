@@ -56,7 +56,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class SiparisFragment extends Fragment implements SiparisAdapter.OrderClickListener {
-    final int[] selectedItem = {0};
+    final int[] selectedItem = {0}, selectedMenu = {0};
     DatabaseHandler databaseHandler;
     FloatingActionButton fabSiparis;
     RecyclerView recyclerView;
@@ -64,12 +64,17 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
     SiparisAdapter adapter;
     List<ClientSiparis> siparisList = new ArrayList<>();
     List<ClientSepet> sepetList = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
+    List<Integer> taskList = new ArrayList<>();
     HashMap<String, String> userSettingMap;
     HashMap<String, String> webSettingsMap;
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     SessionManagement session;
-    String KurusHaneSayisiStokTutar, KurusHaneSayisiStokMiktar, ziyaretSistemiKullanimi;
+    String KurusHaneSayisiStokTutar, KurusHaneSayisiStokMiktar, ziyaretSistemiKullanimi, CariIslemlerToptanSatisFaturasi,
+            CariIslemlerToptanSatisIadeFaturasi, CariIslemlerPerakendeSatisFaturasi, CariIslemlerPerakendeSatisIadeFaturasi,
+            CariIslemlerAlinanSiparis, CariIslemlerVerilenSiparis, CariIslemlerAlimFaturasi, CariIslemlerAlimIadeFaturasi,
+            CariIslemlerSayimFisi, CariIslemlerTalepFisi;
     private String date1, date2;
     Calendar myCalendar;
 
@@ -81,16 +86,59 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         webSettingsMap = session.getWebSettings();
         userSettingMap = session.getUserDetails();
         databaseHandler = DatabaseHandler.getInstance(getActivity());
-        KurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokTutar", "0");
-        KurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokMiktar", "0");
-        ziyaretSistemiKullanimi = parametreGetir(FIRMA_NO, "ZiyaretSistemiKullanimi", "0");
 
         initViews();
-        new GetDataFromDatabase().execute(date1, date2);
         return view;
     }
 
     private void initViews() {
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
+        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
+        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi", "0");
+        CariIslemlerToptanSatisFaturasi = parametreGetir("CariIslemlerToptanSatisFaturasi", "0");
+        CariIslemlerToptanSatisIadeFaturasi = parametreGetir("CariIslemlerToptanSatisIadeFaturasi", "0");
+        CariIslemlerPerakendeSatisFaturasi = parametreGetir("CariIslemlerPerakendeSatisFaturasi", "0");
+        CariIslemlerPerakendeSatisIadeFaturasi = parametreGetir("CariIslemlerPerakendeSatisIadeFaturasi", "0");
+        CariIslemlerAlinanSiparis = parametreGetir("CariIslemlerAlinanSiparis", "0");
+        CariIslemlerVerilenSiparis = parametreGetir("CariIslemlerVerilenSiparis", "0");
+        CariIslemlerAlimFaturasi = parametreGetir("CariIslemlerAlimFaturasi", "0");
+        CariIslemlerAlimIadeFaturasi = parametreGetir("CariIslemlerAlimIadeFaturasi", "0");
+        CariIslemlerSayimFisi = parametreGetir("CariIslemlerSayimFisi", "0");
+        CariIslemlerTalepFisi = parametreGetir("CariIslemlerTalepFisi", "0");
+
+        if (CariIslemlerToptanSatisFaturasi.equals("1")) {
+            taskList.add(8);
+        }
+        if (CariIslemlerToptanSatisIadeFaturasi.equals("1")) {
+            taskList.add(3);
+        }
+        if (CariIslemlerPerakendeSatisFaturasi.equals("1")) {
+            taskList.add(7);
+        }
+        if (CariIslemlerPerakendeSatisIadeFaturasi.equals("1")) {
+            taskList.add(2);
+        }
+        if (CariIslemlerAlinanSiparis.equals("1")) {
+            taskList.add(108);
+        }
+        if (CariIslemlerVerilenSiparis.equals("1")) {
+            taskList.add(101);
+        }
+        if (CariIslemlerAlimFaturasi.equals("1")) {
+            taskList.add(1);
+        }
+        if (CariIslemlerAlimIadeFaturasi.equals("1")) {
+            taskList.add(6);
+        }
+        if (CariIslemlerTalepFisi.equals("1")) {
+            taskList.add(200);
+        }
+        if (CariIslemlerSayimFisi.equals("1")) {
+            taskList.add(201);
+        }
+
+
         recyclerView = view.findViewById(R.id.siparisRecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -122,6 +170,8 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         Date date = new Date();
         date1 = dateFormat.format(date);
         date2 = dateFormat.format(date);
+
+        new GetDataFromDatabase().execute(date1, date2);
     }
 
     @Override
@@ -389,7 +439,49 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
     }
 
     private void chooseOrderOperation() {
-        String[] items = new String[]{getString(R.string.alert_siparis_purchases), getString(R.string.alert_siparis_sales)};
+        String[] items = new String[taskList.size()];
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i) == 8) {
+                items[i] = getString(R.string.alert_siparis_sale_invoice);
+            }
+            if (taskList.get(i) == 3) {
+                items[i] = getString(R.string.alert_siparis_sale_return_invoice);
+            }
+            if (taskList.get(i) == 7) {
+                items[i] = getString(R.string.alert_siparis_sale_retail);
+            }
+            if (taskList.get(i) == 2) {
+                items[i] = getString(R.string.alert_siparis_sale_retail_return);
+            }
+            if (taskList.get(i) == 108) {
+                items[i] = getString(R.string.alert_siparis_purchases);
+            }
+            if (taskList.get(i) == 101) {
+                items[i] = getString(R.string.alert_siparis_sales);
+            }
+            if (taskList.get(i) == 1) {
+                items[i] = getString(R.string.alert_siparis_purchase_invoice);
+            }
+            if (taskList.get(i) == 6) {
+                items[i] = getString(R.string.alert_siparis_purchase_return_invoice);
+            }
+            if (taskList.get(i) == 200) {
+                items[i] = getString(R.string.alert_siparis_request_slip);
+            }
+            if (taskList.get(i) == 201) {
+                items[i] = getString(R.string.alert_siparis_inventory);
+            }
+        }
+        /*String[] items = new String[]{
+                getString(R.string.alert_siparis_purchase_invoice),
+                getString(R.string.alert_siparis_purchase_return_invoice),
+                getString(R.string.alert_siparis_sale_invoice),
+                getString(R.string.alert_siparis_sale_return_invoice),
+                getString(R.string.alert_siparis_purchases),
+                getString(R.string.alert_siparis_sales),
+                getString(R.string.alert_siparis_request_slip),
+                getString(R.string.alert_siparis_inventory)
+        };*/
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle(R.string.alert_kasa_title_choose);
         builder.setCancelable(false);
@@ -398,7 +490,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getActivity(), SiparisIslemleriActivity.class);
-                intent.putExtra("islemTuru", selectedItem[0]);
+                intent.putExtra("islemTuru", taskList.get(selectedMenu[0]));
                 intent.putExtra("KurusHaneSayisiStokMiktar", KurusHaneSayisiStokMiktar);
                 intent.putExtra("KurusHaneSayisiStokTutar", KurusHaneSayisiStokTutar);
                 startActivityForResult(intent, 88);
@@ -410,10 +502,10 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                 dialog.dismiss();
             }
         });
-        builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(items, selectedMenu[0], new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectedItem[0] = which;
+                selectedMenu[0] = which;
             }
         });
         builder.show();
@@ -594,13 +686,12 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         builder.show();
     }
 
-    private String parametreGetir(String firmaNo, String parametre, String deger) {
-        List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
-        String parametreDeger;
-        if (parametrelerList.size() == 1) {
-            parametreDeger = parametrelerList.get(0).getParametreDegeri();
-        } else {
-            parametreDeger = deger;
+    private String parametreGetir(String parametre, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(parametre)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
         }
         return parametreDeger;
     }

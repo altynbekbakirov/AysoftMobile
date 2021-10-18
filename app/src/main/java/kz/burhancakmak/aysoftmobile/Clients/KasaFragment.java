@@ -65,12 +65,14 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener {
-    FloatingActionButton floatingActionButton;
-    RecyclerView recyclerView;
     KasaAdapter clientsAdapter;
     List<ClientKasa> kasaList = new ArrayList<>();
-    final int[] selectedItem = {0};
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
+    List<Integer> taskList = new ArrayList<>();
+    final int[] selectedItem = {0}, selectedMenu = {0};
     View view;
+    FloatingActionButton floatingActionButton;
+    RecyclerView recyclerView;
     RelativeLayout layout;
     DatabaseHandler databaseHandler;
     HashMap<String, String> webSettingsMap;
@@ -78,20 +80,96 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     SessionManagement session;
-    String kurusHaneSayisiStokTutar, ziyaretSistemiKullanimi;
+    String kurusHaneSayisiStokTutar, ziyaretSistemiKullanimi, CariIslemlerKasaTahsilatIslemi,
+            CariIslemlerKasaOdemeIslemi, CariIslemlerKasaMasrafTahsilatIslemi, CariIslemlerKasaMasrafOdemeIslemi;
     private String date1, date2;
     Calendar myCalendar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_kasa, container, false);
         session = new SessionManagement(getActivity());
         webSettingsMap = session.getWebSettings();
         userSettingMap = session.getUserDetails();
         databaseHandler = DatabaseHandler.getInstance(getActivity());
-        kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokTutar", "0");
-        ziyaretSistemiKullanimi = parametreGetir(FIRMA_NO, "ZiyaretSistemiKullanimi", "0");
-        view = inflater.inflate(R.layout.fragment_kasa, container, false);
+
+        initViews();
+        return view;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        chooseMenuOptions(position);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.clients_visit_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.client_visit_filter) {
+            showFilterDialog();
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int kayitNo, position;
+        String makbuzNo, aciklama, tarih;
+        double tutar;
+        int islemTuru;
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 101) {
+                makbuzNo = data.getStringExtra("makbuzNo");
+                aciklama = data.getStringExtra("aciklama");
+                tarih = data.getStringExtra("tarih");
+                tutar = data.getDoubleExtra("tutar", -1);
+                islemTuru = data.getIntExtra("islemTuru", -1);
+                if (tarih != null && aciklama != null) {
+                    addItem(tarih, tutar, makbuzNo, aciklama, islemTuru);
+                }
+            }
+            if (requestCode == 102) {
+                position = data.getIntExtra("position", -1);
+                kayitNo = data.getIntExtra("kayitNo", -1);
+                makbuzNo = data.getStringExtra("makbuzNo");
+                aciklama = data.getStringExtra("aciklama");
+                tarih = data.getStringExtra("tarih");
+                tutar = data.getDoubleExtra("tutar", -1);
+                if (kayitNo != -1) {
+                    updateItem(tarih, tutar, makbuzNo, aciklama, kayitNo, position);
+                }
+            }
+        }
+    }
+
+    private void initViews() {
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        kurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
+        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi", "0");
+        CariIslemlerKasaTahsilatIslemi = parametreGetir("CariIslemlerKasaTahsilatIslemi", "0");
+        CariIslemlerKasaOdemeIslemi = parametreGetir("CariIslemlerKasaOdemeIslemi", "0");
+        CariIslemlerKasaMasrafTahsilatIslemi = parametreGetir("CariIslemlerKasaMasrafTahsilatIslemi", "0");
+        CariIslemlerKasaMasrafOdemeIslemi = parametreGetir("CariIslemlerKasaMasrafOdemeIslemi", "0");
+
+        if (CariIslemlerKasaTahsilatIslemi.equals("1")) {
+            taskList.add(11);
+        }
+        if (CariIslemlerKasaOdemeIslemi.equals("1")) {
+            taskList.add(12);
+        }
+        if (CariIslemlerKasaMasrafTahsilatIslemi.equals("1")) {
+            taskList.add(111);
+        }
+        if (CariIslemlerKasaMasrafOdemeIslemi.equals("1")) {
+            taskList.add(112);
+        }
+
         layout = view.findViewById(R.id.products_snackbar_relativelayout);
         recyclerView = view.findViewById(R.id.kasaRecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -126,55 +204,6 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         date2 = dateFormat.format(date);
 
         new GetDataFromDatabase().execute(date1, date2);
-        return view;
-    }
-
-    @Override
-    public void onItemClick(int position) {
-        chooseMenuOptions(position);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.clients_visit_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.client_visit_filter) {
-            showFilterDialog();
-        }
-        return true;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        int kayitNo, position;
-        String makbuzNo, aciklama, tarih;
-        double tutar;
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 101) {
-                makbuzNo = data.getStringExtra("makbuzNo");
-                aciklama = data.getStringExtra("aciklama");
-                tarih = data.getStringExtra("tarih");
-                tutar = data.getDoubleExtra("tutar", -1);
-                if (tarih != null && aciklama != null) {
-                    addItem(tarih, tutar, makbuzNo, aciklama, tutar > 0 ? 1 : 2);
-                }
-            }
-            if (requestCode == 102) {
-                position = data.getIntExtra("position", -1);
-                kayitNo = data.getIntExtra("kayitNo", -1);
-                makbuzNo = data.getStringExtra("makbuzNo");
-                aciklama = data.getStringExtra("aciklama");
-                tarih = data.getStringExtra("tarih");
-                tutar = data.getDoubleExtra("tutar", -1);
-                if (kayitNo != -1) {
-                    updateItem(tarih, tutar, makbuzNo, aciklama, kayitNo, position);
-                }
-            }
-        }
     }
 
     private class GetDataFromDatabase extends AsyncTask<String, Void, Void> {
@@ -550,7 +579,22 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
     }
 
     private void chooseKasaOperation() {
-        String[] items = new String[]{getString(R.string.alert_kasa_collection), getString(R.string.alert_kasa_payment)};
+//        String[] items = new String[]{getString(R.string.alert_kasa_collection), getString(R.string.alert_kasa_payment)};
+        String[] items = new String[taskList.size()];
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i) == 11) {
+                items[i] = getString(R.string.alert_kasa_collection);
+            }
+            if (taskList.get(i) == 12) {
+                items[i] = getString(R.string.alert_kasa_payment);
+            }
+            if (taskList.get(i) == 111) {
+                items[i] = getString(R.string.alert_kasa_collection_expense);
+            }
+            if (taskList.get(i) == 112) {
+                items[i] = getString(R.string.alert_kasa_payment_expense);
+            }
+        }
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
         builder.setTitle(R.string.alert_kasa_title_choose);
         builder.setCancelable(false);
@@ -559,7 +603,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getActivity(), KasaIslemleriActivity.class);
-                intent.putExtra("islemTuru", selectedItem[0]);
+                intent.putExtra("islemTuru", taskList.get(selectedMenu[0]));
                 startActivityForResult(intent, 101);
             }
         });
@@ -569,10 +613,10 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                 dialog.dismiss();
             }
         });
-        builder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(items, selectedMenu[0], new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectedItem[0] = which;
+                selectedMenu[0] = which;
             }
         });
         builder.show();
@@ -736,13 +780,12 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         builder.show();
     }
 
-    private String parametreGetir(String firmaNo, String parametre, String deger) {
-        List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
-        String parametreDeger;
-        if (parametrelerList.size() == 1) {
-            parametreDeger = parametrelerList.get(0).getParametreDegeri();
-        } else {
-            parametreDeger = deger;
+    private String parametreGetir(String parametre, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(parametre)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
         }
         return parametreDeger;
     }

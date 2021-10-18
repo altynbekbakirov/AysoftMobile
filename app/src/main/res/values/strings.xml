@@ -265,6 +265,16 @@
     <string name="client_visit_start_visit_before_adding">Start visit before and try again</string>
     <string name="client_visit_end_visit_message">Close visit to send to server</string>
     <string name="products_stock_ambar_shelf">Shelf</string>
+    <string name="alert_siparis_purchase_invoice">Purchase invoice</string>
+    <string name="alert_siparis_purchase_return_invoice">Purchase return invoice</string>
+    <string name="alert_siparis_sale_invoice">Whole Sale invoice</string>
+    <string name="alert_siparis_sale_return_invoice">Whole Sale return invoice</string>
+    <string name="alert_siparis_request_slip">Request slip</string>
+    <string name="alert_siparis_inventory">Inventory</string>
+    <string name="alert_siparis_sale_retail">Sale retail invoice</string>
+    <string name="alert_siparis_sale_retail_return">Sale return retail invoice</string>
+    <string name="alert_kasa_payment_expense">Payment expense</string>
+    <string name="alert_kasa_collection_expense">Collection expense</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

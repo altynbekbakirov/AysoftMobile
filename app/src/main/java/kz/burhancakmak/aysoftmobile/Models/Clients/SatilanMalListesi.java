@@ -1,4 +1,4 @@
-package kz.burhancakmak.aysoftmobile.Clients;
+package kz.burhancakmak.aysoftmobile.Models.Clients;
 
 public class SatilanMalListesi {
 

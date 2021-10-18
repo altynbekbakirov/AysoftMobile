@@ -273,7 +273,7 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         if (menuList.size() > 0) {
             for (int i = 0; i < menuList.size(); i++) {
                 CihazlarMenu menu = menuList.get(i);
-                navigationView.getMenu().add(menu.getKayitNo(), menu.getKayitNo(), menu.getKayitNo(), menu.getAciklama1()).setIcon(R.drawable.menu_ic_reports);
+                navigationView.getMenu().add(i, menu.getKayitNo(), i, menu.getAciklama1()).setIcon(R.drawable.menu_ic_reports);
                 if (menu.getOndeger() == 1) {
                     NAV_FILTER = menu.getFiltre();
                 }

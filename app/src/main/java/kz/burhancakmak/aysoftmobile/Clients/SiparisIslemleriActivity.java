@@ -147,7 +147,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                 siparis.setAciklama(Aciklama);
                 siparis.setOdemeSekli(OdemeSekli);
                 siparis.setSiparisTeslimTarihi(SiparisTeslimTarihi == null ? dateFormat.format(date) : SiparisTeslimTarihi);
-                siparis.setIslemTipi(islemTuru == 0 ? 108 : 101);
+                siparis.setIslemTipi(islemTuru);
                 siparis.setErpGonderildi(0);
                 siparis.setZiyaretKayitNo(session.getKeyVisit().intValue());
                 double total = 0.0;

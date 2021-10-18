@@ -69,6 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!editTextId.getText().toString().isEmpty() && !editTextWeb.getText().toString().isEmpty()) {
+                    session.removeKeyFirmaNo();
+                    session.removeWebSettings();
                     session.createWebSettings(editTextId.getText().toString(), editTextWeb.getText().toString());
 //                    session.createWebSettings("869780039775405", "http://5.199.138.36:34444/NewMobil/");
                     Intent intent = new Intent();

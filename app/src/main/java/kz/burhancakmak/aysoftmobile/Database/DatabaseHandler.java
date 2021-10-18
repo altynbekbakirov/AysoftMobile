@@ -1936,6 +1936,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return params;
     }
 
+    public List<CihazlarFirmaParametreler> selectParametreList(String firmaNo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<CihazlarFirmaParametreler> params = new ArrayList<>();
+        String sql = "SELECT params.KayitNo, params.CihazlarFirmaKayitNo, params.ParametreTipi, params.ParametreAdi, " +
+                "params.ParametreDegeri, params.Aciklama, params.MobilCihazdaDegistirebilir, params.Grup " +
+                "FROM " + TABLE_CIHAZLAR_FIRMA_PARAMETRELER + " AS params " +
+                "INNER JOIN " + TABLE_CIHAZLAR_FIRMA + " AS firma " +
+                "ON params.CihazlarFirmaKayitNo = firma.KayitNo " +
+                "WHERE firma.FirmaNo = " + firmaNo;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                CihazlarFirmaParametreler parametreler = new CihazlarFirmaParametreler();
+                parametreler.setKayitNo(cursor.getInt(0));
+                parametreler.setCihazlarFirmaKayitNo(cursor.getInt(1));
+                parametreler.setParametreTipi(cursor.getString(2));
+                parametreler.setParametreAdi(cursor.getString(3));
+                parametreler.setParametreDegeri(cursor.getString(4));
+                parametreler.setAciklama(cursor.getString(5));
+                parametreler.setMobilCihazdaDegistirebilir(cursor.getInt(6));
+                parametreler.setGrup(cursor.getString(7));
+                params.add(parametreler);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return params;
+    }
+
     public List<ItemsPrclist> selectPrclist() {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsPrclist> prclists = new ArrayList<>();

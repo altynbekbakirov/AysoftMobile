@@ -163,7 +163,8 @@ public class KasaIslemleriActivity extends AppCompatActivity {
                 intent.putExtra("kayitNo", kayitNo);
                 intent.putExtra("position", position);
                 intent.putExtra("tarih", edtTarih.getText().toString());
-                intent.putExtra("tutar", islemTuru == 1 ? -tutar : tutar);
+                intent.putExtra("tutar", tutar);
+                intent.putExtra("islemTuru", islemTuru);
                 intent.putExtra("aciklama", edtAciklama.getText().toString());
                 intent.putExtra("makbuzNo", edtMakbuzNo.getText().toString());
                 setResult(RESULT_OK, intent);
