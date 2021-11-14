@@ -16,10 +16,8 @@ public class ClientExtractQuery {
     @Expose
     private String _200;
 
-
     public ClientExtractQuery() {
     }
-
 
     public ClientExtractQuery(Boolean hata, List<String> cariekstre, String _200) {
         super();

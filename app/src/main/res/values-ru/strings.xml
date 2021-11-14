@@ -275,6 +275,10 @@
     <string name="alert_siparis_sale_retail_return">Возвратная расходная накладная от покупателя</string>
     <string name="alert_kasa_payment_expense">Расходный КО издержек</string>
     <string name="alert_kasa_collection_expense">Приходный КО издержек</string>
+    <string name="products_extract_toolbar_title">Выписка</string>
+    <string name="products_extract_purchase_count">Закупки</string>
+    <string name="products_extract_sale_count">Продажи</string>
+    <string name="products_extract_onhand">Остаток</string>
 
 
 </resources>

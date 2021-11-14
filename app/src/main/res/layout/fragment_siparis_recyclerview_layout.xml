@@ -119,7 +119,45 @@
                 android:id="@+id/siparisTutar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
+                android:layout_weight="2"
+                android:fontFamily="@font/open_sans_semibold_italic"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/siparisIndirimTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/nova_square"
+                android:text="@string/client_order_bottom_panel_discount"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/siparisIndirim"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/open_sans_semibold_italic"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/siparisNetTutarTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:fontFamily="@font/nova_square"
+                android:text="@string/client_order_bottom_panel_net"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/siparisNetTutar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:fontFamily="@font/open_sans_semibold_italic"
                 android:textSize="14sp" />
 

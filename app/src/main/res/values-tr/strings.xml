@@ -252,5 +252,9 @@
     <string name="alert_siparis_sale_retail_return">Perakende satış iade faturası</string>
     <string name="alert_kasa_payment_expense">Masraf ödeme</string>
     <string name="alert_kasa_collection_expense">Masraf tahsilat</string>
+    <string name="products_extract_toolbar_title">Ekstre</string>
+    <string name="products_extract_purchase_count">Satınalma</string>
+    <string name="products_extract_sale_count">Satış</string>
+    <string name="products_extract_onhand">Kalan</string>
 
 </resources>

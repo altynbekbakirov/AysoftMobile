@@ -1,31 +1,21 @@
-package kz.burhancakmak.aysoftmobile.Clients;
+package kz.burhancakmak.aysoftmobile.Products;
 
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
-import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -39,20 +29,22 @@ import java.util.List;
 import java.util.Locale;
 
 import kz.burhancakmak.aysoftmobile.Adapters.ClientsExtractAdapter;
+import kz.burhancakmak.aysoftmobile.Adapters.ItemsExtractAdapter;
+import kz.burhancakmak.aysoftmobile.Clients.ClientsExtractActivity;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
-import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientExtract;
-import kz.burhancakmak.aysoftmobile.Models.Clients.ClientExtractQuery;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsExtract;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsExtractQuery;
 import kz.burhancakmak.aysoftmobile.R;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class ClientsExtractActivity extends AppCompatActivity {
+public class ProductsExtractActivity extends AppCompatActivity {
     SessionManagement session;
     HashMap<String, String> userSettingMap;
     HashMap<String, String> webSettingsMap;
@@ -62,12 +54,13 @@ public class ClientsExtractActivity extends AppCompatActivity {
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LANG = "language";
-    List<ClientExtract> clientExtractList = new ArrayList<>();
-    ClientsExtractAdapter adapter;
-    int clientKayitNo;
-    ClCard card;
+    List<ItemsExtract> itemsExtractList = new ArrayList<>();
+    ItemsExtractAdapter adapter;
     Calendar myCalendar;
-    String kurusHaneSayisiStok;
+    String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar;
+    Toolbar toolbar;
+    int kayitNo;
+    String kayitKod, kayitAciklama;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +70,11 @@ public class ClientsExtractActivity extends AppCompatActivity {
         userSettingMap = session.getUserDetails();
         webSettingsMap = session.getWebSettings();
 
-
         if (!(userSettingMap.get(KEY_LANG) == null)) {
             setPhoneDefaultLanguage(userSettingMap.get(KEY_LANG));
         }
-        setContentView(R.layout.activity_clients_extract);
+
+        setContentView(R.layout.activity_products_extract);
 
         if (!session.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -93,20 +86,7 @@ public class ClientsExtractActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        Intent intent = getIntent();
-        clientKayitNo = intent.getIntExtra("clientKayitNo", -1);
-
         databaseHandler = DatabaseHandler.getInstance(this);
-
-        if (clientKayitNo != -1) {
-            card = databaseHandler.selectClientById(clientKayitNo);
-            kurusHaneSayisiStok = parametreGetir(FIRMA_NO, "KurusHaneSayisiCari", "0");
-        }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(card.getUnvani1());
-        toolbar.setNavigationIcon(R.drawable.ic_close);
-        setSupportActionBar(toolbar);
 
         if (date1 == null) {
             date1 = convertDateFormat(parametreGetir(FIRMA_NO, "FirmaDonemBaslangicTarihi", "02.02.2021"));
@@ -115,14 +95,37 @@ public class ClientsExtractActivity extends AppCompatActivity {
             date2 = convertDateFormat(parametreGetir(FIRMA_NO, "FirmaDonemBitisTarihi", "31.12.2021"));
         }
 
+        Intent intent = getIntent();
+        kayitNo = intent.getIntExtra("kayitNo", -1);
+        kayitKod = intent.getStringExtra("kayitKod");
+        kayitAciklama = intent.getStringExtra("kayitAciklama");
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(kayitKod + " - " + kayitAciklama);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        if (kayitNo != -1) {
+            kurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO, "kurusHaneSayisiStokMiktar", "0");
+            kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "kurusHaneSayisiStokTutar", "0");
+        }
+
         myCalendar = Calendar.getInstance();
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(ClientsExtractActivity.this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(ProductsExtractActivity.this));
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(1);
-        adapter = new ClientsExtractAdapter(clientExtractList, Integer.parseInt(kurusHaneSayisiStok));
+        adapter = new ItemsExtractAdapter(itemsExtractList, Integer.parseInt(kurusHaneSayisiStokMiktar), Integer.parseInt(kurusHaneSayisiStokTutar));
         recyclerView.setAdapter(adapter);
+
     }
 
     private class GetDataFromWeb extends AsyncTask<Void, String, Void> {
@@ -132,60 +135,57 @@ public class ClientsExtractActivity extends AppCompatActivity {
         String password = userSettingMap.get(KEY_PASSWORD);
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
         RetrofitApi retrofitApi;
-        Call<ClientExtractQuery> queryList;
+        Call<ItemsExtractQuery> queryList;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            clientExtractList.clear();
+            itemsExtractList.clear();
             products_progressBar.setVisibility(View.VISIBLE);
             retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
-            queryList = retrofitApi.getClientExtractList(
+            queryList = retrofitApi.getStockExtractList(
                     phoneId,
                     login,
                     password,
                     FIRMA_NO,
                     DONEM_NO,
-                    card.getKayitNo(),
                     "Tr",
                     date1,
                     date2,
                     0,
-                    card.getKod()
+                    kayitKod,
+                    kayitNo
             );
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                Response<ClientExtractQuery> response = queryList.execute();
+                Response<ItemsExtractQuery> response = queryList.execute();
                 if (response.isSuccessful() && response.body() != null) {
-                    ClientExtractQuery query = response.body();
+                    ItemsExtractQuery query = response.body();
 
-                    if (query.getCariekstre().size() > 2) {
+                    if (query.getStokekstre().size() > 2) {
                         publishProgress(getString(R.string.data_import_progressbar_clients));
-                        for (int i = 2; i < query.getCariekstre().size(); i++) {
-                            String[] clients = query.getCariekstre().get(i).split("\\|");
-                            ClientExtract clientExtract = new ClientExtract();
-                            clientExtract.setIslemNo(clients[0]);
-                            clientExtract.setTarih(clients[1]);
-                            clientExtract.setCariHesapKodu(clients[2]);
-                            clientExtract.setUnvani(clients[3]);
-                            clientExtract.setOzelKod(clients[4]);
-                            clientExtract.setSatisElemaniKodu(clients[5]);
-                            clientExtract.setSatisElemaniAdi(clients[6]);
-                            clientExtract.setIslemTipi(clients[7]);
-                            clientExtract.setBelgeNo(clients[8]);
-                            clientExtract.setAciklama(clients[9]);
-                            clientExtract.setBorc(Double.parseDouble(clients[10]));
-                            clientExtract.setAlacak(Double.parseDouble(clients[11]));
-                            clientExtract.setDoviz(clients[12]);
-                            clientExtract.setKur(Double.parseDouble(clients[13]));
-                            clientExtract.setDBorc(Double.parseDouble(clients[14]));
-                            clientExtract.setDAlacak(Double.parseDouble(clients[15]));
-                            clientExtract.setYBakiye(Double.parseDouble(clients[16]));
-                            clientExtract.setDBakiye(Double.parseDouble(clients[17]));
-                            clientExtractList.add(clientExtract);
+                        for (int i = 2; i < query.getStokekstre().size(); i++) {
+                            String[] items = query.getStokekstre().get(i).split("\\|");
+                            ItemsExtract itemsExtract = new ItemsExtract();
+                            itemsExtract.setStoKKodu(items[0]);
+                            itemsExtract.setAciklama(items[1]);
+                            itemsExtract.setTarih(items[2]);
+                            itemsExtract.setIslemNo(items[3]);
+                            itemsExtract.setMusteri(items[4]);
+                            itemsExtract.setIslemTipi(items[5]);
+                            itemsExtract.setAnaBirim(items[6]);
+                            itemsExtract.setGirenMiktar(Double.parseDouble(items[7]));
+                            itemsExtract.setCikanMiktar(Double.parseDouble(items[8]));
+                            itemsExtract.setKalanMiktar(Double.parseDouble(items[9]));
+                            itemsExtract.setFiyat(Double.parseDouble(items[10]));
+                            itemsExtract.setToplam(Double.parseDouble(items[11]));
+                            itemsExtract.setNetIskonto(Double.parseDouble(items[12]));
+                            itemsExtract.setNetMasraf(Double.parseDouble(items[13]));
+                            itemsExtract.setNetToplam(Double.parseDouble(items[14]));
+                            itemsExtractList.add(itemsExtract);
                         }
                     }
                 }
@@ -198,30 +198,12 @@ public class ClientsExtractActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            adapter.setList(clientExtractList);
+            adapter.setList(itemsExtractList);
             products_progressBar.setVisibility(View.GONE);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.clients_extract_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.client_extract_refresh) {
-            new GetDataFromWeb().execute();
-        }
-        if (item.getItemId() == R.id.client_extract_filter) {
-            showFilterDialog();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showFilterDialog() {
+    /*private void showFilterDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setCancelable(true);
         View view = getLayoutInflater().inflate(R.layout.client_extract_filter_layout, null);
@@ -279,11 +261,11 @@ public class ClientsExtractActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new GetDataFromWeb().execute();
+                new ClientsExtractActivity.GetDataFromWeb().execute();
             }
         });
         builder.show();
-    }
+    }*/
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
@@ -335,5 +317,4 @@ public class ClientsExtractActivity extends AppCompatActivity {
         }
         return targetFormat.format(date);
     }
-
 }

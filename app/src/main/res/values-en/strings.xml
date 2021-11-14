@@ -275,6 +275,10 @@
     <string name="alert_siparis_sale_retail_return">Sale return retail invoice</string>
     <string name="alert_kasa_payment_expense">Payment expense</string>
     <string name="alert_kasa_collection_expense">Collection expense</string>
+    <string name="products_extract_toolbar_title">Extract</string>
+    <string name="products_extract_purchase_count">Purchase</string>
+    <string name="products_extract_sale_count">Sale</string>
+    <string name="products_extract_onhand">On hand</string>
 
 
 </resources>

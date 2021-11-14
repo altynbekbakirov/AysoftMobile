@@ -5,32 +5,32 @@ public class AylaraGoreCariSatisTahsilat {
     private Integer CariKayitNo;
     private String CariKod;
     private String CariUnvan;
-    private Integer OcakSatis;
-    private Integer OcakTahsilat;
-    private Integer SubatSatis;
-    private Integer SubatTahsilat;
-    private Integer MartSatis;
-    private Integer MartTahsilat;
-    private Integer NisanSatis;
-    private Integer NisanTahsilat;
-    private Integer MayisSatis;
-    private Integer MayisTahsilat;
-    private Integer HaziranSatis;
-    private Integer HaziranTahsilat;
-    private Integer TemmuzSatis;
-    private Integer TemmuzTahsilat;
-    private Integer AgustosSatis;
-    private Integer AgustosTahsilat;
-    private Integer EylulSatis;
-    private Integer EylulTahsilat;
-    private Integer EkimSatis;
-    private Integer EkimTahsilat;
-    private Integer KasimSatis;
-    private Integer kasimTahsilat;
-    private Integer AralikSatis;
-    private Integer AralikTahsilat;
-    private Integer ToplamSatis;
-    private Integer ToplamTahsilat;
+    private Float OcakSatis;
+    private Float OcakTahsilat;
+    private Float SubatSatis;
+    private Float SubatTahsilat;
+    private Float MartSatis;
+    private Float MartTahsilat;
+    private Float NisanSatis;
+    private Float NisanTahsilat;
+    private Float MayisSatis;
+    private Float MayisTahsilat;
+    private Float HaziranSatis;
+    private Float HaziranTahsilat;
+    private Float TemmuzSatis;
+    private Float TemmuzTahsilat;
+    private Float AgustosSatis;
+    private Float AgustosTahsilat;
+    private Float EylulSatis;
+    private Float EylulTahsilat;
+    private Float EkimSatis;
+    private Float EkimTahsilat;
+    private Float KasimSatis;
+    private Float kasimTahsilat;
+    private Float AralikSatis;
+    private Float AralikTahsilat;
+    private Float ToplamSatis;
+    private Float ToplamTahsilat;
 
     public Integer getCariKayitNo() {
         return CariKayitNo;
@@ -56,211 +56,211 @@ public class AylaraGoreCariSatisTahsilat {
         CariUnvan = cariUnvan;
     }
 
-    public Integer getOcakSatis() {
+    public Float getOcakSatis() {
         return OcakSatis;
     }
 
-    public void setOcakSatis(Integer ocakSatis) {
+    public void setOcakSatis(Float ocakSatis) {
         OcakSatis = ocakSatis;
     }
 
-    public Integer getOcakTahsilat() {
+    public Float getOcakTahsilat() {
         return OcakTahsilat;
     }
 
-    public void setOcakTahsilat(Integer ocakTahsilat) {
+    public void setOcakTahsilat(Float ocakTahsilat) {
         OcakTahsilat = ocakTahsilat;
     }
 
-    public Integer getSubatSatis() {
+    public Float getSubatSatis() {
         return SubatSatis;
     }
 
-    public void setSubatSatis(Integer subatSatis) {
+    public void setSubatSatis(Float subatSatis) {
         SubatSatis = subatSatis;
     }
 
-    public Integer getSubatTahsilat() {
+    public Float getSubatTahsilat() {
         return SubatTahsilat;
     }
 
-    public void setSubatTahsilat(Integer subatTahsilat) {
+    public void setSubatTahsilat(Float subatTahsilat) {
         SubatTahsilat = subatTahsilat;
     }
 
-    public Integer getMartSatis() {
+    public Float getMartSatis() {
         return MartSatis;
     }
 
-    public void setMartSatis(Integer martSatis) {
+    public void setMartSatis(Float martSatis) {
         MartSatis = martSatis;
     }
 
-    public Integer getMartTahsilat() {
+    public Float getMartTahsilat() {
         return MartTahsilat;
     }
 
-    public void setMartTahsilat(Integer martTahsilat) {
+    public void setMartTahsilat(Float martTahsilat) {
         MartTahsilat = martTahsilat;
     }
 
-    public Integer getNisanSatis() {
+    public Float getNisanSatis() {
         return NisanSatis;
     }
 
-    public void setNisanSatis(Integer nisanSatis) {
+    public void setNisanSatis(Float nisanSatis) {
         NisanSatis = nisanSatis;
     }
 
-    public Integer getNisanTahsilat() {
+    public Float getNisanTahsilat() {
         return NisanTahsilat;
     }
 
-    public void setNisanTahsilat(Integer nisanTahsilat) {
+    public void setNisanTahsilat(Float nisanTahsilat) {
         NisanTahsilat = nisanTahsilat;
     }
 
-    public Integer getMayisSatis() {
+    public Float getMayisSatis() {
         return MayisSatis;
     }
 
-    public void setMayisSatis(Integer mayisSatis) {
+    public void setMayisSatis(Float mayisSatis) {
         MayisSatis = mayisSatis;
     }
 
-    public Integer getMayisTahsilat() {
+    public Float getMayisTahsilat() {
         return MayisTahsilat;
     }
 
-    public void setMayisTahsilat(Integer mayisTahsilat) {
+    public void setMayisTahsilat(Float mayisTahsilat) {
         MayisTahsilat = mayisTahsilat;
     }
 
-    public Integer getHaziranSatis() {
+    public Float getHaziranSatis() {
         return HaziranSatis;
     }
 
-    public void setHaziranSatis(Integer haziranSatis) {
+    public void setHaziranSatis(Float haziranSatis) {
         HaziranSatis = haziranSatis;
     }
 
-    public Integer getHaziranTahsilat() {
+    public Float getHaziranTahsilat() {
         return HaziranTahsilat;
     }
 
-    public void setHaziranTahsilat(Integer haziranTahsilat) {
+    public void setHaziranTahsilat(Float haziranTahsilat) {
         HaziranTahsilat = haziranTahsilat;
     }
 
-    public Integer getTemmuzSatis() {
+    public Float getTemmuzSatis() {
         return TemmuzSatis;
     }
 
-    public void setTemmuzSatis(Integer temmuzSatis) {
+    public void setTemmuzSatis(Float temmuzSatis) {
         TemmuzSatis = temmuzSatis;
     }
 
-    public Integer getTemmuzTahsilat() {
+    public Float getTemmuzTahsilat() {
         return TemmuzTahsilat;
     }
 
-    public void setTemmuzTahsilat(Integer temmuzTahsilat) {
+    public void setTemmuzTahsilat(Float temmuzTahsilat) {
         TemmuzTahsilat = temmuzTahsilat;
     }
 
-    public Integer getAgustosSatis() {
+    public Float getAgustosSatis() {
         return AgustosSatis;
     }
 
-    public void setAgustosSatis(Integer agustosSatis) {
+    public void setAgustosSatis(Float agustosSatis) {
         AgustosSatis = agustosSatis;
     }
 
-    public Integer getAgustosTahsilat() {
+    public Float getAgustosTahsilat() {
         return AgustosTahsilat;
     }
 
-    public void setAgustosTahsilat(Integer agustosTahsilat) {
+    public void setAgustosTahsilat(Float agustosTahsilat) {
         AgustosTahsilat = agustosTahsilat;
     }
 
-    public Integer getEylulSatis() {
+    public Float getEylulSatis() {
         return EylulSatis;
     }
 
-    public void setEylulSatis(Integer eylulSatis) {
+    public void setEylulSatis(Float eylulSatis) {
         EylulSatis = eylulSatis;
     }
 
-    public Integer getEylulTahsilat() {
+    public Float getEylulTahsilat() {
         return EylulTahsilat;
     }
 
-    public void setEylulTahsilat(Integer eylulTahsilat) {
+    public void setEylulTahsilat(Float eylulTahsilat) {
         EylulTahsilat = eylulTahsilat;
     }
 
-    public Integer getEkimSatis() {
+    public Float getEkimSatis() {
         return EkimSatis;
     }
 
-    public void setEkimSatis(Integer ekimSatis) {
+    public void setEkimSatis(Float ekimSatis) {
         EkimSatis = ekimSatis;
     }
 
-    public Integer getEkimTahsilat() {
+    public Float getEkimTahsilat() {
         return EkimTahsilat;
     }
 
-    public void setEkimTahsilat(Integer ekimTahsilat) {
+    public void setEkimTahsilat(Float ekimTahsilat) {
         EkimTahsilat = ekimTahsilat;
     }
 
-    public Integer getKasimSatis() {
+    public Float getKasimSatis() {
         return KasimSatis;
     }
 
-    public void setKasimSatis(Integer kasimSatis) {
+    public void setKasimSatis(Float kasimSatis) {
         KasimSatis = kasimSatis;
     }
 
-    public Integer getKasimTahsilat() {
+    public Float getKasimTahsilat() {
         return kasimTahsilat;
     }
 
-    public void setKasimTahsilat(Integer kasimTahsilat) {
+    public void setKasimTahsilat(Float kasimTahsilat) {
         this.kasimTahsilat = kasimTahsilat;
     }
 
-    public Integer getAralikSatis() {
+    public Float getAralikSatis() {
         return AralikSatis;
     }
 
-    public void setAralikSatis(Integer aralikSatis) {
+    public void setAralikSatis(Float aralikSatis) {
         AralikSatis = aralikSatis;
     }
 
-    public Integer getAralikTahsilat() {
+    public Float getAralikTahsilat() {
         return AralikTahsilat;
     }
 
-    public void setAralikTahsilat(Integer aralikTahsilat) {
+    public void setAralikTahsilat(Float aralikTahsilat) {
         AralikTahsilat = aralikTahsilat;
     }
 
-    public Integer getToplamSatis() {
+    public Float getToplamSatis() {
         return ToplamSatis;
     }
 
-    public void setToplamSatis(Integer toplamSatis) {
+    public void setToplamSatis(Float toplamSatis) {
         ToplamSatis = toplamSatis;
     }
 
-    public Integer getToplamTahsilat() {
+    public Float getToplamTahsilat() {
         return ToplamTahsilat;
     }
 
-    public void setToplamTahsilat(Integer toplamTahsilat) {
+    public void setToplamTahsilat(Float toplamTahsilat) {
         ToplamTahsilat = toplamTahsilat;
     }
 }

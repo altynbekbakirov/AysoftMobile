@@ -79,7 +79,6 @@ public class ProductsInfoActivity extends AppCompatActivity {
             }
         });
 
-
         Intent intent = getIntent();
         kayitNo = intent.getIntExtra("kayitNo", -1);
         databaseHandler = DatabaseHandler.getInstance(this);

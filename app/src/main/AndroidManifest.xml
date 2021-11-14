@@ -28,7 +28,6 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation"
@@ -74,6 +73,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Products.ProductsDashboardActivity"
+            android:configChanges="orientation"
+            android:parentActivityName=".Products.ProductsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Products.ProductsExtractActivity"
             android:configChanges="orientation"
             android:parentActivityName=".Products.ProductsActivity"
             android:screenOrientation="portrait" />
@@ -128,7 +132,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB3fP9SQAruJcOkus5Po6v9ouryijdX5SU" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

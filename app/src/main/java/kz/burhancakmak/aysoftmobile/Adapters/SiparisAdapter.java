@@ -47,6 +47,8 @@ public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHol
         holder.siparisNo.setText(String.valueOf(orderList.get(position).getKayitNo()));
         holder.siparisDate.setText(orderList.get(position).getTarih());
         holder.siparisTutar.setText(String.format("%." + digit + "f", orderList.get(position).getTutar()));
+        holder.siparisNetTutar.setText(String.format("%." + digit + "f", orderList.get(position).getNetTutar()));
+        holder.siparisIndirim.setText(String.format("%." + digit + "f", orderList.get(position).getGenelIndirimTutari()));
         if (orderList.get(position).getErpGonderildi() < 1) {
             holder.siparisDurum.setText(context.getString(R.string.client_order_status_pending));
             holder.siparisImage.setImageResource(R.drawable.ic_check);
@@ -62,7 +64,7 @@ public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHol
     }
 
     static class OrderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView siparisNo, siparisDurum, siparisDate, siparisTutar;
+        TextView siparisNo, siparisDurum, siparisDate, siparisTutar, siparisIndirim, siparisNetTutar;
         ImageView siparisImage;
         OrderClickListener orderClickListener;
 
@@ -73,6 +75,8 @@ public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHol
             siparisDurum = itemView.findViewById(R.id.siparisDurum);
             siparisDate = itemView.findViewById(R.id.siparisDate);
             siparisTutar = itemView.findViewById(R.id.siparisTutar);
+            siparisNetTutar = itemView.findViewById(R.id.siparisNetTutar);
+            siparisIndirim = itemView.findViewById(R.id.siparisIndirim);
             siparisImage = itemView.findViewById(R.id.siparisImage);
             itemView.setOnClickListener(this);
         }

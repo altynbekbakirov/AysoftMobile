@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -19,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
@@ -27,15 +27,11 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.io.IOException;
@@ -52,6 +48,7 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsDashboardQuery;
 import kz.burhancakmak.aysoftmobile.Models.Clients.GrupBazindaSatis;
 import kz.burhancakmak.aysoftmobile.Models.Clients.MarkaBazindaSatisMiktarTutarGore;
+import kz.burhancakmak.aysoftmobile.Models.Clients.OzelKodBazindaSatis;
 import kz.burhancakmak.aysoftmobile.Models.Clients.SatilanMalListesi;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
@@ -77,6 +74,16 @@ public class ClientsDashboardActivity extends AppCompatActivity {
     List<MarkaBazindaSatisMiktarTutarGore> markaBazindaSatisTutar = new ArrayList<>();
     List<GrupBazindaSatis> grupBazindaSatisMiktar = new ArrayList<>();
     List<GrupBazindaSatis> grupBazindaSatisTutar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel1KodBazindaSatisMiktar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel1KodBazindaSatisTutar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel2KodBazindaSatisMiktar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel2KodBazindaSatisTutar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel3KodBazindaSatisMiktar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel3KodBazindaSatisTutar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel4KodBazindaSatisMiktar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel4KodBazindaSatisTutar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel5KodBazindaSatisMiktar = new ArrayList<>();
+    List<OzelKodBazindaSatis> ozel5KodBazindaSatisTutar = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -326,119 +333,61 @@ public class ClientsDashboardActivity extends AppCompatActivity {
     }
 
     private void markaBazindaSatisMiktar(List<MarkaBazindaSatisMiktarTutarGore> list) {
-        LineChart lineChart = findViewById(R.id.barChartMarkaSatisMiktar);
-        LinearLayout layoutBarChartMarkaSatisMiktar = findViewById(R.id.layoutBarChartMarkaSatisMiktar);
+        PieChart pieChart = findViewById(R.id.pieChartMarkaSatisMiktar);
+        LinearLayout layoutPieChartMarkaSatisMiktar = findViewById(R.id.layoutPieChartMarkaSatisMiktar);
 
         if (list.size() == 0) {
-            layoutBarChartMarkaSatisMiktar.setVisibility(View.GONE);
+            layoutPieChartMarkaSatisMiktar.setVisibility(View.GONE);
         } else {
-            layoutBarChartMarkaSatisMiktar.setVisibility(View.VISIBLE);
+            layoutPieChartMarkaSatisMiktar.setVisibility(View.VISIBLE);
 
-            List<Entry> entries1 = new ArrayList<>();
-            List<String> labels = new ArrayList<>();
-
+            List<PieEntry> pieEntries = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
-                entries1.add(new Entry(i, list.get(i).getMiktar()));
-                labels.add(list.get(i).getMarka());
+                pieEntries.add(new PieEntry(list.get(i).getMiktar(), list.get(i).getMarka()));
             }
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            PieDataSet dataSet1 = new PieDataSet(pieEntries, "Miktar");
+            dataSet1.setColors(ColorTemplate.MATERIAL_COLORS);
+            dataSet1.setValueTextSize(14f);
 
-            LineDataSet dataSet1 = new LineDataSet(entries1, "Miktar");
-            dataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
-            dataSet1.setValueTextSize(10);
-            dataSet1.setValueTextColor(Color.BLACK);
-            dataSet1.setLineWidth(8);
-            dataSet1.setCircleRadius(6);
-            dataSet1.setCircleColor(getResources().getColor(R.color.colorAccent));
-            dataSet1.setCircleHoleRadius(4);
-            dataSet1.setCircleHoleColor(Color.RED);
+            PieData pieData = new PieData(dataSet1);
 
-            XAxis axis = lineChart.getXAxis();
-            axis.setValueFormatter(new IndexAxisValueFormatter(labels));
-            axis.setLabelCount(labels.size(), true);
-            axis.setEnabled(true);
-            axis.setPosition(XAxis.XAxisPosition.TOP);
-            axis.setTextColor(getResources().getColor(R.color.black));
-            axis.setTextSize(12f);
-            axis.setGranularity(0);
-            axis.setGranularityEnabled(true);
-
-            dataSets.add(dataSet1);
-
-            LineData lineData = new LineData(dataSets);
-
-            lineChart.setBackgroundColor(getResources().getColor(R.color.alphawhite));
-            lineChart.setNoDataText("Gosterilecek veri yok");
-            lineChart.setDrawGridBackground(false);
-            lineChart.setBorderColor(Color.RED);
-            lineChart.setBorderWidth(1f);
-            lineChart.getDescription().setEnabled(false);
-
-            lineChart.setData(lineData);
-            lineChart.invalidate();
+            pieChart.getDescription().setEnabled(false);
+            pieChart.setCenterText("Miktar");
+            pieChart.setCenterTextSize(14f);
+            pieChart.setCenterTextColor(Color.BLACK);
+            pieChart.setData(pieData);
+            pieChart.invalidate();
         }
 
     }
 
     private void markaBazindaSatisTutar(List<MarkaBazindaSatisMiktarTutarGore> list) {
-        LineChart lineChart = findViewById(R.id.barChartMarkaSatisTutar);
-        LinearLayout laoutBarChartMarkaSatisTutar = findViewById(R.id.laoutBarChartMarkaSatisTutar);
+        PieChart pieChart = findViewById(R.id.pieChartMarkaSatisTutar);
+        LinearLayout layoutPieChartMarkaSatisTutar = findViewById(R.id.layoutPieChartMarkaSatisTutar);
 
         if (list.size() == 0) {
-            laoutBarChartMarkaSatisTutar.setVisibility(View.GONE);
+            layoutPieChartMarkaSatisTutar.setVisibility(View.GONE);
         } else {
-            laoutBarChartMarkaSatisTutar.setVisibility(View.VISIBLE);
+            layoutPieChartMarkaSatisTutar.setVisibility(View.VISIBLE);
 
-            List<String> labels = new ArrayList<>();
-
-            List<Entry> entries1 = new ArrayList<>();
+            List<PieEntry> pieEntries = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
-                entries1.add(new Entry(i, list.get(i).getTutar()));
-                labels.add(list.get(i).getMarka());
+                pieEntries.add(new PieEntry(list.get(i).getTutar(), list.get(i).getMarka()));
             }
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            PieDataSet dataSet1 = new PieDataSet(pieEntries, "Tutar");
+            dataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+            dataSet1.setValueTextSize(14f);
 
-            LineDataSet dataSet1 = new LineDataSet(entries1, "Tutar");
-            dataSet1.setColors(ColorTemplate.MATERIAL_COLORS);
-            dataSet1.setValueTextSize(10);
-            dataSet1.setValueTextColor(Color.BLACK);
-            dataSet1.setLineWidth(8);
-            dataSet1.setCircleRadius(6);
-            dataSet1.setCircleColor(getResources().getColor(R.color.red));
-            dataSet1.setCircleHoleRadius(3);
-            dataSet1.setCircleHoleColor(getResources().getColor(R.color.yellow_apple));
-            dataSet1.enableDashedLine(5, 5, 5);
+            PieData pieData = new PieData(dataSet1);
 
-            XAxis axis = lineChart.getXAxis();
-            axis.setValueFormatter(new IndexAxisValueFormatter(labels));
-            axis.setLabelCount(labels.size(), true);
-            axis.setEnabled(true);
-            axis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-            axis.setTextColor(getResources().getColor(R.color.blue_web));
-            axis.setTextSize(12f);
-            axis.setGranularity(0);
-            axis.setGranularityEnabled(true);
-
-            dataSets.add(dataSet1);
-
-            LineData lineData = new LineData(dataSets);
-
-            Legend legend = lineChart.getLegend();
-            legend.setEnabled(true);
-            legend.setTextColor(Color.BLACK);
-            legend.setTextSize(12f);
-
-            lineChart.setBackgroundColor(getResources().getColor(R.color.alphawhite));
-            lineChart.setNoDataText("Gosterilecek veri yok");
-            lineChart.setDrawGridBackground(false);
-            lineChart.setBorderColor(Color.RED);
-            lineChart.setBorderWidth(1f);
-            lineChart.getDescription().setEnabled(false);
-
-            lineChart.setData(lineData);
-            lineChart.invalidate();
+            pieChart.getDescription().setEnabled(false);
+            pieChart.setCenterText("Tutar");
+            pieChart.setCenterTextSize(14f);
+            pieChart.setCenterTextColor(Color.BLACK);
+            pieChart.setData(pieData);
+            pieChart.invalidate();
         }
     }
 
@@ -457,7 +406,7 @@ public class ClientsDashboardActivity extends AppCompatActivity {
             }
 
             PieDataSet pieDataSet = new PieDataSet(pieEntries, "Grup bazinda miktar");
-            pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
             pieDataSet.setValueTextSize(14f);
 
             PieData pieData = new PieData(pieDataSet);
@@ -488,7 +437,7 @@ public class ClientsDashboardActivity extends AppCompatActivity {
             }
 
             PieDataSet pieDataSet = new PieDataSet(pieEntries, "Grup bazinda tutar");
-            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+            pieDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
             pieDataSet.setValueTextSize(14f);
 
             PieData pieData = new PieData(pieDataSet);
@@ -499,6 +448,305 @@ public class ClientsDashboardActivity extends AppCompatActivity {
             pieChartGrupSatisTutar.setCenterTextColor(Color.BLACK);
             pieChartGrupSatisTutar.setData(pieData);
             pieChartGrupSatisTutar.invalidate();
+        }
+    }
+
+    private void ozelKod1BazindaSatisMiktar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel1Miktar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel1Miktar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getMiktar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis miktar");
+            pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Miktar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod1BazindaSatisTutar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel1Tutar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel1Tutar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getTutar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis tutar");
+            pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Tutar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod2BazindaSatisMiktar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel2Miktar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel2Miktar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getMiktar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis miktar");
+            pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Miktar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod2BazindaSatisTutar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel2Tutar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel2Tutar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getTutar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis tutar");
+            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Tutar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod3BazindaSatisMiktar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel3Miktar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel3Miktar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getMiktar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis miktar");
+            pieDataSet.setColors(ColorTemplate.LIBERTY_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Miktar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod3BazindaSatisTutar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel3Tutar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel3Tutar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getTutar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis tutar");
+            pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Tutar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod4BazindaSatisMiktar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel4Miktar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel4Miktar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getMiktar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis miktar");
+            pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Miktar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod4BazindaSatisTutar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel4Tutar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel4Tutar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getTutar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis tutar");
+            pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Tutar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod5BazindaSatisMiktar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel5Miktar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel5Miktar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getMiktar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis miktar");
+            pieDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Miktar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
+
+        }
+    }
+
+    private void ozelKod5BazindaSatisTutar(List<OzelKodBazindaSatis> list) {
+        PieChart pieChartOzel1Miktar = findViewById(R.id.pieChartOzel5Tutar);
+        LinearLayout layoutPieChartOzel1Miktar = findViewById(R.id.layoutPieChartOzel5Tutar);
+
+        if (list.size() == 0) {
+            layoutPieChartOzel1Miktar.setVisibility(View.GONE);
+        } else {
+            layoutPieChartOzel1Miktar.setVisibility(View.VISIBLE);
+
+            List<PieEntry> pieEntries = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                pieEntries.add(new PieEntry(list.get(i).getTutar(), list.get(i).getMarka()));
+            }
+
+            PieDataSet pieDataSet = new PieDataSet(pieEntries, "Ozel kod bazinda satis tutar");
+            pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+            pieDataSet.setValueTextSize(14f);
+
+            PieData pieData = new PieData(pieDataSet);
+
+            pieChartOzel1Miktar.getDescription().setEnabled(false);
+            pieChartOzel1Miktar.setCenterText("Tutar");
+            pieChartOzel1Miktar.setCenterTextSize(16f);
+            pieChartOzel1Miktar.setCenterTextColor(Color.BLACK);
+            pieChartOzel1Miktar.setData(pieData);
+            pieChartOzel1Miktar.invalidate();
 
         }
     }
@@ -533,99 +781,199 @@ public class ClientsDashboardActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     ClientsDashboardQuery query = response.body();
                     if (!query.getHata()) {
-                        if (query.getAylaraGoreCariSatisTahsilat().size() > 0) {
+                        if (query.getAylaraGoreCariSatisTahsilat().size() > 2) {
                             publishProgress(getString(R.string.data_import_progressbar_clients));
                             for (int i = 2; i < query.getAylaraGoreCariSatisTahsilat().size(); i++) {
                                 String[] clients = query.getAylaraGoreCariSatisTahsilat().get(i).split("\\|");
                                 satisTahsilat.setCariKayitNo(Integer.parseInt(clients[0]));
                                 satisTahsilat.setCariKod(clients[1]);
                                 satisTahsilat.setCariUnvan(clients[2]);
-                                satisTahsilat.setOcakSatis(Integer.parseInt(clients[3]));
-                                satisTahsilat.setOcakTahsilat(Integer.parseInt(clients[4]));
-                                satisTahsilat.setSubatSatis(Integer.parseInt(clients[5]));
-                                satisTahsilat.setSubatTahsilat(Integer.parseInt(clients[6]));
-                                satisTahsilat.setMartSatis(Integer.parseInt(clients[7]));
-                                satisTahsilat.setMartTahsilat(Integer.parseInt(clients[8]));
-                                satisTahsilat.setNisanSatis(Integer.parseInt(clients[9]));
-                                satisTahsilat.setNisanTahsilat(Integer.parseInt(clients[10]));
-                                satisTahsilat.setMayisSatis(Integer.parseInt(clients[11]));
-                                satisTahsilat.setMayisTahsilat(Integer.parseInt(clients[12]));
-                                satisTahsilat.setHaziranSatis(Integer.parseInt(clients[13]));
-                                satisTahsilat.setHaziranTahsilat(Integer.parseInt(clients[14]));
-                                satisTahsilat.setTemmuzSatis(Integer.parseInt(clients[15]));
-                                satisTahsilat.setTemmuzTahsilat(Integer.parseInt(clients[16]));
-                                satisTahsilat.setAgustosSatis(Integer.parseInt(clients[17]));
-                                satisTahsilat.setAgustosTahsilat(Integer.parseInt(clients[18]));
-                                satisTahsilat.setEylulSatis(Integer.parseInt(clients[19]));
-                                satisTahsilat.setEylulTahsilat(Integer.parseInt(clients[20]));
-                                satisTahsilat.setEkimSatis(Integer.parseInt(clients[21]));
-                                satisTahsilat.setEkimTahsilat(Integer.parseInt(clients[22]));
-                                satisTahsilat.setKasimSatis(Integer.parseInt(clients[23]));
-                                satisTahsilat.setKasimTahsilat(Integer.parseInt(clients[24]));
-                                satisTahsilat.setAralikSatis(Integer.parseInt(clients[25]));
-                                satisTahsilat.setAralikTahsilat(Integer.parseInt(clients[26]));
-                                satisTahsilat.setToplamSatis(Integer.parseInt(clients[27]));
-                                satisTahsilat.setToplamTahsilat(Integer.parseInt(clients[28]));
+                                satisTahsilat.setOcakSatis(Float.parseFloat(clients[3]));
+                                satisTahsilat.setOcakTahsilat(Float.parseFloat(clients[4]));
+                                satisTahsilat.setSubatSatis(Float.parseFloat(clients[5]));
+                                satisTahsilat.setSubatTahsilat(Float.parseFloat(clients[6]));
+                                satisTahsilat.setMartSatis(Float.parseFloat(clients[7]));
+                                satisTahsilat.setMartTahsilat(Float.parseFloat(clients[8]));
+                                satisTahsilat.setNisanSatis(Float.parseFloat(clients[9]));
+                                satisTahsilat.setNisanTahsilat(Float.parseFloat(clients[10]));
+                                satisTahsilat.setMayisSatis(Float.parseFloat(clients[11]));
+                                satisTahsilat.setMayisTahsilat(Float.parseFloat(clients[12]));
+                                satisTahsilat.setHaziranSatis(Float.parseFloat(clients[13]));
+                                satisTahsilat.setHaziranTahsilat(Float.parseFloat(clients[14]));
+                                satisTahsilat.setTemmuzSatis(Float.parseFloat(clients[15]));
+                                satisTahsilat.setTemmuzTahsilat(Float.parseFloat(clients[16]));
+                                satisTahsilat.setAgustosSatis(Float.parseFloat(clients[17]));
+                                satisTahsilat.setAgustosTahsilat(Float.parseFloat(clients[18]));
+                                satisTahsilat.setEylulSatis(Float.parseFloat(clients[19]));
+                                satisTahsilat.setEylulTahsilat(Float.parseFloat(clients[20]));
+                                satisTahsilat.setEkimSatis(Float.parseFloat(clients[21]));
+                                satisTahsilat.setEkimTahsilat(Float.parseFloat(clients[22]));
+                                satisTahsilat.setKasimSatis(Float.parseFloat(clients[23]));
+                                satisTahsilat.setKasimTahsilat(Float.parseFloat(clients[24]));
+                                satisTahsilat.setAralikSatis(Float.parseFloat(clients[25]));
+                                satisTahsilat.setAralikTahsilat(Float.parseFloat(clients[26]));
+                                satisTahsilat.setToplamSatis(Float.parseFloat(clients[27]));
+                                satisTahsilat.setToplamTahsilat(Float.parseFloat(clients[28]));
                             }
                         }
-                        if (query.getSatilanMalListesiMiktarGore().size() > 0) {
+                        if (query.getSatilanMalListesiMiktarGore().size() > 2) {
                             for (int i = 2; i < query.getSatilanMalListesiMiktarGore().size(); i++) {
                                 String[] clients = query.getSatilanMalListesiMiktarGore().get(i).split("\\|");
                                 SatilanMalListesi liste = new SatilanMalListesi();
                                 liste.setStokKodu(clients[0]);
                                 liste.setStokAdi(clients[1]);
-                                liste.setMiktar(Integer.parseInt(clients[2]));
+                                liste.setMiktar(Float.parseFloat(clients[2]));
                                 satilanMalMiktar.add(liste);
                             }
                         }
-                        if (query.getSatilanMalListesiTutarGore().size() > 0) {
+                        if (query.getSatilanMalListesiTutarGore().size() > 2) {
                             for (int i = 2; i < query.getSatilanMalListesiMiktarGore().size(); i++) {
                                 String[] clients = query.getSatilanMalListesiTutarGore().get(i).split("\\|");
                                 SatilanMalListesi liste = new SatilanMalListesi();
                                 liste.setStokKodu(clients[0]);
                                 liste.setStokAdi(clients[1]);
-                                liste.setTutar(Integer.parseInt(clients[2]));
+                                liste.setTutar(Float.parseFloat(clients[2]));
                                 satilanMalTutar.add(liste);
                             }
                         }
-                        if (query.getMarkaBazindaSatisMiktarGore().size() > 0) {
+                        if (query.getMarkaBazindaSatisMiktarGore().size() > 2) {
                             for (int i = 2; i < query.getMarkaBazindaSatisMiktarGore().size(); i++) {
                                 String[] marka = query.getMarkaBazindaSatisMiktarGore().get(i).split("\\|");
                                 MarkaBazindaSatisMiktarTutarGore list = new MarkaBazindaSatisMiktarTutarGore();
                                 list.setMarkaKodu(marka[0]);
                                 list.setMarka(marka[1]);
-                                list.setMiktar(Integer.parseInt(marka[2]));
+                                list.setMiktar(Float.parseFloat(marka[2]));
                                 markaBazindaSatisMiktar.add(list);
                             }
                         }
-                        if (query.getMarkaBazindaSatisTutarGore().size() > 0) {
+                        if (query.getMarkaBazindaSatisTutarGore().size() > 2) {
                             for (int i = 2; i < query.getMarkaBazindaSatisTutarGore().size(); i++) {
                                 String[] marka = query.getMarkaBazindaSatisTutarGore().get(i).split("\\|");
                                 MarkaBazindaSatisMiktarTutarGore list = new MarkaBazindaSatisMiktarTutarGore();
                                 list.setMarkaKodu(marka[0]);
                                 list.setMarka(marka[1]);
-                                list.setTutar(Integer.parseInt(marka[2]));
+                                list.setTutar(Float.parseFloat(marka[2]));
                                 markaBazindaSatisTutar.add(list);
                             }
                         }
-                        if (query.getGrupBazindaSatisMiktarGore().size() > 0) {
+                        if (query.getGrupBazindaSatisMiktarGore().size() > 2) {
                             for (int i = 2; i < query.getGrupBazindaSatisMiktarGore().size(); i++) {
                                 String[] grup = query.getGrupBazindaSatisMiktarGore().get(i).split("\\|");
                                 GrupBazindaSatis miktar = new GrupBazindaSatis();
                                 miktar.setMarkaKodu(grup[0]);
                                 miktar.setMarka(grup[1]);
-                                miktar.setMiktar(Integer.parseInt(grup[2]));
+                                miktar.setMiktar(Float.parseFloat(grup[2]));
                                 grupBazindaSatisMiktar.add(miktar);
                             }
                         }
-                        if (query.getGrupBazindaSatisTutarGore().size() > 0) {
+                        if (query.getGrupBazindaSatisTutarGore().size() > 2) {
                             for (int i = 2; i < query.getGrupBazindaSatisTutarGore().size(); i++) {
                                 String[] grup = query.getGrupBazindaSatisTutarGore().get(i).split("\\|");
                                 GrupBazindaSatis miktar = new GrupBazindaSatis();
                                 miktar.setMarkaKodu(grup[0]);
                                 miktar.setMarka(grup[1]);
-                                miktar.setTutar(Integer.parseInt(grup[2]));
+                                miktar.setTutar(Float.parseFloat(grup[2]));
                                 grupBazindaSatisTutar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod1BazindaSatisMiktarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod1BazindaSatisMiktarGore().size(); i++) {
+                                String[] grup = query.getOzelKod1BazindaSatisMiktarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setMiktar(Float.parseFloat(grup[2]));
+                                ozel1KodBazindaSatisMiktar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod1BazindaSatisTutarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod1BazindaSatisTutarGore().size(); i++) {
+                                String[] grup = query.getOzelKod1BazindaSatisTutarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setTutar(Float.parseFloat(grup[2]));
+                                ozel1KodBazindaSatisTutar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod2BazindaSatisMiktarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod2BazindaSatisMiktarGore().size(); i++) {
+                                String[] grup = query.getOzelKod2BazindaSatisMiktarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setMiktar(Float.parseFloat(grup[2]));
+                                ozel2KodBazindaSatisMiktar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod2BazindaSatisTutarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod2BazindaSatisTutarGore().size(); i++) {
+                                String[] grup = query.getOzelKod2BazindaSatisTutarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setTutar(Float.parseFloat(grup[2]));
+                                ozel2KodBazindaSatisTutar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod3BazindaSatisMiktarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod3BazindaSatisMiktarGore().size(); i++) {
+                                String[] grup = query.getOzelKod3BazindaSatisMiktarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setMiktar(Float.parseFloat(grup[2]));
+                                ozel3KodBazindaSatisMiktar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod3BazindaSatisTutarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod3BazindaSatisTutarGore().size(); i++) {
+                                String[] grup = query.getOzelKod3BazindaSatisTutarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setTutar(Float.parseFloat(grup[2]));
+                                ozel3KodBazindaSatisTutar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod4BazindaSatisMiktarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod4BazindaSatisMiktarGore().size(); i++) {
+                                String[] grup = query.getOzelKod4BazindaSatisMiktarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setMiktar(Float.parseFloat(grup[2]));
+                                ozel4KodBazindaSatisMiktar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod4BazindaSatisTutarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod4BazindaSatisTutarGore().size(); i++) {
+                                String[] grup = query.getOzelKod4BazindaSatisTutarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setTutar(Float.parseFloat(grup[2]));
+                                ozel4KodBazindaSatisTutar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod5BazindaSatisMiktarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod5BazindaSatisMiktarGore().size(); i++) {
+                                String[] grup = query.getOzelKod5BazindaSatisMiktarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setMiktar(Float.parseFloat(grup[2]));
+                                ozel5KodBazindaSatisMiktar.add(miktar);
+                            }
+                        }
+                        if (query.getOzelKod5BazindaSatisTutarGore().size() > 2) {
+                            for (int i = 2; i < query.getOzelKod5BazindaSatisTutarGore().size(); i++) {
+                                String[] grup = query.getOzelKod5BazindaSatisTutarGore().get(i).split("\\|");
+                                OzelKodBazindaSatis miktar = new OzelKodBazindaSatis();
+                                miktar.setMarkaKodu(grup[0]);
+                                miktar.setMarka(grup[1]);
+                                miktar.setTutar(Float.parseFloat(grup[2]));
+                                ozel5KodBazindaSatisTutar.add(miktar);
                             }
                         }
                     }
@@ -646,6 +994,16 @@ public class ClientsDashboardActivity extends AppCompatActivity {
             markaBazindaSatisTutar(markaBazindaSatisTutar);
             grupBazindaSatisMiktar(grupBazindaSatisMiktar);
             grupBazindaSatisTutar(grupBazindaSatisTutar);
+            ozelKod1BazindaSatisMiktar(ozel1KodBazindaSatisMiktar);
+            ozelKod1BazindaSatisTutar(ozel1KodBazindaSatisTutar);
+            ozelKod2BazindaSatisMiktar(ozel2KodBazindaSatisMiktar);
+            ozelKod2BazindaSatisTutar(ozel2KodBazindaSatisTutar);
+            ozelKod3BazindaSatisMiktar(ozel3KodBazindaSatisMiktar);
+            ozelKod3BazindaSatisTutar(ozel3KodBazindaSatisTutar);
+            ozelKod4BazindaSatisMiktar(ozel4KodBazindaSatisMiktar);
+            ozelKod4BazindaSatisTutar(ozel4KodBazindaSatisTutar);
+            ozelKod5BazindaSatisMiktar(ozel5KodBazindaSatisMiktar);
+            ozelKod5BazindaSatisTutar(ozel5KodBazindaSatisTutar);
             products_progressBar.setVisibility(View.GONE);
         }
     }

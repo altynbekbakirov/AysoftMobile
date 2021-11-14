@@ -146,7 +146,6 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-
                 return true;
             }
 
@@ -156,7 +155,6 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 return true;
             }
         });
-
         return true;
     }
 
@@ -401,9 +399,11 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                     intent.putExtra("kayitNo", productItemList.get(position).getKayitNo());
                     startActivity(intent);
                 } else if (selectedItem[0] == 2) {
-                    /*Intent intent = new Intent(ProductsActivity.this, ProductsStockActivity.class);
+                    Intent intent = new Intent(ProductsActivity.this, ProductsExtractActivity.class);
                     intent.putExtra("kayitNo", productItemList.get(position).getKayitNo());
-                    startActivity(intent);*/
+                    intent.putExtra("kayitKod", productItemList.get(position).getStokKodu());
+                    intent.putExtra("kayitAciklama", productItemList.get(position).getStokAdi1());
+                    startActivity(intent);
                 } else if (selectedItem[0] == 3) {
                     Intent intent = new Intent(ProductsActivity.this, ProductsDashboardActivity.class);
                     intent.putExtra("kayitNo", productItemList.get(position).getKayitNo());

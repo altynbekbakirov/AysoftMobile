@@ -1302,7 +1302,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
-
     public List<ItemsToplamlar> selectAllItemsByAmbar(int kayitno) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsToplamlar> toplamList = new ArrayList<>();

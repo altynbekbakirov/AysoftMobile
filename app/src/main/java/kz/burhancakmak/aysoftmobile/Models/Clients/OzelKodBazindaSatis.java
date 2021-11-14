@@ -1,6 +1,6 @@
 package kz.burhancakmak.aysoftmobile.Models.Clients;
 
-public class MarkaBazindaSatisMiktarTutarGore {
+public class OzelKodBazindaSatis {
 
     private String MarkaKodu;
     private String Marka;

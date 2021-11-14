@@ -3,8 +3,8 @@ package kz.burhancakmak.aysoftmobile.Models.Clients;
 public class GrupBazindaSatis {
     private String MarkaKodu;
     private String Marka;
-    private Integer Miktar;
-    private Integer Tutar;
+    private Float Miktar;
+    private Float Tutar;
 
     public String getMarkaKodu() {
         return MarkaKodu;
@@ -22,19 +22,19 @@ public class GrupBazindaSatis {
         Marka = marka;
     }
 
-    public Integer getMiktar() {
+    public Float getMiktar() {
         return Miktar;
     }
 
-    public void setMiktar(Integer miktar) {
+    public void setMiktar(Float miktar) {
         Miktar = miktar;
     }
 
-    public Integer getTutar() {
+    public Float getTutar() {
         return Tutar;
     }
 
-    public void setTutar(Integer tutar) {
+    public void setTutar(Float tutar) {
         Tutar = tutar;
     }
 }

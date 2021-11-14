@@ -9,6 +9,7 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsMap;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsQuery;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsSiparisResponse;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarQuery;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsExtractQuery;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsQuery;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -46,6 +47,23 @@ public interface RetrofitApi {
             @Field("DonemNo") String donem,
             @Field("FirmaNo") String firma,
             @Field("Tip") Integer type);
+
+    @POST("StokEkstre.php")
+    @FormUrlEncoded
+    Call<ItemsExtractQuery> getStockExtractList(
+            @Field("CihazId") String CihazId,
+            @Field("Login") String login,
+            @Field("Parola") String Parola,
+            @Field("FirmaNo") String firma,
+            @Field("DonemNo") String donem,
+            @Field("Dil") String dil,
+            @Field("Tarih1") String tarih1,
+            @Field("Tarih2") String tarih2,
+            @Field("Tur") int tur,
+            @Field("StokKod") String stokKod,
+            @Field("StokKayitNo") int stokKayitNo
+
+    );
 
     @POST("CariListesi.php")
     @FormUrlEncoded
