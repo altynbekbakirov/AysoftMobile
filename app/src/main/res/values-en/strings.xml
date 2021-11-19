@@ -279,6 +279,12 @@
     <string name="products_extract_purchase_count">Purchase</string>
     <string name="products_extract_sale_count">Sale</string>
     <string name="products_extract_onhand">On hand</string>
+    <string name="client_menu_filter">Filters</string>
+    <string name="client_alert_debt_situation">Debt situation</string>
+    <string name="client_alert_list_all">All</string>
+    <string name="client_alert_list_debtors">Debtors</string>
+    <string name="client_alert_list_creditors">Creditors</string>
+    <string name="client_alert_list_zero_debtors">Zero debtors</string>
 
 
 </resources>

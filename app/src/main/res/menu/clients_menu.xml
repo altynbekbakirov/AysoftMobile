@@ -8,10 +8,10 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
-    <!--<item
-        android:id="@+id/client_extract"
-        android:title="@string/client_menu_extract"
-        app:showAsAction="never" />-->
+    <item
+        android:id="@+id/client_filter"
+        android:title="@string/client_menu_filter"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/client_balance_update"

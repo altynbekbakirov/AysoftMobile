@@ -256,5 +256,11 @@
     <string name="products_extract_purchase_count">Satınalma</string>
     <string name="products_extract_sale_count">Satış</string>
     <string name="products_extract_onhand">Kalan</string>
+    <string name="client_menu_filter">Filtre</string>
+    <string name="client_alert_debt_situation">Borç durumu</string>
+    <string name="client_alert_list_all">Hepsi</string>
+    <string name="client_alert_list_debtors">Borçlu olanlar</string>
+    <string name="client_alert_list_creditors">Alacaklı olanlar</string>
+    <string name="client_alert_list_zero_debtors">Borcu 0 olanlar</string>
 
 </resources>

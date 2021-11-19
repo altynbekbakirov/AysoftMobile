@@ -61,9 +61,7 @@ public interface RetrofitApi {
             @Field("Tarih2") String tarih2,
             @Field("Tur") int tur,
             @Field("StokKod") String stokKod,
-            @Field("StokKayitNo") int stokKayitNo
-
-    );
+            @Field("StokKayitNo") int stokKayitNo);
 
     @POST("CariListesi.php")
     @FormUrlEncoded
@@ -166,9 +164,7 @@ public interface RetrofitApi {
             @Field("Tarih1") String tarih1,
             @Field("Tarih2") String tarih2,
             @Field("Tur") int tur,
-            @Field("CariKod") String cariKod
-
-    );
+            @Field("CariKod") String cariKod);
 
     @POST("CariGuncelleme.php")
     @FormUrlEncoded
@@ -181,8 +177,7 @@ public interface RetrofitApi {
             @Field("CariKod") String cariKod,
             @Field("DegisecekAlanAdi") String alanAdi,
             @Field("YeniDeger") String yeniDeger,
-            @Field("CariKayitNo") int cariKayitNo
-    );
+            @Field("CariKayitNo") int cariKayitNo);
 
     @POST("CariDashboard.php")
     @FormUrlEncoded
@@ -194,7 +189,6 @@ public interface RetrofitApi {
             @Field("DonemNo") String donem,
             @Field("Tur") int tur,
             @Field("CariKayitNo") int cariKayitNo,
-            @Field("CariKod") String cariKod
-    );
+            @Field("CariKod") String cariKod);
 
 }

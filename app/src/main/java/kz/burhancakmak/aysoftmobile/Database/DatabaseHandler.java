@@ -1437,7 +1437,70 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String sql = "SELECT KayitNo, Kod, Unvani1, Adres1, Telefon1, Bakiye, KordinatLongitude, KordinatLatitute, "
                 + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 0 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS beklemedeTutar, "
                 + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar "
-                + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client WHERE Unvani1 <> '' " + filter
+                + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
+                + "WHERE Unvani1 <> '' " + filter
+                + " ORDER BY " + order;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ClCard card = new ClCard();
+                card.setKayitNo(cursor.getInt(0));
+                card.setKod(cursor.getString(1));
+                card.setUnvani1(cursor.getString(2));
+                card.setAdres1(cursor.getString(3));
+                card.setTelefon1(cursor.getString(4));
+                card.setBakiye(cursor.getDouble(5));
+                card.setKordinatLongitude(cursor.getDouble(6));
+                card.setKordinatLatitute(cursor.getDouble(7));
+                card.setSiparisBeklemede(cursor.getInt(8));
+                card.setSiparisGonderildi(cursor.getInt(9));
+                cardList.add(card);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return cardList;
+    }
+
+    public List<ClCard> selectAllClientsByBalanceZero(String filter, String order) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ClCard> cardList = new ArrayList<>();
+        String sql = "SELECT KayitNo, Kod, Unvani1, Adres1, Telefon1, Bakiye, KordinatLongitude, KordinatLatitute, "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 0 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS beklemedeTutar, "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar "
+                + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
+                + "WHERE Bakiye = 0 AND Unvani1 <> '' " + filter
+                + " ORDER BY " + order;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ClCard card = new ClCard();
+                card.setKayitNo(cursor.getInt(0));
+                card.setKod(cursor.getString(1));
+                card.setUnvani1(cursor.getString(2));
+                card.setAdres1(cursor.getString(3));
+                card.setTelefon1(cursor.getString(4));
+                card.setBakiye(cursor.getDouble(5));
+                card.setKordinatLongitude(cursor.getDouble(6));
+                card.setKordinatLatitute(cursor.getDouble(7));
+                card.setSiparisBeklemede(cursor.getInt(8));
+                card.setSiparisGonderildi(cursor.getInt(9));
+                cardList.add(card);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return cardList;
+    }
+
+    public List<ClCard> selectAllClientsByBalance(String filter, String order, long min, long max) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ClCard> cardList = new ArrayList<>();
+        String sql = "SELECT KayitNo, Kod, Unvani1, Adres1, Telefon1, Bakiye, KordinatLongitude, KordinatLatitute, "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 0 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS beklemedeTutar, "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar "
+                + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
+                + "WHERE Bakiye >= " + min + " AND Bakiye <= " + max + " AND Unvani1 <> '' " + filter
                 + " ORDER BY " + order;
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {

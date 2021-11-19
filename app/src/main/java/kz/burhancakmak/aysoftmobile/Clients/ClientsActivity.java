@@ -2,21 +2,32 @@ package kz.burhancakmak.aysoftmobile.Clients;
 
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
+import static kz.burhancakmak.aysoftmobile.MainActivity.clientFilterSelected;
+import static kz.burhancakmak.aysoftmobile.MainActivity.max;
 import static kz.burhancakmak.aysoftmobile.MainActivity.menuGrupKayitNo;
+import static kz.burhancakmak.aysoftmobile.MainActivity.min;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,7 +47,9 @@ import com.google.android.material.navigation.NavigationView;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -100,115 +113,11 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
             kurusHaneSayisiStok = parametreGetir(FIRMA_NO, "KurusHaneSayisiCari", "0");
             initViews();
         }
-
     }
 
     @Override
     public void onItemClick(int position) {
         chooseMenuOptions(position);
-    }
-
-    private void initViews() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.main_nav_clients);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.products_drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        clientsAdapter = new ClientsAdapter(this, cardList, this, Integer.parseInt(kurusHaneSayisiStok));
-        recyclerView.setAdapter(clientsAdapter);
-
-        navigationView = findViewById(R.id.products_nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().clear();
-
-        menuList = databaseHandler.selectCihazlarMenu(2, menuGrupKayitNo);
-        if (menuList.size() > 0) {
-            for (int i = 0; i < menuList.size(); i++) {
-                CihazlarMenu menu = menuList.get(i);
-                int sayi = databaseHandler.selectCihazlarCariSayisi(menu.getFiltre());
-                navigationView.getMenu().add(i, menu.getKayitNo(), i, menu.getAciklama1() + " (" + sayi + ")").setIcon(R.drawable.menu_ic_reports);
-                if (menu.getOndeger() == 1) {
-                    NAV_FILTER = menu.getFiltre();
-                    NAV_ORDER = menu.getSiralama();
-                }
-            }
-            navigationView.getMenu().getItem(0).setChecked(true);
-        }
-
-        new GetDataFromDatabase().execute();
-    }
-
-    private void chooseMenuOptions(int position) {
-        String[] items = new String[]{
-                getString(R.string.client_popup_show_operations),
-                getString(R.string.client_popup_info),
-                getString(R.string.client_popup_show_map),
-                getString(R.string.client_menu_extract),
-                getString(R.string.client_popup_analyze),
-                getString(R.string.main_nav_reports)};
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(R.string.alert_kasa_title_choose);
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.ic_menu);
-        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (selectedItem[0]) {
-                    case 0:
-                        Intent intent2 = new Intent(ClientsActivity.this, ClientsTasksActivity.class);
-                        intent2.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        intent2.putExtra("position", position);
-                        startActivityForResult(intent2, 305);
-                        break;
-                    case 1:
-                        Intent intent3 = new Intent(ClientsActivity.this, ClientsInfoActivity.class);
-                        intent3.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        intent3.putExtra("position", position);
-                        startActivityForResult(intent3, 405);
-                        break;
-                    case 2:
-                        Intent intent = new Intent(ClientsActivity.this, ClientsMapActivity.class);
-                        intent.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        startActivityForResult(intent, 105);
-                        break;
-                    case 3:
-                        Intent intent1 = new Intent(ClientsActivity.this, ClientsExtractActivity.class);
-                        intent1.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        startActivityForResult(intent1, 205);
-                        break;
-                    case 4:
-                        Intent intent4 = new Intent(ClientsActivity.this, ClientsDashboardActivity.class);
-                        intent4.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        startActivityForResult(intent4, 505);
-                        break;
-                    case 5:
-                        break;
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.login_internet_connection_btnCancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setSingleChoiceItems(items, selectedItem[0], new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                selectedItem[0] = which;
-            }
-        });
-        builder.show();
     }
 
     @Override
@@ -282,18 +191,237 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-    class GetDataFromDatabase extends AsyncTask<Void, Void, Void> {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.clients_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.client_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                clientsAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.client_balance_update) {
+            new UpdateBalanceFromWeb().execute();
+        }
+        if (item.getItemId() == R.id.client_filter) {
+            showFilterDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+        int index = 0;
+        for (int i = 0; i < menuList.size(); i++) {
+            if (menuList.get(i).getKayitNo() == item.getItemId()) {
+                index = i;
+                NAV_FILTER = menuList.get(i).getFiltre();
+                NAV_ORDER = menuList.get(i).getSiralama();
+                break;
+            }
+        }
+        for (int i = 0; i < menuList.size(); i++) {
+            navigationView.getMenu().getItem(i).setChecked(false);
+        }
+        navigationView.getMenu().getItem(index).setChecked(true);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        new GetDataFromDatabase().execute();
+        return true;
+    }
+
+    private void initViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.main_nav_clients);
+        setSupportActionBar(toolbar);
+
+        drawerLayout = findViewById(R.id.products_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        clientsAdapter = new ClientsAdapter(this, cardList, this, Integer.parseInt(kurusHaneSayisiStok));
+        recyclerView.setAdapter(clientsAdapter);
+
+        navigationView = findViewById(R.id.products_nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().clear();
+
+        menuList = databaseHandler.selectCihazlarMenu(2, menuGrupKayitNo);
+        if (menuList.size() > 0) {
+            for (int i = 0; i < menuList.size(); i++) {
+                CihazlarMenu menu = menuList.get(i);
+                int sayi = databaseHandler.selectCihazlarCariSayisi(menu.getFiltre());
+                navigationView.getMenu().add(i, menu.getKayitNo(), i, menu.getAciklama1() + " (" + sayi + ")").setIcon(R.drawable.menu_ic_reports);
+                if (menu.getOndeger() == 1) {
+                    NAV_FILTER = menu.getFiltre();
+                    NAV_ORDER = menu.getSiralama();
+                }
+            }
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+
+        if (min == 0) {
+            min = 1L;
+        }
+        if (max == 0) {
+            max = 999999999999999L;
+        }
+        if (clientFilterSelected == 0) {
+            new GetDataFromDatabase().execute();
+        } else if (clientFilterSelected == 1) {
+            new GetDataFromDatabaseBalance().execute(min, max);
+        } else if (clientFilterSelected == 2) {
+            new GetDataFromDatabaseBalance().execute(-max, -min);
+        } else {
+            new GetDataFromDatabaseBalanceZero().execute();
+        }
+    }
+
+    private void chooseMenuOptions(int position) {
+        String[] items = new String[]{
+                getString(R.string.client_popup_show_operations),
+                getString(R.string.client_popup_info),
+                getString(R.string.client_popup_show_map),
+                getString(R.string.client_menu_extract),
+                getString(R.string.client_popup_analyze),
+                getString(R.string.main_nav_reports)};
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.alert_kasa_title_choose);
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_menu);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (selectedItem[0]) {
+                    case 0:
+                        Intent intent2 = new Intent(ClientsActivity.this, ClientsTasksActivity.class);
+                        intent2.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        intent2.putExtra("position", position);
+                        startActivityForResult(intent2, 305);
+                        break;
+                    case 1:
+                        Intent intent3 = new Intent(ClientsActivity.this, ClientsInfoActivity.class);
+                        intent3.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        intent3.putExtra("position", position);
+                        startActivityForResult(intent3, 405);
+                        break;
+                    case 2:
+                        Intent intent = new Intent(ClientsActivity.this, ClientsMapActivity.class);
+                        intent.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent, 105);
+                        break;
+                    case 3:
+                        Intent intent1 = new Intent(ClientsActivity.this, ClientsExtractActivity.class);
+                        intent1.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent1, 205);
+                        break;
+                    case 4:
+                        Intent intent4 = new Intent(ClientsActivity.this, ClientsDashboardActivity.class);
+                        intent4.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent4, 505);
+                        break;
+                    case 5:
+                        break;
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.login_internet_connection_btnCancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setSingleChoiceItems(items, selectedItem[0], new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem[0] = which;
+            }
+        });
+        builder.show();
+    }
+
+    private class GetDataFromDatabase extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            cardList.clear();
             products_progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected Void doInBackground(Void... items) {
             cardList = databaseHandler.selectAllClients(NAV_FILTER, NAV_ORDER);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            clientsAdapter.setCardList(cardList);
+            products_progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private class GetDataFromDatabaseBalanceZero extends AsyncTask<Void, Void, Void> {
+        RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            products_progressBar.setVisibility(View.VISIBLE);
+            cardList.clear();
+        }
+
+        @Override
+        protected Void doInBackground(Void... items) {
+            cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER, NAV_ORDER);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            clientsAdapter.setCardList(cardList);
+            products_progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private class GetDataFromDatabaseBalance extends AsyncTask<Long, Void, Void> {
+        RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            cardList.clear();
+            products_progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Long... items) {
+            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, items[0], items[1]);
             return null;
         }
 
@@ -343,7 +471,17 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                             clCard.setBakiye(Double.parseDouble(clients[4]));
                             databaseHandler.updateClientBalance(clCard, String.valueOf(clCard.getKayitNo()));
                         }
-                        cardList = databaseHandler.selectAllClients(NAV_FILTER, NAV_ORDER);
+
+                        cardList.clear();
+                        if (clientFilterSelected == 0) {
+                            cardList = databaseHandler.selectAllClients(NAV_FILTER, NAV_ORDER);
+                        } else if (clientFilterSelected == 1) {
+                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, min, max);
+                        } else if (clientFilterSelected == 2) {
+                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, -max, -min);
+                        } else {
+                            cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER, NAV_ORDER);
+                        }
                     }
                 } else {
                     Toast.makeText(ClientsActivity.this, R.string.client_update_balance_failed, Toast.LENGTH_SHORT).show();
@@ -362,59 +500,93 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.clients_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.client_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    private void showFilterDialog() {
+        List<String> clientTaskList = new ArrayList<>();
+        clientTaskList.add(getString(R.string.client_alert_list_all));
+        clientTaskList.add(getString(R.string.client_alert_list_debtors));
+        clientTaskList.add(getString(R.string.client_alert_list_creditors));
+        clientTaskList.add(getString(R.string.client_alert_list_zero_debtors));
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setCancelable(false);
+        View view = getLayoutInflater().inflate(R.layout.client_filter_layout, null);
+        builder.setView(view);
+
+        LinearLayout editLayout = view.findViewById(R.id.ll3);
+        Spinner spinner1 = view.findViewById(R.id.client_menu_combo);
+        EditText editDate1 = view.findViewById(R.id.editDate1);
+        EditText editDate2 = view.findViewById(R.id.editDate2);
+
+        if (clientFilterSelected == 0 || clientFilterSelected == 3) {
+            editLayout.setVisibility(View.GONE);
+        }
+
+        ArrayAdapter<String> clientAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_layout, clientTaskList);
+        clientAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        clientAdapter.notifyDataSetChanged();
+        spinner1.setAdapter(clientAdapter);
+        spinner1.setSelection(clientFilterSelected);
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                clientFilterSelected = i;
+                if (clientFilterSelected == 0) {
+                    editLayout.setVisibility(View.GONE);
+                } else if (clientFilterSelected == 1) {
+                    editLayout.setVisibility(View.VISIBLE);
+                    editDate1.setText(String.valueOf(min));
+                    editDate1.requestFocus();
+                    editDate1.setSelectAllOnFocus(true);
+                    editDate2.setText(String.valueOf(max));
+                } else if (clientFilterSelected == 2) {
+                    editLayout.setVisibility(View.VISIBLE);
+                    editDate1.setText(String.valueOf(min));
+                    editDate1.requestFocus();
+                    editDate1.setSelectAllOnFocus(true);
+                    editDate2.setText(String.valueOf(max));
+                } else {
+                    editLayout.setVisibility(View.GONE);
+                }
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                clientsAdapter.getFilter().filter(newText);
-                return true;
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.client_balance_update) {
-            new UpdateBalanceFromWeb().execute();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-        int index = 0;
-        for (int i = 0; i < menuList.size(); i++) {
-            if (menuList.get(i).getKayitNo() == item.getItemId()) {
-                index = i;
-                NAV_FILTER = menuList.get(i).getFiltre();
-                NAV_ORDER = menuList.get(i).getSiralama();
-                break;
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (clientFilterSelected == 0) {
+                    new GetDataFromDatabase().execute();
+                } else if (clientFilterSelected == 1) {
+                    if (!editDate1.getText().toString().isEmpty()) {
+                        min = Long.parseLong(editDate1.getText().toString());
+                    }
+                    if (!editDate2.getText().toString().isEmpty()) {
+                        max = Long.parseLong(editDate2.getText().toString());
+                    }
+                    new GetDataFromDatabaseBalance().execute(min, max);
+                } else if (clientFilterSelected == 2) {
+                    if (!editDate1.getText().toString().isEmpty()) {
+                        min = Long.parseLong(editDate1.getText().toString());
+                    }
+                    if (!editDate2.getText().toString().isEmpty()) {
+                        max = Long.parseLong(editDate2.getText().toString());
+                    }
+                    new GetDataFromDatabaseBalance().execute(-max, -min);
+                } else {
+                    new GetDataFromDatabaseBalanceZero().execute();
+                }
             }
-        }
-        for (int i = 0; i < menuList.size(); i++) {
-            navigationView.getMenu().getItem(i).setChecked(false);
-        }
-        navigationView.getMenu().getItem(index).setChecked(true);
-        drawerLayout.closeDrawer(GravityCompat.START);
-        new GetDataFromDatabase().execute();
-        return true;
+        });
+        builder.show();
     }
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
-
         switch (code) {
             case "Türkçe":
                 countryCode = "tr";
@@ -428,7 +600,6 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
             default:
                 countryCode = "en";
         }
-
         setLocale(this, countryCode);
     }
 
@@ -452,3 +623,4 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
         return parametreDeger;
     }
 }
+

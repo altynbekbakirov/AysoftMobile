@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String ondegerFiyatGrubu1 = null;
     public static String ondegerFiyatGrubu2 = null;
     public static int menuGrupKayitNo;
+    public static long min;
+    public static long max;
+    public static int clientFilterSelected;
     public static String depo1Aciklama1;
     public static String depo2Aciklama1;
     List<CihazlarFirma> firmaList = new ArrayList<>();
