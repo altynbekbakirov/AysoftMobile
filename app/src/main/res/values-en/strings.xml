@@ -285,6 +285,29 @@
     <string name="client_alert_list_debtors">Debtors</string>
     <string name="client_alert_list_creditors">Creditors</string>
     <string name="client_alert_list_zero_debtors">Zero debtors</string>
+    <string name="products_alert_filter_title">Leftover</string>
+    <string name="products_alert_filter_all">All</string>
+    <string name="products_alert_filter_onhand">Onhand</string>
+    <string name="client_popup_order_days">Order days</string>
+    <string name="client_popup_order_monday">Monday</string>
+    <string name="client_popup_order_tuesday">Tuesday</string>
+    <string name="client_popup_order_wednesday">Wednesday</string>
+    <string name="client_popup_order_thursday">Thursday</string>
+    <string name="client_popup_order_friday">Friday</string>
+    <string name="client_popup_order_saturday">Saturday</string>
+    <string name="client_popup_order_sunday">Sunday</string>
+    <string name="client_popup_order_update_success">Update successfull</string>
+    <string name="client_popup_order_update_fail">Save failed</string>
+    <string name="client_menu_add_client">Add client</string>
+    <string name="client_popup_add_company_name">Company name</string>
+    <string name="client_popup_add_address">Address</string>
+    <string name="client_popup_add_name">Name and surname</string>
+    <string name="client_popup_add_email">Email</string>
+    <string name="client_popup_add_tel1">Phone 1</string>
+    <string name="client_popup_add_tel2">Phone 2</string>
+    <string name="client_popup_empty_error">Value required</string>
+    <string name="client_popup_wrong_format">Wrong format</string>
+    <string name="alert_kasa_menu_view">View</string>
 
 
 </resources>

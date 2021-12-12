@@ -285,6 +285,29 @@
     <string name="client_alert_list_debtors">Дебиторы</string>
     <string name="client_alert_list_creditors">Кредиторы</string>
     <string name="client_alert_list_zero_debtors">Нулевые дебиторы</string>
+    <string name="products_alert_filter_title">Остатки</string>
+    <string name="products_alert_filter_all">Все</string>
+    <string name="products_alert_filter_onhand">Остатки</string>
+    <string name="client_popup_order_days">Дни заказа</string>
+    <string name="client_popup_order_monday">Понедельник</string>
+    <string name="client_popup_order_tuesday">Вторник</string>
+    <string name="client_popup_order_wednesday">Среда</string>
+    <string name="client_popup_order_thursday">Четверг</string>
+    <string name="client_popup_order_friday">Пятница</string>
+    <string name="client_popup_order_saturday">Суббота</string>
+    <string name="client_popup_order_sunday">Воскресенье</string>
+    <string name="client_popup_order_update_success">Успешно сохранено!!!</string>
+    <string name="client_popup_order_update_fail">Ошибка при сохранении.</string>
+    <string name="client_menu_add_client">Новый контрагент</string>
+    <string name="client_popup_add_company_name">Наименование</string>
+    <string name="client_popup_add_address">Адрес</string>
+    <string name="client_popup_add_name">Имя и фамилия</string>
+    <string name="client_popup_add_email">Почта</string>
+    <string name="client_popup_add_tel1">Телефон 1</string>
+    <string name="client_popup_add_tel2">Телефон 2</string>
+    <string name="client_popup_empty_error">Поле обязательное</string>
+    <string name="client_popup_wrong_format">Неверный формат</string>
+    <string name="alert_kasa_menu_view">Просмотр</string>
 
 
 </resources>

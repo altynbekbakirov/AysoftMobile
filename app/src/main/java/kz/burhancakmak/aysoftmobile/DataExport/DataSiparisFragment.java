@@ -5,8 +5,10 @@ import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,12 +40,14 @@ import java.util.List;
 import java.util.Locale;
 
 import kz.burhancakmak.aysoftmobile.Adapters.DataExportAdapter;
+import kz.burhancakmak.aysoftmobile.Clients.SiparisIslemleriActivity;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSepet;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSiparis;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsSiparisResponse;
 import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportTask;
+import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitClient;
@@ -61,10 +65,11 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
     RecyclerView recyclerView;
     DataExportAdapter adapter;
     List<DataExportTask> listSiparis = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     CheckBox cbSelectAll;
     String currentDate;
-    int spinnerSelected;
     View view;
+    String KurusHaneSayisiStokTutar, KurusHaneSayisiStokMiktar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,6 +104,10 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
         Date date1 = new Date();
         currentDate = dateFormat.format(date1);
 
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
+        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
+
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -111,7 +120,16 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(getActivity(), SiparisIslemleriActivity.class);
+        intent.putExtra("islemTuru", 2);
+        intent.putExtra("updateCart", 0);
+        intent.putExtra("kayitNo", listSiparis.get(position).getCariKayitNo());
+        intent.putExtra("siparisNo", listSiparis.get(position).getKayitNo());
+        intent.putExtra("discountTotal", 1);
+        intent.putExtra("discountPercent", 1);
+        intent.putExtra("KurusHaneSayisiStokMiktar", KurusHaneSayisiStokTutar);
+        intent.putExtra("KurusHaneSayisiStokTutar", KurusHaneSayisiStokMiktar);
+        startActivityForResult(intent, 99);
     }
 
     @Override
@@ -366,6 +384,16 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
             }
         });
         builder.show();
+    }
+
+    private String parametreGetir(String parametre, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(parametre)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
+        }
+        return parametreDeger;
     }
 
 }

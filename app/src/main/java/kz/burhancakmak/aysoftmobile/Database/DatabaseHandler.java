@@ -1030,6 +1030,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateClientOrderDays(ClCard card, String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("Pazartesi", card.getPazartesi());
+        cv.put("PazartesiSiraNo", card.getPazartesiSiraNo());
+        cv.put("Sali", card.getSali());
+        cv.put("SaliSiraNo", card.getSaliSiraNo());
+        cv.put("Carsamba", card.getCarsamba());
+        cv.put("CarsambaSiraNo", card.getCarsambaSiraNo());
+        cv.put("Persembe", card.getPersembe());
+        cv.put("PersembeSiraNo", card.getPersembeSiraNo());
+        cv.put("Cuma", card.getCuma());
+        cv.put("CumaSiraNo", card.getCumaSiraNo());
+        cv.put("Cumartesi", card.getCumartesi());
+        cv.put("CumartesiSiraNo", card.getCumartesiSiraNo());
+        cv.put("Pazar", card.getPazar());
+        cv.put("PazarSiraNo", card.getPazarSiraNo());
+        db.update("AY_" + FIRMA_NO + "_ClCard", cv, "KayitNo = ?", new String[]{id});
+        db.close();
+    }
+
     public void updateZiyaretKapat(ClientZiyaret visit, String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -1074,7 +1095,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("CariKayitNo", order.getCariKayitNo());
-        cv.put("Tarih", order.getTarih());
+//        cv.put("Tarih", order.getTarih());
         cv.put("Tutar", order.getTutar());
         cv.put("NetTutar", order.getNetTutar());
         cv.put("IslemTipi", order.getIslemTipi());
@@ -1302,6 +1323,102 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<ItemsWithPrices> selectAllItemsZero(String fiyat1, String fiyat2, String filtre) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ItemsWithPrices> list = new ArrayList<>();
+        String sql = "SELECT items.KayitNo, items.StokKodu, " +
+                "items.StokAdi1 as StokAdi1, " +
+                "items.Kalan1, " +
+                "items.Kalan2, " +
+                "items.ResimDosyasiKucuk AS StokResim, " +
+                "items.ResimDosyasiBuyuk1 AS StokResim1, " +
+                "items.ResimDosyasiBuyuk2 AS StokResim2, " +
+                "items.ResimDosyasiBuyuk3 AS StokResim3, " +
+                "unt.Birim, " +
+                "prc1.Fiyat as Fiyat1, " +
+                "prc2.Fiyat as Fiyat2, " +
+                "prc1.DovizIsareti AS dov1, " +
+                "prc2.DovizIsareti AS dov2 " +
+                "FROM " + "AY_" + FIRMA_NO + "_Items" + " items " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
+                "WHERE items.Kalan1 = 0 AND items.StokKodu <> '' " + filtre + " " +
+                "ORDER BY items.StokKodu";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ItemsWithPrices items = new ItemsWithPrices();
+                items.setKayitNo(cursor.getInt(0));
+                items.setStokKodu(cursor.getString(1));
+                items.setStokAdi1(cursor.getString(2));
+                items.setKalan1(cursor.getDouble(3));
+                items.setKalan2(cursor.getDouble(4));
+                items.setStokResim(cursor.getString(5));
+                items.setStokResim1(cursor.getString(6));
+                items.setStokResim2(cursor.getString(7));
+                items.setStokResim3(cursor.getString(8));
+                items.setBirim(cursor.getString(9));
+                items.setFiyat1(cursor.getDouble(10));
+                items.setFiyat2(cursor.getDouble(11));
+                items.setDoviz1(cursor.getString(12));
+                items.setDoviz2(cursor.getString(13));
+                list.add(items);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<ItemsWithPrices> selectAllItemsByStock(String fiyat1, String fiyat2, String filtre, long min, long max) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ItemsWithPrices> list = new ArrayList<>();
+        String sql = "SELECT items.KayitNo, items.StokKodu, " +
+                "items.StokAdi1 as StokAdi1, " +
+                "items.Kalan1, " +
+                "items.Kalan2, " +
+                "items.ResimDosyasiKucuk AS StokResim, " +
+                "items.ResimDosyasiBuyuk1 AS StokResim1, " +
+                "items.ResimDosyasiBuyuk2 AS StokResim2, " +
+                "items.ResimDosyasiBuyuk3 AS StokResim3, " +
+                "unt.Birim, " +
+                "prc1.Fiyat as Fiyat1, " +
+                "prc2.Fiyat as Fiyat2, " +
+                "prc1.DovizIsareti AS dov1, " +
+                "prc2.DovizIsareti AS dov2 " +
+                "FROM " + "AY_" + FIRMA_NO + "_Items" + " items " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
+                "WHERE items.Kalan1 >= " + min + " AND items.Kalan1 <= " + max + "  AND items.StokKodu <> '' " + filtre + " " +
+                "ORDER BY items.StokKodu";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ItemsWithPrices items = new ItemsWithPrices();
+                items.setKayitNo(cursor.getInt(0));
+                items.setStokKodu(cursor.getString(1));
+                items.setStokAdi1(cursor.getString(2));
+                items.setKalan1(cursor.getDouble(3));
+                items.setKalan2(cursor.getDouble(4));
+                items.setStokResim(cursor.getString(5));
+                items.setStokResim1(cursor.getString(6));
+                items.setStokResim2(cursor.getString(7));
+                items.setStokResim3(cursor.getString(8));
+                items.setBirim(cursor.getString(9));
+                items.setFiyat1(cursor.getDouble(10));
+                items.setFiyat2(cursor.getDouble(11));
+                items.setDoviz1(cursor.getString(12));
+                items.setDoviz2(cursor.getString(13));
+                list.add(items);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
     public List<ItemsToplamlar> selectAllItemsByAmbar(int kayitno) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsToplamlar> toplamList = new ArrayList<>();
@@ -1436,7 +1553,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<ClCard> cardList = new ArrayList<>();
         String sql = "SELECT KayitNo, Kod, Unvani1, Adres1, Telefon1, Bakiye, KordinatLongitude, KordinatLatitute, "
                 + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 0 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS beklemedeTutar, "
-                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar, " +
+                "Pazartesi, PazartesiSiraNo, Sali, SaliSiraNo, Carsamba, CarsambaSiraNo, " +
+                "Persembe, PersembeSiraNo, Cuma, CumaSiraNo, Cumartesi, CumartesiSiraNo, Pazar, PazarSiraNo "
                 + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
                 + "WHERE Unvani1 <> '' " + filter
                 + " ORDER BY " + order;
@@ -1454,6 +1573,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 card.setKordinatLatitute(cursor.getDouble(7));
                 card.setSiparisBeklemede(cursor.getInt(8));
                 card.setSiparisGonderildi(cursor.getInt(9));
+                card.setPazartesi(cursor.getString(10));
+                card.setPazartesiSiraNo(cursor.getString(11));
+                card.setSali(cursor.getString(12));
+                card.setSaliSiraNo(cursor.getString(13));
+                card.setCarsamba(cursor.getString(14));
+                card.setCarsambaSiraNo(cursor.getString(15));
+                card.setPersembe(cursor.getString(16));
+                card.setPersembeSiraNo(cursor.getString(17));
+                card.setCuma(cursor.getString(18));
+                card.setCumaSiraNo(cursor.getString(19));
+                card.setCumartesi(cursor.getString(20));
+                card.setCumartesiSiraNo(cursor.getString(21));
+                card.setPazar(cursor.getString(22));
+                card.setPazarSiraNo(cursor.getString(23));
                 cardList.add(card);
             } while (cursor.moveToNext());
         }
@@ -1467,7 +1600,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<ClCard> cardList = new ArrayList<>();
         String sql = "SELECT KayitNo, Kod, Unvani1, Adres1, Telefon1, Bakiye, KordinatLongitude, KordinatLatitute, "
                 + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 0 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS beklemedeTutar, "
-                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar, " +
+                "Pazartesi, PazartesiSiraNo, Sali, SaliSiraNo, Carsamba, CarsambaSiraNo, " +
+                "Persembe, PersembeSiraNo, Cuma, CumaSiraNo, Cumartesi, CumartesiSiraNo, Pazar, PazarSiraNo "
                 + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
                 + "WHERE Bakiye = 0 AND Unvani1 <> '' " + filter
                 + " ORDER BY " + order;
@@ -1485,6 +1620,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 card.setKordinatLatitute(cursor.getDouble(7));
                 card.setSiparisBeklemede(cursor.getInt(8));
                 card.setSiparisGonderildi(cursor.getInt(9));
+                card.setPazartesi(cursor.getString(10));
+                card.setPazartesiSiraNo(cursor.getString(11));
+                card.setSali(cursor.getString(12));
+                card.setSaliSiraNo(cursor.getString(13));
+                card.setCarsamba(cursor.getString(14));
+                card.setCarsambaSiraNo(cursor.getString(15));
+                card.setPersembe(cursor.getString(16));
+                card.setPersembeSiraNo(cursor.getString(17));
+                card.setCuma(cursor.getString(18));
+                card.setCumaSiraNo(cursor.getString(19));
+                card.setCumartesi(cursor.getString(20));
+                card.setCumartesiSiraNo(cursor.getString(21));
+                card.setPazar(cursor.getString(22));
+                card.setPazarSiraNo(cursor.getString(23));
                 cardList.add(card);
             } while (cursor.moveToNext());
         }
@@ -1498,7 +1647,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<ClCard> cardList = new ArrayList<>();
         String sql = "SELECT KayitNo, Kod, Unvani1, Adres1, Telefon1, Bakiye, KordinatLongitude, KordinatLatitute, "
                 + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 0 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS beklemedeTutar, "
-                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar "
+                + "(SELECT count(Tutar) FROM " + "AY_" + FIRMA_NO + "_Siparis" + " WHERE client.KayitNo = CariKayitNo AND ErpGonderildi = 1 AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS gonderilenTutar, " +
+                "Pazartesi, PazartesiSiraNo, Sali, SaliSiraNo, Carsamba, CarsambaSiraNo, " +
+                "Persembe, PersembeSiraNo, Cuma, CumaSiraNo, Cumartesi, CumartesiSiraNo, Pazar, PazarSiraNo "
                 + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
                 + "WHERE Bakiye >= " + min + " AND Bakiye <= " + max + " AND Unvani1 <> '' " + filter
                 + " ORDER BY " + order;
@@ -1516,6 +1667,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 card.setKordinatLatitute(cursor.getDouble(7));
                 card.setSiparisBeklemede(cursor.getInt(8));
                 card.setSiparisGonderildi(cursor.getInt(9));
+                card.setPazartesi(cursor.getString(10));
+                card.setPazartesiSiraNo(cursor.getString(11));
+                card.setSali(cursor.getString(12));
+                card.setSaliSiraNo(cursor.getString(13));
+                card.setCarsamba(cursor.getString(14));
+                card.setCarsambaSiraNo(cursor.getString(15));
+                card.setPersembe(cursor.getString(16));
+                card.setPersembeSiraNo(cursor.getString(17));
+                card.setCuma(cursor.getString(18));
+                card.setCumaSiraNo(cursor.getString(19));
+                card.setCumartesi(cursor.getString(20));
+                card.setCumartesiSiraNo(cursor.getString(21));
+                card.setPazar(cursor.getString(22));
+                card.setPazarSiraNo(cursor.getString(23));
                 cardList.add(card);
             } while (cursor.moveToNext());
         }
@@ -1760,7 +1925,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 task.setCariKayitNo(cursor.getInt(0));
                 task.setKod(cursor.getString(1));
                 task.setUnvani(cursor.getString(2));
-                task.setKayitNo(cursor.getInt(3));
+                task.setKayitNo(cursor.getLong(3));
                 task.setTarih(cursor.getString(4));
                 task.setIslemTipi(cursor.getInt(5));
                 task.setErpGonderildi(cursor.getInt(6));
@@ -1793,7 +1958,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 task.setCariKayitNo(cursor.getInt(0));
                 task.setKod(cursor.getString(1));
                 task.setUnvani(cursor.getString(2));
-                task.setKayitNo(cursor.getInt(3));
+                task.setKayitNo(cursor.getLong(3));
                 task.setTarih(cursor.getString(4));
                 task.setIslemTipi(cursor.getInt(5));
                 task.setErpGonderildi(cursor.getInt(6));

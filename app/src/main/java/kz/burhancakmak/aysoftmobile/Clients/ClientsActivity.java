@@ -3,19 +3,21 @@ package kz.burhancakmak.aysoftmobile.Clients;
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.clientFilterSelected;
-import static kz.burhancakmak.aysoftmobile.MainActivity.max;
+import static kz.burhancakmak.aysoftmobile.MainActivity.clientMax;
 import static kz.burhancakmak.aysoftmobile.MainActivity.menuGrupKayitNo;
-import static kz.burhancakmak.aysoftmobile.MainActivity.min;
+import static kz.burhancakmak.aysoftmobile.MainActivity.clientMin;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +25,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,6 +36,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -43,13 +47,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonSyntaxException;
+import com.santalu.maskara.widget.MaskEditText;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -117,7 +121,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onItemClick(int position) {
-        chooseMenuOptions(position);
+        alertChooseItemsMenuDialog(position);
     }
 
     @Override
@@ -219,7 +223,10 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
             new UpdateBalanceFromWeb().execute();
         }
         if (item.getItemId() == R.id.client_filter) {
-            showFilterDialog();
+            alertFilterDialog();
+        }
+        if (item.getItemId() == R.id.client_add_client) {
+            alertAddNewClient();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -281,84 +288,21 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
             navigationView.getMenu().getItem(0).setChecked(true);
         }
 
-        if (min == 0) {
-            min = 1L;
+        if (clientMin == 0) {
+            clientMin = 1L;
         }
-        if (max == 0) {
-            max = 999999999999999L;
+        if (clientMax == 0) {
+            clientMax = 999999999999999L;
         }
         if (clientFilterSelected == 0) {
             new GetDataFromDatabase().execute();
         } else if (clientFilterSelected == 1) {
-            new GetDataFromDatabaseBalance().execute(min, max);
+            new GetDataFromDatabaseBalance().execute(clientMin, clientMax);
         } else if (clientFilterSelected == 2) {
-            new GetDataFromDatabaseBalance().execute(-max, -min);
+            new GetDataFromDatabaseBalance().execute(-clientMax, -clientMin);
         } else {
             new GetDataFromDatabaseBalanceZero().execute();
         }
-    }
-
-    private void chooseMenuOptions(int position) {
-        String[] items = new String[]{
-                getString(R.string.client_popup_show_operations),
-                getString(R.string.client_popup_info),
-                getString(R.string.client_popup_show_map),
-                getString(R.string.client_menu_extract),
-                getString(R.string.client_popup_analyze),
-                getString(R.string.main_nav_reports)};
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(R.string.alert_kasa_title_choose);
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.ic_menu);
-        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (selectedItem[0]) {
-                    case 0:
-                        Intent intent2 = new Intent(ClientsActivity.this, ClientsTasksActivity.class);
-                        intent2.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        intent2.putExtra("position", position);
-                        startActivityForResult(intent2, 305);
-                        break;
-                    case 1:
-                        Intent intent3 = new Intent(ClientsActivity.this, ClientsInfoActivity.class);
-                        intent3.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        intent3.putExtra("position", position);
-                        startActivityForResult(intent3, 405);
-                        break;
-                    case 2:
-                        Intent intent = new Intent(ClientsActivity.this, ClientsMapActivity.class);
-                        intent.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        startActivityForResult(intent, 105);
-                        break;
-                    case 3:
-                        Intent intent1 = new Intent(ClientsActivity.this, ClientsExtractActivity.class);
-                        intent1.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        startActivityForResult(intent1, 205);
-                        break;
-                    case 4:
-                        Intent intent4 = new Intent(ClientsActivity.this, ClientsDashboardActivity.class);
-                        intent4.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
-                        startActivityForResult(intent4, 505);
-                        break;
-                    case 5:
-                        break;
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.login_internet_connection_btnCancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setSingleChoiceItems(items, selectedItem[0], new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                selectedItem[0] = which;
-            }
-        });
-        builder.show();
     }
 
     private class GetDataFromDatabase extends AsyncTask<Void, Void, Void> {
@@ -476,9 +420,9 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                         if (clientFilterSelected == 0) {
                             cardList = databaseHandler.selectAllClients(NAV_FILTER, NAV_ORDER);
                         } else if (clientFilterSelected == 1) {
-                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, min, max);
+                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, clientMin, clientMax);
                         } else if (clientFilterSelected == 2) {
-                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, -max, -min);
+                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, -clientMax, -clientMin);
                         } else {
                             cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER, NAV_ORDER);
                         }
@@ -486,7 +430,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                 } else {
                     Toast.makeText(ClientsActivity.this, R.string.client_update_balance_failed, Toast.LENGTH_SHORT).show();
                 }
-            } catch (IOException e) {
+            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
                 e.printStackTrace();
             }
             return null;
@@ -500,7 +444,259 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-    private void showFilterDialog() {
+    private class UpdateOrderDaysFromWeb extends AsyncTask<Integer, String, Void> {
+        String webAddress = webSettingsMap.get("web");
+        String phoneId = webSettingsMap.get("uuid");
+        RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+        RetrofitApi retrofitApi;
+        Call<ClientsQuery> queryList;
+        boolean isSuccess = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            products_progressBar.setVisibility(View.VISIBLE);
+            retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
+        }
+
+        @Override
+        protected Void doInBackground(Integer... item) {
+            queryList = retrofitApi.getClientOrderDays(
+                    phoneId,
+                    userSettingMap.get(KEY_NAME),
+                    userSettingMap.get(KEY_PASSWORD),
+                    DONEM_NO,
+                    FIRMA_NO,
+                    cardList.get(item[0]).getKod(),
+                    cardList.get(item[0]).getKayitNo(),
+                    item[1],
+                    item[2],
+                    item[3],
+                    item[4],
+                    item[5],
+                    item[6],
+                    item[7],
+                    item[8],
+                    item[9],
+                    item[10],
+                    item[11],
+                    item[12],
+                    item[13],
+                    item[14]
+            );
+            try {
+                Response<ClientsQuery> response = queryList.execute();
+                if (response.isSuccessful() && response.body() != null) {
+                    if (!response.body().getHata()) {
+                        cardList.get(item[0]).setPazartesi(String.valueOf(item[1]));
+                        cardList.get(item[0]).setSali(String.valueOf(item[2]));
+                        cardList.get(item[0]).setCarsamba(String.valueOf(item[3]));
+                        cardList.get(item[0]).setPersembe(String.valueOf(item[4]));
+                        cardList.get(item[0]).setCuma(String.valueOf(item[5]));
+                        cardList.get(item[0]).setCumartesi(String.valueOf(item[6]));
+                        cardList.get(item[0]).setPazar(String.valueOf(item[7]));
+                        cardList.get(item[0]).setPazartesiSiraNo(String.valueOf(item[8]));
+                        cardList.get(item[0]).setSaliSiraNo(String.valueOf(item[9]));
+                        cardList.get(item[0]).setCarsambaSiraNo(String.valueOf(item[10]));
+                        cardList.get(item[0]).setPersembeSiraNo(String.valueOf(item[11]));
+                        cardList.get(item[0]).setCumaSiraNo(String.valueOf(item[12]));
+                        cardList.get(item[0]).setCumartesiSiraNo(String.valueOf(item[13]));
+                        cardList.get(item[0]).setPazartesiSiraNo(String.valueOf(item[14]));
+                        databaseHandler.updateClientOrderDays(cardList.get(item[0]), String.valueOf(cardList.get(item[0]).getKayitNo()));
+                        isSuccess = true;
+                    } else {
+                        isSuccess = false;
+                    }
+                } else {
+                    isSuccess = false;
+                }
+            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            clientsAdapter.setCardList(cardList);
+            products_progressBar.setVisibility(View.GONE);
+            if (isSuccess) {
+                Toast.makeText(ClientsActivity.this, R.string.client_popup_order_update_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ClientsActivity.this, R.string.client_popup_order_update_fail, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class AddNewClientFromWeb extends AsyncTask<String, String, Void> {
+        String webAddress = webSettingsMap.get("web");
+        String phoneId = webSettingsMap.get("uuid");
+        RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+        RetrofitApi retrofitApi;
+        Call<ClientsQuery> queryList;
+        boolean isSuccess = false;
+        String hata = null;
+        Response<ClientsQuery> response;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            products_progressBar.setVisibility(View.VISIBLE);
+            retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
+        }
+
+        @Override
+        protected Void doInBackground(String... item) {
+            queryList = retrofitApi.addNewClient(
+                    phoneId,
+                    userSettingMap.get(KEY_NAME),
+                    userSettingMap.get(KEY_PASSWORD),
+                    DONEM_NO,
+                    FIRMA_NO,
+                    item[0], // Unvani1
+                    item[1], // Adres1
+                    item[2], // Yetkili
+                    item[3], // telefon1
+                    item[4], // telefon2
+                    item[5] // email
+            );
+            try {
+                response = queryList.execute();
+                if (response.isSuccessful() && response.body() != null) {
+                    if (!response.body().getHata()) {
+                        ClCard card = new ClCard();
+                        int max = 0;
+                        for (int i = 0; i < cardList.size(); i++) {
+                            if (cardList.get(i).getKayitNo() > max) {
+                                max = cardList.get(i).getKayitNo();
+                            }
+                        }
+                        card.setKayitNo(max + 1);
+                        card.setKod(response.body().getYeniCariKod());
+                        card.setOzelKod1(response.body().getYeniCariKodOzelKod1());
+                        card.setOzelKod4(response.body().getYeniCariKodOzelKod4());
+                        card.setTicariIslemGrubu(response.body().getYeniCariTicariIslemGrubu());
+                        card.setUnvani1(item[0]);
+                        card.setAdres1(item[1]);
+                        card.setUnvani2(item[2]);
+                        card.setTelefon1(item[3]);
+                        card.setTelefon2(item[4]);
+                        card.setEmailAdresi1(item[5]);
+                        card.setKordinatLongitude(0.0);
+                        card.setKordinatLatitute(0.0);
+                        card.setSiparisBeklemede(0);
+                        card.setSiparisGonderildi(0);
+                        card.setPazartesi("0");
+                        card.setPazartesiSiraNo("0");
+                        card.setSali("0");
+                        card.setSaliSiraNo("0");
+                        card.setCarsamba("0");
+                        card.setCarsambaSiraNo("0");
+                        card.setPersembe("0");
+                        card.setPersembeSiraNo("0");
+                        card.setCuma("0");
+                        card.setCumaSiraNo("0");
+                        card.setCumartesi("0");
+                        card.setCumartesiSiraNo("0");
+                        card.setPazar("0");
+                        card.setPazarSiraNo("0");
+                        databaseHandler.insertClients(card);
+                        cardList.set(0, card);
+                        isSuccess = true;
+                    } else {
+                        isSuccess = false;
+                    }
+                } else {
+                    isSuccess = false;
+                }
+            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
+                hata = e.getMessage();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            products_progressBar.setVisibility(View.GONE);
+            if (isSuccess) {
+                clientsAdapter.setCardList(cardList);
+                Toast.makeText(ClientsActivity.this, R.string.client_popup_order_update_success, Toast.LENGTH_SHORT).show();
+            } else {
+                sendDataToServerFailDialog(hata);
+            }
+        }
+    }
+
+    private void alertChooseItemsMenuDialog(int position) {
+        String[] items = new String[]{
+                getString(R.string.client_popup_show_operations),
+                getString(R.string.client_popup_info),
+                getString(R.string.client_popup_show_map),
+                getString(R.string.client_menu_extract),
+                getString(R.string.client_popup_analyze),
+                getString(R.string.main_nav_reports),
+                getString(R.string.client_popup_order_days)};
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.alert_kasa_title_choose);
+        builder.setCancelable(false);
+        builder.setIcon(R.drawable.ic_menu);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (selectedItem[0]) {
+                    case 0: // Tasks
+                        Intent intent2 = new Intent(ClientsActivity.this, ClientsTasksActivity.class);
+                        intent2.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        intent2.putExtra("position", position);
+                        startActivityForResult(intent2, 305);
+                        break;
+                    case 1: // Info
+                        Intent intent3 = new Intent(ClientsActivity.this, ClientsInfoActivity.class);
+                        intent3.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        intent3.putExtra("position", position);
+                        startActivityForResult(intent3, 405);
+                        break;
+                    case 2: // Geolocation
+                        Intent intent = new Intent(ClientsActivity.this, ClientsMapActivity.class);
+                        intent.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent, 105);
+                        break;
+                    case 3: // Extract
+                        Intent intent1 = new Intent(ClientsActivity.this, ClientsExtractActivity.class);
+                        intent1.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent1, 205);
+                        break;
+                    case 4: // Analyse
+                        Intent intent4 = new Intent(ClientsActivity.this, ClientsDashboardActivity.class);
+                        intent4.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent4, 505);
+                        break;
+                    case 5: // Reports
+                        break;
+                    case 6: // Route
+                        alertOrderDaysDialog(position);
+                        break;
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.login_internet_connection_btnCancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setSingleChoiceItems(items, selectedItem[0], new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                selectedItem[0] = which;
+            }
+        });
+        builder.show();
+    }
+
+    private void alertFilterDialog() {
         List<String> clientTaskList = new ArrayList<>();
         clientTaskList.add(getString(R.string.client_alert_list_all));
         clientTaskList.add(getString(R.string.client_alert_list_debtors));
@@ -535,16 +731,16 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                     editLayout.setVisibility(View.GONE);
                 } else if (clientFilterSelected == 1) {
                     editLayout.setVisibility(View.VISIBLE);
-                    editDate1.setText(String.valueOf(min));
+                    editDate1.setText(String.valueOf(clientMin));
                     editDate1.requestFocus();
                     editDate1.setSelectAllOnFocus(true);
-                    editDate2.setText(String.valueOf(max));
+                    editDate2.setText(String.valueOf(clientMax));
                 } else if (clientFilterSelected == 2) {
                     editLayout.setVisibility(View.VISIBLE);
-                    editDate1.setText(String.valueOf(min));
+                    editDate1.setText(String.valueOf(clientMin));
                     editDate1.requestFocus();
                     editDate1.setSelectAllOnFocus(true);
-                    editDate2.setText(String.valueOf(max));
+                    editDate2.setText(String.valueOf(clientMax));
                 } else {
                     editLayout.setVisibility(View.GONE);
                 }
@@ -563,23 +759,169 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                     new GetDataFromDatabase().execute();
                 } else if (clientFilterSelected == 1) {
                     if (!editDate1.getText().toString().isEmpty()) {
-                        min = Long.parseLong(editDate1.getText().toString());
+                        clientMin = Long.parseLong(editDate1.getText().toString());
                     }
                     if (!editDate2.getText().toString().isEmpty()) {
-                        max = Long.parseLong(editDate2.getText().toString());
+                        clientMax = Long.parseLong(editDate2.getText().toString());
                     }
-                    new GetDataFromDatabaseBalance().execute(min, max);
+                    new GetDataFromDatabaseBalance().execute(clientMin, clientMax);
                 } else if (clientFilterSelected == 2) {
                     if (!editDate1.getText().toString().isEmpty()) {
-                        min = Long.parseLong(editDate1.getText().toString());
+                        clientMin = Long.parseLong(editDate1.getText().toString());
                     }
                     if (!editDate2.getText().toString().isEmpty()) {
-                        max = Long.parseLong(editDate2.getText().toString());
+                        clientMax = Long.parseLong(editDate2.getText().toString());
                     }
-                    new GetDataFromDatabaseBalance().execute(-max, -min);
+                    new GetDataFromDatabaseBalance().execute(-clientMax, -clientMin);
                 } else {
                     new GetDataFromDatabaseBalanceZero().execute();
                 }
+            }
+        });
+        builder.show();
+    }
+
+    private void alertOrderDaysDialog(int position) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setCancelable(false);
+        View view = getLayoutInflater().inflate(R.layout.client_route_layout, null);
+        builder.setView(view);
+
+        CheckBox checkMonday = view.findViewById(R.id.checkMonday);
+        CheckBox checkTuesday = view.findViewById(R.id.checkTuesday);
+        CheckBox checkWednesday = view.findViewById(R.id.checkWednesday);
+        CheckBox checkThursday = view.findViewById(R.id.checkThursday);
+        CheckBox checkFriday = view.findViewById(R.id.checkFriday);
+        CheckBox checkSaturday = view.findViewById(R.id.checkSaturday);
+        CheckBox checkSunday = view.findViewById(R.id.checkSunday);
+
+        EditText mondayNo = view.findViewById(R.id.mondayNo);
+        EditText tuesdayNo = view.findViewById(R.id.tuesdayNo);
+        EditText wednesdayNo = view.findViewById(R.id.wednesdayNo);
+        EditText thursdayNo = view.findViewById(R.id.thursdayNo);
+        EditText fridayNo = view.findViewById(R.id.fridayNo);
+        EditText saturdayNo = view.findViewById(R.id.saturdayNo);
+        EditText sundayNo = view.findViewById(R.id.sundayNo);
+
+        checkMonday.setChecked(cardList.get(position).getPazartesi().equals("1"));
+        checkTuesday.setChecked(cardList.get(position).getSali().equals("1"));
+        checkWednesday.setChecked(cardList.get(position).getCarsamba().equals("1"));
+        checkThursday.setChecked(cardList.get(position).getPersembe().equals("1"));
+        checkFriday.setChecked(cardList.get(position).getCuma().equals("1"));
+        checkSaturday.setChecked(cardList.get(position).getCumartesi().equals("1"));
+        checkSunday.setChecked(cardList.get(position).getPazar().equals("1"));
+
+        mondayNo.setText(cardList.get(position).getPazartesiSiraNo());
+        tuesdayNo.setText(cardList.get(position).getSaliSiraNo());
+        wednesdayNo.setText(cardList.get(position).getCarsambaSiraNo());
+        thursdayNo.setText(cardList.get(position).getPersembeSiraNo());
+        fridayNo.setText(cardList.get(position).getCumaSiraNo());
+        saturdayNo.setText(cardList.get(position).getCumartesiSiraNo());
+        sundayNo.setText(cardList.get(position).getPazarSiraNo());
+
+        builder.setPositiveButton(R.string.client_menu_save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Integer[] values = new Integer[15];
+                values[0] = position;
+                values[1] = checkMonday.isChecked() ? 1 : 0;
+                values[2] = checkTuesday.isChecked() ? 1 : 0;
+                values[3] = checkWednesday.isChecked() ? 1 : 0;
+                values[4] = checkThursday.isChecked() ? 1 : 0;
+                values[5] = checkFriday.isChecked() ? 1 : 0;
+                values[6] = checkSaturday.isChecked() ? 1 : 0;
+                values[7] = checkSunday.isChecked() ? 1 : 0;
+                values[8] = Integer.valueOf(mondayNo.getText().toString());
+                values[9] = Integer.valueOf(tuesdayNo.getText().toString());
+                values[10] = Integer.valueOf(wednesdayNo.getText().toString());
+                values[11] = Integer.valueOf(thursdayNo.getText().toString());
+                values[12] = Integer.valueOf(fridayNo.getText().toString());
+                values[13] = Integer.valueOf(saturdayNo.getText().toString());
+                values[14] = Integer.valueOf(sundayNo.getText().toString());
+                new UpdateOrderDaysFromWeb().execute(values);
+            }
+        });
+
+        builder.setNegativeButton(R.string.login_internet_connection_btnCancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void alertAddNewClient() {
+        View view = getLayoutInflater().inflate(R.layout.client_addnew_layout, null);
+        final AlertDialog d = new AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton(R.string.client_menu_save, null) //Set to null. We override the onclick
+                .setNegativeButton(R.string.login_internet_connection_btnCancel, null)
+                .create();
+
+        EditText companyName = view.findViewById(R.id.companyName);
+        EditText companyAddress = view.findViewById(R.id.companyAddress);
+        EditText clientName = view.findViewById(R.id.clientName);
+        EditText clientEmail = view.findViewById(R.id.clientEmail);
+        MaskEditText clientPhone1 = view.findViewById(R.id.clientPhone1);
+        MaskEditText clientPhone2 = view.findViewById(R.id.clientPhone2);
+
+        d.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (companyName.getText().toString().trim().isEmpty()) {
+                            companyName.setError(getString(R.string.client_popup_empty_error));
+                            companyName.requestFocus();
+                        } else if (companyAddress.getText().toString().trim().isEmpty()) {
+                            companyAddress.setError(getString(R.string.client_popup_empty_error));
+                            companyAddress.requestFocus();
+                        } else if (clientName.getText().toString().trim().isEmpty()) {
+                            clientName.setError(getString(R.string.client_popup_empty_error));
+                            clientName.requestFocus();
+                        } else if (clientPhone1.getText().toString().isEmpty()) {
+                            clientPhone1.setError(getString(R.string.client_popup_empty_error));
+                            clientPhone1.requestFocus();
+                        } else if (!clientPhone1.isDone()) {
+                            clientPhone1.setError(getString(R.string.client_popup_wrong_format));
+                            clientPhone1.requestFocus();
+                        } else if (!clientPhone2.getText().toString().isEmpty() && !clientPhone2.isDone()) {
+                            clientPhone2.setError(getString(R.string.client_popup_wrong_format));
+                            clientPhone2.requestFocus();
+                        } else if (!TextUtils.isEmpty(clientEmail.getText().toString().trim()) && !Patterns.EMAIL_ADDRESS.matcher(clientEmail.getText().toString().trim()).matches()) {
+                            clientEmail.setError(getString(R.string.client_popup_wrong_format));
+                            clientEmail.requestFocus();
+                        } else {
+                            d.dismiss();
+                            String[] client = new String[6];
+                            client[0] = companyName.getText().toString();
+                            client[1] = companyAddress.getText().toString();
+                            client[2] = clientName.getText().toString();
+                            client[3] = clientPhone1.getText().toString();
+                            client[4] = clientPhone2.getText().toString();
+                            client[5] = clientEmail.getText().toString();
+                            new AddNewClientFromWeb().execute(client);
+                        }
+                    }
+                });
+            }
+        });
+        d.show();
+    }
+
+    private void sendDataToServerFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         builder.show();

@@ -1,7 +1,7 @@
 package kz.burhancakmak.aysoftmobile.Models.DataExport;
 
 public class DataExportTask {
-    private Integer KayitNo;
+    private Long KayitNo;
     private Integer CariKayitNo;
     private String Kod;
     private String Unvani;
@@ -76,11 +76,11 @@ public class DataExportTask {
         IslemTipi = islemTipi;
     }
 
-    public Integer getKayitNo() {
+    public Long getKayitNo() {
         return KayitNo;
     }
 
-    public void setKayitNo(Integer kayitNo) {
+    public void setKayitNo(Long kayitNo) {
         KayitNo = kayitNo;
     }
 

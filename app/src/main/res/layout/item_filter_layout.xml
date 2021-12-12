@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/itemLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_line"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:gravity="center_vertical"
+            android:text="@string/products_alert_filter_title"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_menu" />
+
+        <Spinner
+            android:id="@+id/item_menu_combo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/spinner_background"
+            android:fontFamily="@font/open_sans_semibold_italic"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemLayout1"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:weightSum="11">
+
+        <EditText
+            android:id="@+id/editDate1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:padding="5dp"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/editDate2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

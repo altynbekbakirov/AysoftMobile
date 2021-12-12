@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -232,7 +233,6 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
     }
 
     private class SendDataToServer extends AsyncTask<Integer, String, Void> {
-
         String webAddress = webSettingsMap.get("web");
         String phoneId = webSettingsMap.get("uuid");
         RelativeLayout products_progressBar = getActivity().findViewById(R.id.siparis_progressBar_layout);
@@ -243,6 +243,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         ClientZiyaret ziyaret;
         ClCard card;
         String ziyaretSatiri;
+        String errorMessage;
 
         @Override
         protected void onPreExecute() {
@@ -341,15 +342,15 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
             try {
                 Response<ClientsSiparisResponse> response = queryList.execute();
                 if (response.isSuccessful() && response.body() != null) {
-                    query = response.body();
-                    if (!query.getHata()) {
+                    if (!response.body().getHata()) {
+                        errorMessage = response.body().getMesaj();
                         ClientSiparis siparis = new ClientSiparis();
                         siparisList.get(integers[0]).setErpGonderildi(1);
-                        siparisList.get(integers[0]).setErpKayitNo(query.getSiparisKayitNo());
-                        siparisList.get(integers[0]).setErpSiparisFisNo(query.getSiparisFisNo());
+                        siparisList.get(integers[0]).setErpKayitNo(response.body().getSiparisKayitNo());
+                        siparisList.get(integers[0]).setErpSiparisFisNo(response.body().getSiparisFisNo());
                         adapter.notifyItemChanged(integers[0]);
-                        siparis.setErpSiparisFisNo(query.getSiparisFisNo());
-                        siparis.setErpKayitNo(query.getSiparisKayitNo());
+                        siparis.setErpSiparisFisNo(response.body().getSiparisFisNo());
+                        siparis.setErpKayitNo(response.body().getSiparisKayitNo());
                         siparis.setErpGonderildi(1);
                         databaseHandler.updateSiparisIslemleriErpGonder(siparis, String.valueOf(siparisList.get(integers[0]).getKayitNo()));
                     } else {
@@ -373,7 +374,6 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
     }
 
     private class CancelDataToServer extends AsyncTask<Integer, String, Void> {
-
         String webAddress = webSettingsMap.get("web");
         String phoneId = webSettingsMap.get("uuid");
         RelativeLayout products_progressBar = getActivity().findViewById(R.id.siparis_progressBar_layout);
@@ -514,6 +514,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
     private void chooseMenuOptions(int position) {
         String[] items = new String[]{
                 getString(R.string.alert_kasa_menu_edit),
+                getString(R.string.alert_kasa_menu_view),
                 getString(R.string.alert_kasa_menu_delete),
                 getString(R.string.alert_kasa_menu_erp_gonder),
                 getString(R.string.alert_kasa_menu_erp_gerial),
@@ -532,6 +533,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                                 if (siparisList.get(position).getErpGonderildi() < 1) {
                                     Intent intent = new Intent(getActivity(), SiparisIslemleriActivity.class);
                                     intent.putExtra("islemTuru", selectedItem[0]);
+                                    intent.putExtra("kayitNo", siparisList.get(position).getCariKayitNo());
                                     intent.putExtra("updateCart", 1);
                                     intent.putExtra("siparisNo", siparisList.get(position).getKayitNo());
                                     intent.putExtra("discountTotal", siparisList.get(position).getGenelIndirimTutari());
@@ -549,6 +551,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                             if (siparisList.get(position).getErpGonderildi() < 1) {
                                 Intent intent = new Intent(getActivity(), SiparisIslemleriActivity.class);
                                 intent.putExtra("islemTuru", selectedItem[0]);
+                                intent.putExtra("kayitNo", siparisList.get(position).getCariKayitNo());
                                 intent.putExtra("updateCart", 1);
                                 intent.putExtra("siparisNo", siparisList.get(position).getKayitNo());
                                 intent.putExtra("discountTotal", siparisList.get(position).getGenelIndirimTutari());
@@ -562,6 +565,18 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                         }
                         break;
                     case 1:
+                        Intent intent = new Intent(getActivity(), SiparisIslemleriActivity.class);
+                        intent.putExtra("islemTuru", 2);
+                        intent.putExtra("updateCart", 0);
+                        intent.putExtra("kayitNo", siparisList.get(position).getCariKayitNo());
+                        intent.putExtra("siparisNo", siparisList.get(position).getKayitNo());
+                        intent.putExtra("discountTotal", siparisList.get(position).getGenelIndirimTutari());
+                        intent.putExtra("discountPercent", siparisList.get(position).getGenelIndirimOrani());
+                        intent.putExtra("KurusHaneSayisiStokMiktar", KurusHaneSayisiStokMiktar);
+                        intent.putExtra("KurusHaneSayisiStokTutar", KurusHaneSayisiStokTutar);
+                        startActivityForResult(intent, 99);
+                        break;
+                    case 2:
                         if (ziyaretSistemiKullanimi.equals("1")) {
                             if (session.getKeyVisit() != -1) {
                                 if (siparisList.get(position).getErpGonderildi() < 1) {
@@ -580,7 +595,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                             }
                         }
                         break;
-                    case 2:
+                    case 3:
                         if (ziyaretSistemiKullanimi.equals("1")) {
                             if (session.getKeyVisit() != -1) {
                                 if (siparisList.get(position).getErpGonderildi() < 1) {
@@ -599,7 +614,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                             }
                         }
                         break;
-                    case 3:
+                    case 4:
                         if (ziyaretSistemiKullanimi.equals("1")) {
                             if (session.getKeyVisit() != -1) {
                                 if (siparisList.get(position).getErpGonderildi() > 0) {
@@ -677,6 +692,21 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         builder.setCancelable(true);
         builder.setIcon(R.drawable.ic_dangerous);
         builder.setMessage(R.string.info_warning_sendto_server_fail);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void sendDataToServerFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
         builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

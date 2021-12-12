@@ -4,6 +4,9 @@ import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.depo1Aciklama1;
 import static kz.burhancakmak.aysoftmobile.MainActivity.depo2Aciklama1;
+import static kz.burhancakmak.aysoftmobile.MainActivity.itemFilterSelected;
+import static kz.burhancakmak.aysoftmobile.MainActivity.itemMax;
+import static kz.burhancakmak.aysoftmobile.MainActivity.itemMin;
 import static kz.burhancakmak.aysoftmobile.MainActivity.menuGrupKayitNo;
 import static kz.burhancakmak.aysoftmobile.MainActivity.ondegerFiyatGrubu1;
 import static kz.burhancakmak.aysoftmobile.MainActivity.ondegerFiyatGrubu2;
@@ -22,7 +25,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -93,7 +99,8 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
     List<ItemsPrclist> productPricesList = new ArrayList<>();
     List<String> priceList = new ArrayList<>();
     final int[] selectedItem = {0};
-    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, IkiFiyatKullanimi, IkiDepoKullanimi;
+    String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar, ikiDepoKullanimi;
+    int ikiFiyatKullanimi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,19 +120,27 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
             finish();
         } else {
             initViews();
-            new GetDataFromDatabase().execute();
+            if (itemFilterSelected == 0) {
+                new GetDataFromDatabase().execute();
+            } else if (itemFilterSelected == 1) {
+                new GetDataFromDatabaseStock().execute(itemMin, itemMax);
+            } else if (itemFilterSelected == 2) {
+                new GetDataFromDatabaseStock().execute(-itemMax, -itemMin);
+            } else {
+                new GetDataFromDatabaseZero().execute();
+            }
         }
     }
 
     @Override
     public void onItemListener(int position) {
-        chooseItemsMenu(position);
+        alertChooseItemsMenuDialog(position);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.products_menu, menu);
+        inflater.inflate(R.menu.items_menu, menu);
         searchItem = menu.findItem(R.id.product_search);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setIconified(false);
@@ -161,10 +176,10 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.product_price) {
-            alertOnPriceChange();
+            alertPriceChangeDialog();
         }
         if (item.getItemId() == R.id.product_view_type) {
-            alertOnLayoutViewChange();
+            alertLayoutChangeDialog();
         }
         if (item.getItemId() == R.id.product_barcode_scan) {
             IntentIntegrator intentIntegrator = new IntentIntegrator(ProductsActivity.this);
@@ -176,6 +191,9 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         }
         if (item.getItemId() == R.id.product_update) {
             new GetDataFromWeb().execute();
+        }
+        if (item.getItemId() == R.id.product_filter) {
+            alertFilterDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -192,7 +210,15 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
-        new GetDataFromDatabase().execute();
+        if (itemFilterSelected == 0) {
+            new GetDataFromDatabase().execute();
+        } else if (itemFilterSelected == 1) {
+            new GetDataFromDatabaseStock().execute(itemMin, itemMax);
+        } else if (itemFilterSelected == 2) {
+            new GetDataFromDatabaseStock().execute(-itemMax, -itemMin);
+        } else {
+            new GetDataFromDatabaseZero().execute();
+        }
         return true;
     }
 
@@ -225,10 +251,10 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
         databaseHandler = DatabaseHandler.getInstance(this);
         menuList = databaseHandler.selectCihazlarMenu(1, menuGrupKayitNo);
-        KurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokMiktar", "0");
-        KurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokTutar", "0");
-        IkiFiyatKullanimi = parametreGetir(FIRMA_NO, "IkiFiyatKullanimi", "0");
-        IkiDepoKullanimi = parametreGetir(FIRMA_NO, "IkiDepoKullanimi", "0");
+        kurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokMiktar", "0");
+        kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokTutar", "0");
+        ikiFiyatKullanimi = Integer.parseInt(parametreGetir(FIRMA_NO, "IkiFiyatKullanimi", "0"));
+        ikiDepoKullanimi = parametreGetir(FIRMA_NO, "IkiDepoKullanimi", "0");
         productPricesList = databaseHandler.selectPrclist();
         priceList.add("");
         for (int i = 0; i < productPricesList.size(); i++) {
@@ -247,10 +273,10 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 productItemList,
                 this,
                 this,
-                Integer.parseInt(KurusHaneSayisiStokMiktar),
-                Integer.parseInt(KurusHaneSayisiStokTutar),
-                Integer.parseInt(IkiFiyatKullanimi),
-                Integer.parseInt(IkiDepoKullanimi)
+                Integer.parseInt(kurusHaneSayisiStokMiktar),
+                Integer.parseInt(kurusHaneSayisiStokTutar),
+                ikiFiyatKullanimi,
+                Integer.parseInt(ikiDepoKullanimi)
         );
         recyclerView.setAdapter(itemsAdapter);
 
@@ -275,6 +301,23 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 }
             }
             navigationView.getMenu().getItem(0).setChecked(true);
+
+            if (itemMin == 0) {
+                itemMin = 1L;
+            }
+            if (itemMax == 0) {
+                itemMax = 999999999999999L;
+            }
+
+            if (itemFilterSelected == 0) {
+                productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+            } else if (itemFilterSelected == 1) {
+                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, itemMin, itemMax);
+            } else if (itemFilterSelected == 2) {
+                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, -itemMax, -itemMin);
+            } else {
+                productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+            }
         }
     }
 
@@ -291,6 +334,66 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         @Override
         protected Void doInBackground(Void... items) {
             productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            itemsAdapter.setItemsList(
+                    productItemList,
+                    VIEW_TYPE,
+                    depo1Aciklama1 + " " + getString(R.string.items_kalan1_label),
+                    depo2Aciklama1.isEmpty() ? "" : depo2Aciklama1 + " " + getString(R.string.items_kalan2_label),
+                    ondegerFiyatGrubu1.isEmpty() ? "" : ondegerFiyatGrubu1 + " " + getString(R.string.items_fiyat1_label),
+                    ondegerFiyatGrubu2.isEmpty() ? "" : ondegerFiyatGrubu2 + " " + getString(R.string.items_fiyat2_label));
+            products_progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private class GetDataFromDatabaseZero extends AsyncTask<Void, Void, Void> {
+        RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            productItemList.clear();
+            products_progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... items) {
+            productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            itemsAdapter.setItemsList(
+                    productItemList,
+                    VIEW_TYPE,
+                    depo1Aciklama1 + " " + getString(R.string.items_kalan1_label),
+                    depo2Aciklama1.isEmpty() ? "" : depo2Aciklama1 + " " + getString(R.string.items_kalan2_label),
+                    ondegerFiyatGrubu1.isEmpty() ? "" : ondegerFiyatGrubu1 + " " + getString(R.string.items_fiyat1_label),
+                    ondegerFiyatGrubu2.isEmpty() ? "" : ondegerFiyatGrubu2 + " " + getString(R.string.items_fiyat2_label));
+            products_progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private class GetDataFromDatabaseStock extends AsyncTask<Long, Void, Void> {
+        RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            productItemList.clear();
+            products_progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Long... items) {
+            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, items[0], items[1]);
             return null;
         }
 
@@ -362,6 +465,17 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                             publishProgress(++counter + " / " + itemsQuery.getItemsToplamlar().size());
                             databaseHandler.updateToplam(toplamlar, String.valueOf(toplamlar.getKayitNo()));
                         }
+
+                        productItemList.clear();
+                        if (itemFilterSelected == 0) {
+                            productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+                        } else if (itemFilterSelected == 1) {
+                            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, itemMin, itemMax);
+                        } else if (itemFilterSelected == 2) {
+                            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, -itemMax, -itemMin);
+                        } else {
+                            productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -374,11 +488,10 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
-            new GetDataFromDatabase().execute();
         }
     }
 
-    private void chooseItemsMenu(int position) {
+    private void alertChooseItemsMenuDialog(int position) {
         String[] items = new String[]{
                 getString(R.string.products_info_toolbar_title),
                 getString(R.string.products_info_stock_status),
@@ -426,34 +539,92 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         builder.show();
     }
 
-    private void setPhoneDefaultLanguage(String code) {
-        String countryCode;
-        switch (code) {
-            case "Türkçe":
-                countryCode = "tr";
-                break;
-            case "Русский":
-                countryCode = "ru";
-                break;
-            case "English":
-                countryCode = "en";
-                break;
-            default:
-                countryCode = "en";
+    private void alertFilterDialog() {
+        List<String> itemTaskList = new ArrayList<>();
+        itemTaskList.add(getString(R.string.client_alert_list_all));
+        itemTaskList.add("Stokta olanlar");
+        itemTaskList.add("Eksiye dusenler");
+        itemTaskList.add("Stogu 0 olanlar");
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setCancelable(false);
+        View view = getLayoutInflater().inflate(R.layout.item_filter_layout, null);
+        builder.setView(view);
+
+        LinearLayout editLayout = view.findViewById(R.id.itemLayout2);
+        Spinner spinner1 = view.findViewById(R.id.item_menu_combo);
+        EditText editDate1 = view.findViewById(R.id.editDate1);
+        EditText editDate2 = view.findViewById(R.id.editDate2);
+
+        if (itemFilterSelected == 0 || itemFilterSelected == 3) {
+            editLayout.setVisibility(View.GONE);
         }
-        setLocale(this, countryCode);
+
+        ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_layout, itemTaskList);
+        itemAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        itemAdapter.notifyDataSetChanged();
+        spinner1.setAdapter(itemAdapter);
+        spinner1.setSelection(itemFilterSelected);
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                itemFilterSelected = i;
+                if (itemFilterSelected == 0) {
+                    editLayout.setVisibility(View.GONE);
+                } else if (itemFilterSelected == 1) {
+                    editLayout.setVisibility(View.VISIBLE);
+                    editDate1.setText(String.valueOf(itemMin));
+                    editDate1.requestFocus();
+                    editDate1.setSelectAllOnFocus(true);
+                    editDate2.setText(String.valueOf(itemMax));
+                } else if (itemFilterSelected == 2) {
+                    editLayout.setVisibility(View.VISIBLE);
+                    editDate1.setText(String.valueOf(itemMin));
+                    editDate1.requestFocus();
+                    editDate1.setSelectAllOnFocus(true);
+                    editDate2.setText(String.valueOf(itemMax));
+                } else {
+                    editLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (itemFilterSelected == 0) {
+                    new GetDataFromDatabase().execute();
+                } else if (itemFilterSelected == 1) {
+                    if (!editDate1.getText().toString().isEmpty()) {
+                        itemMin = Long.parseLong(editDate1.getText().toString());
+                    }
+                    if (!editDate2.getText().toString().isEmpty()) {
+                        itemMax = Long.parseLong(editDate2.getText().toString());
+                    }
+                    new GetDataFromDatabaseStock().execute(itemMin, itemMax);
+                } else if (itemFilterSelected == 2) {
+                    if (!editDate1.getText().toString().isEmpty()) {
+                        itemMin = Long.parseLong(editDate1.getText().toString());
+                    }
+                    if (!editDate2.getText().toString().isEmpty()) {
+                        itemMax = Long.parseLong(editDate2.getText().toString());
+                    }
+                    new GetDataFromDatabaseStock().execute(-itemMax, -itemMin);
+                } else {
+                    new GetDataFromDatabaseZero().execute();
+                }
+            }
+        });
+        builder.show();
     }
 
-    public static void setLocale(Activity activity, String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
-        Resources resources = activity.getResources();
-        Configuration config = resources.getConfiguration();
-        config.setLocale(locale);
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-    }
-
-    private void alertOnPriceChange() {
+    private void alertPriceChangeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View layout = inflater.inflate(R.layout.alert_change_price_layout, null);
@@ -468,14 +639,15 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         spinner1.setAdapter(priceAdapter);
         spinner1.setSelection(priceAdapter.getPosition(ondegerFiyatGrubu1));
 
-        if (Integer.parseInt(IkiFiyatKullanimi) == 1) {
-            if (!ondegerFiyatGrubu2.isEmpty()) {
-                spinner2.setAdapter(priceAdapter);
-                spinner2.setSelection(priceAdapter.getPosition(ondegerFiyatGrubu2));
-            } else {
+        if (ikiFiyatKullanimi == 1) {
+//            if (!ondegerFiyatGrubu2.isEmpty()) {
+            spinner2.setAdapter(priceAdapter);
+            spinner2.setSelection(priceAdapter.getPosition(ondegerFiyatGrubu2));
+//            }
+            /*else {
                 spinner2Label.setVisibility(View.GONE);
                 spinner2.setVisibility(View.GONE);
-            }
+            }*/
         } else {
             spinner2Label.setVisibility(View.GONE);
             spinner2.setVisibility(View.GONE);
@@ -485,10 +657,10 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ondegerFiyatGrubu1 = spinner1.getSelectedItem().toString();
-                if (Integer.parseInt(IkiFiyatKullanimi) == 1) {
-                    if (!ondegerFiyatGrubu2.isEmpty()) {
-                        ondegerFiyatGrubu2 = spinner2.getSelectedItem().toString();
-                    }
+                if (ikiFiyatKullanimi == 1) {
+//                    if (!ondegerFiyatGrubu2.trim().isEmpty()) {
+                    ondegerFiyatGrubu2 = spinner2.getSelectedItem().toString();
+//                    }
                 }
                 new GetDataFromDatabase().execute();
             }
@@ -497,7 +669,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         alertDialog.show();
     }
 
-    private void alertOnLayoutViewChange() {
+    private void alertLayoutChangeDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View layout = inflater.inflate(R.layout.alert_change_view_layout, null);
@@ -542,6 +714,33 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
             parametreDeger = deger;
         }
         return parametreDeger;
+    }
+
+    private void setPhoneDefaultLanguage(String code) {
+        String countryCode;
+        switch (code) {
+            case "Türkçe":
+                countryCode = "tr";
+                break;
+            case "Русский":
+                countryCode = "ru";
+                break;
+            case "English":
+                countryCode = "en";
+                break;
+            default:
+                countryCode = "en";
+        }
+        setLocale(this, countryCode);
+    }
+
+    public static void setLocale(Activity activity, String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Resources resources = activity.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
 }

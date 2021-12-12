@@ -1,7 +1,6 @@
 package kz.burhancakmak.aysoftmobile.Clients;
 
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -31,6 +30,7 @@ import java.util.Locale;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
+import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
 
@@ -41,10 +41,11 @@ public class KasaIslemleriActivity extends AppCompatActivity {
     HashMap<String, String> hashMap;
     DatabaseHandler databaseHandler;
     private static final String KEY_LANG = "language";
-    int islemTuru, kayitNo, position;
+    int islemTuru, kayitNo, position, incele;
     String makbuzNo, aciklama, tarih;
     double tutar;
     String KurusHaneSayisiStokTutar;
+    ClCard card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class KasaIslemleriActivity extends AppCompatActivity {
 
     private void initViews() {
         Intent intent = getIntent();
+        incele = intent.getIntExtra("incele", -1);
         islemTuru = intent.getIntExtra("islemTuru", -1);
         position = intent.getIntExtra("position", -1);
         kayitNo = intent.getIntExtra("kayitNo", -1);
@@ -77,13 +79,15 @@ public class KasaIslemleriActivity extends AppCompatActivity {
         tarih = intent.getStringExtra("tarih");
         tutar = intent.getDoubleExtra("tutar", -1);
 
+        card = databaseHandler.selectClientById(kayitNo);
+
         String toolbarTitle;
         if (islemTuru == 1) {
             toolbarTitle = getString(R.string.alert_kasa_payment);
         } else if (islemTuru == 0) {
             toolbarTitle = getString(R.string.alert_kasa_collection);
         } else {
-            toolbarTitle = getString(R.string.main_nav_clients);
+            toolbarTitle = card.getUnvani1();
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -117,6 +121,13 @@ public class KasaIslemleriActivity extends AppCompatActivity {
             edtTarih.setText(dateFormat.format(date1));
         }
 
+        if (incele == 1) {
+            edtAciklama.setEnabled(false);
+            edtMakbuzNo.setEnabled(false);
+            edtTarih.setEnabled(false);
+            edtTutar.setEnabled(false);
+        }
+
         final Calendar myCalendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -142,8 +153,10 @@ public class KasaIslemleriActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.clients_maps_menu, menu);
+        if (incele != 1) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.clients_maps_menu, menu);
+        }
         return true;
     }
 
@@ -194,7 +207,6 @@ public class KasaIslemleriActivity extends AppCompatActivity {
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
-
         switch (code) {
             case "Türkçe":
                 countryCode = "tr";
@@ -208,7 +220,6 @@ public class KasaIslemleriActivity extends AppCompatActivity {
             default:
                 countryCode = "en";
         }
-
         setLocale(this, countryCode);
     }
 

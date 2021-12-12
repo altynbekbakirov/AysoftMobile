@@ -1,7 +1,5 @@
 package kz.burhancakmak.aysoftmobile.Clients;
 
-import static kz.burhancakmak.aysoftmobile.Clients.ClientsTasksActivity.clientKayitNo;
-
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -22,6 +20,7 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -97,17 +96,18 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         setContentView(R.layout.activity_siparis_islemleri);
 
         databaseHandler = DatabaseHandler.getInstance(this);
-        card = databaseHandler.selectClientById(clientKayitNo);
         initViews();
         new ClientSepetTask().execute();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.clients_orders_menu, menu);
-        if (card.getAdres1().isEmpty()) {
-            menu.findItem(R.id.client_orders_change_data).setVisible(false);
+        if (islemTuru != 2) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.clients_orders_menu, menu);
+            if (card.getAdres1().isEmpty()) {
+                menu.findItem(R.id.client_orders_change_data).setVisible(false);
+            }
         }
         return true;
     }
@@ -142,7 +142,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = new Date();
                 ClientSiparis siparis = new ClientSiparis();
-                siparis.setCariKayitNo(clientKayitNo);
+                siparis.setCariKayitNo(kayitNo);
                 siparis.setTarih(dateFormat.format(date));
                 siparis.setAciklama(Aciklama);
                 siparis.setOdemeSekli(OdemeSekli);
@@ -219,12 +219,17 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
 
     @Override
     public void onOrderClick(int position) {
-        chooseMenuOptions(position);
+        if (islemTuru != 2) chooseMenuOptions(position);
     }
 
     @Override
     public void onBackPressed() {
-        confirmationCancel();
+        if (islemTuru != 2) {
+            confirmationCancel();
+        } else {
+            setResult(RESULT_CANCELED);
+            finish();
+        }
     }
 
     private void initViews() {
@@ -236,6 +241,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         updateCart = intent.getIntExtra("updateCart", -1);
         KurusHaneSayisiStokMiktar = intent.getStringExtra("KurusHaneSayisiStokMiktar");
         KurusHaneSayisiStokTutar = intent.getStringExtra("KurusHaneSayisiStokTutar");
+        card = databaseHandler.selectClientById(kayitNo);
         if (intent.getDoubleExtra("discountPercent", -1) != -1) {
             discountPercent = intent.getDoubleExtra("discountPercent", -1);
             if (discountPercent > 0) {
@@ -255,7 +261,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         } else if (islemTuru == 1) {
             toolbarTitle = getString(R.string.alert_siparis_sales);
         } else {
-            toolbarTitle = getString(R.string.client_order_toolbar_title);
+            toolbarTitle = card.getUnvani1();
         }
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(toolbarTitle);
@@ -265,7 +271,12 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmationCancel();
+                if (islemTuru != 2) {
+                    confirmationCancel();
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
             }
         });
 
@@ -555,7 +566,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                         break;
                     case 2:
                         break;
-
                 }
             }
         });
@@ -743,7 +753,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
-
         switch (code) {
             case "Türkçe":
                 countryCode = "tr";
@@ -757,7 +766,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             default:
                 countryCode = "en";
         }
-
         setLocale(this, countryCode);
     }
 
@@ -847,6 +855,5 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             bottomPanelCount.setText("0");
         }
     }
-
 
 }

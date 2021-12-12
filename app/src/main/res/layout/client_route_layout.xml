@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/linearlayout_border_line"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:gravity="center_vertical"
+            android:text="@string/client_popup_order_days"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_menu" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll1"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkMonday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_monday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/mondayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll2"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkTuesday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_tuesday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/tuesdayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll3"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkWednesday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_wednesday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/wednesdayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll4"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkThursday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_thursday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/thursdayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll5"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkFriday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_friday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/fridayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll6"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkSaturday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_saturday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/saturdayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll7"
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:weightSum="11">
+
+        <CheckBox
+            android:id="@+id/checkSunday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:text="@string/client_popup_order_sunday"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+        <TextView
+            style="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text=" - "
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/sundayNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@drawable/edittext_border_alert"
+            android:fontFamily="@font/open_sans_condensed_bold"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:selectAllOnFocus="true"
+            android:textColor="@color/grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -82,6 +82,46 @@ public interface RetrofitApi {
             @Field("FirmaNo") String firma,
             @Field("Tip") Integer type);
 
+    @POST("CariRutOlusturma.php")
+    @FormUrlEncoded
+    Call<ClientsQuery> getClientOrderDays(
+            @Field("CihazId") String CihazId,
+            @Field("Login") String Login,
+            @Field("Parola") String Parola,
+            @Field("DonemNo") String donem,
+            @Field("FirmaNo") String firma,
+            @Field("CariKod") String kod,
+            @Field("CariKayitNo") Integer kayitNo,
+            @Field("Gun1") Integer gun1,
+            @Field("Gun2") Integer gun2,
+            @Field("Gun3") Integer gun3,
+            @Field("Gun4") Integer gun4,
+            @Field("Gun5") Integer gun5,
+            @Field("Gun6") Integer gun6,
+            @Field("Gun7") Integer gun7,
+            @Field("Gun1SiraNo") Integer gun1SiraNo,
+            @Field("Gun2SiraNo") Integer gun2SiraNo,
+            @Field("Gun3SiraNo") Integer gun3SiraNo,
+            @Field("Gun4SiraNo") Integer gun4SiraNo,
+            @Field("Gun5SiraNo") Integer gun5SiraNo,
+            @Field("Gun6SiraNo") Integer gun6SiraNo,
+            @Field("Gun7SiraNo") Integer gun7SiraNo);
+
+    @POST("CariEkle.php")
+    @FormUrlEncoded
+    Call<ClientsQuery> addNewClient(
+            @Field("CihazId") String CihazId,
+            @Field("Login") String Login,
+            @Field("Parola") String Parola,
+            @Field("DonemNo") String donem,
+            @Field("FirmaNo") String firma,
+            @Field("Unvani1") String unvani1,
+            @Field("Adres1") String adres1,
+            @Field("Yetkili") String yetkili,
+            @Field("Telefon1") String telefon1,
+            @Field("Telefon2") String telefon2,
+            @Field("EmailAdresi") String email);
+
     @POST("KasaHareketEkle.php")
     @FormUrlEncoded
     Call<ClientsKasaResponse> kasaHareketleriGuncelle(

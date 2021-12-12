@@ -452,8 +452,6 @@ public class LoginActivity extends AppCompatActivity {
                 pd.dismiss();
             }
         });
-
-
     }
 
 

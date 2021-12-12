@@ -113,11 +113,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 if (!fiyat1.isEmpty()) {
                     linearHolder.Fiyat1Label.setText(fiyat1);
                     linearHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " " + itemsList.get(position).getDoviz1() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                } else {
+                    linearHolder.Fiyat1Label.setVisibility(View.GONE);
+                    linearHolder.Fiyat1.setVisibility(View.GONE);
                 }
 
                 if (!fiyat2.isEmpty()) {
                     linearHolder.Fiyat2Label.setText(fiyat2);
                     linearHolder.Fiyat2.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat2()) + " " + itemsList.get(position).getDoviz2() + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                } else {
+                    linearHolder.Fiyat2Label.setVisibility(View.GONE);
+                    linearHolder.Fiyat2.setVisibility(View.GONE);
                 }
 
                 if (!itemsList.get(position).getStokResim().isEmpty()) {

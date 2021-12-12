@@ -262,5 +262,28 @@
     <string name="client_alert_list_debtors">Borçlu olanlar</string>
     <string name="client_alert_list_creditors">Alacaklı olanlar</string>
     <string name="client_alert_list_zero_debtors">Borcu 0 olanlar</string>
+    <string name="products_alert_filter_title">Kalan</string>
+    <string name="products_alert_filter_all">Hepsi</string>
+    <string name="products_alert_filter_onhand">Kalan</string>
+    <string name="client_popup_order_days">Sipariş günleri</string>
+    <string name="client_popup_order_monday">Pazartesi</string>
+    <string name="client_popup_order_tuesday">Salı</string>
+    <string name="client_popup_order_wednesday">Çarşamba</string>
+    <string name="client_popup_order_thursday">Perşembe</string>
+    <string name="client_popup_order_friday">Cuma</string>
+    <string name="client_popup_order_saturday">Cumartesi</string>
+    <string name="client_popup_order_sunday">Pazar</string>
+    <string name="client_popup_order_update_success">Kaydedildi!!!</string>
+    <string name="client_popup_order_update_fail">Hata oluştu...</string>
+    <string name="client_menu_add_client">Yeni müşteri</string>
+    <string name="client_popup_add_company_name">Firma ismi</string>
+    <string name="client_popup_add_address">Adres</string>
+    <string name="client_popup_add_name">Adı ve soyadı</string>
+    <string name="client_popup_add_email">Email</string>
+    <string name="client_popup_add_tel1">Telefon 1</string>
+    <string name="client_popup_add_tel2">Telefon 2</string>
+    <string name="client_popup_empty_error">Boş olamaz</string>
+    <string name="client_popup_wrong_format">Yanlış format</string>
+    <string name="alert_kasa_menu_view">Incele</string>
 
 </resources>

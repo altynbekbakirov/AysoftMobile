@@ -46,7 +46,6 @@
             android:ems="10"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:hint="25.06.2021"
             android:inputType="text"
             android:maxLines="1"
             android:textSize="16sp" />
@@ -76,7 +75,6 @@
             android:layout_weight="3"
             android:background="@drawable/edittext_border_line"
             android:ems="10"
-            android:hint="0"
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:textSize="16sp" />
@@ -106,7 +104,6 @@
             android:layout_weight="3"
             android:background="@drawable/edittext_border_line"
             android:ems="10"
-            android:hint="@string/client_kasa_definition_title"
             android:inputType="text"
             android:maxLines="1"
             android:textSize="16sp" />
@@ -136,7 +133,6 @@
             android:layout_weight="3"
             android:background="@drawable/edittext_border_line"
             android:ems="10"
-            android:hint="@string/client_kasa_ficheno_title"
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:textSize="16sp" />

@@ -18,4 +18,9 @@
         android:title="@string/client_menu_balance_update"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/client_add_client"
+        android:title="@string/client_menu_add_client"
+        app:showAsAction="never" />
+
 </menu>

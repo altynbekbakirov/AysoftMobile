@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -252,7 +253,6 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
 
         @Override
         protected Void doInBackground(Integer... integers) {
-
             ziyaret = databaseHandler.selectClientByOpenZiyaret(kasaList.get(integers[0]).getZiyaretKayitNo());
             String ziyaretSatiri;
 
@@ -278,7 +278,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                     phoneId,
                     userSettingMap.get(KEY_NAME),
                     userSettingMap.get(KEY_PASSWORD),
-                    FIRMA_NO,
+                    String.valueOf(FIRMA_NO),
                     DONEM_NO,
                     kasaList.get(integers[0]).getIslemTipi(),
                     kasaList.get(integers[0]).getKayitNo(),
@@ -309,7 +309,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                         isFailed = true;
                     }
                 }
-            } catch (IOException e) {
+            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
                 e.printStackTrace();
             }
             return null;
@@ -374,7 +374,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                         isFailed = true;
                     }
                 }
-            } catch (IOException e) {
+            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
                 e.printStackTrace();
             }
             return null;
@@ -393,6 +393,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
     private void chooseMenuOptions(int position) {
         String[] items = new String[]{
                 getString(R.string.alert_kasa_menu_edit),
+                getString(R.string.alert_kasa_menu_view),
                 getString(R.string.alert_kasa_menu_delete),
                 getString(R.string.alert_kasa_menu_erp_gonder),
                 getString(R.string.alert_kasa_menu_erp_gerial),
@@ -439,6 +440,17 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                         }
                         break;
                     case 1:
+                        Intent intent = new Intent(getActivity(), KasaIslemleriActivity.class);
+                        intent.putExtra("position", position);
+                        intent.putExtra("kayitNo", kasaList.get(position).getKayitNo());
+                        intent.putExtra("makbuzNo", kasaList.get(position).getMakbuzNo());
+                        intent.putExtra("aciklama", kasaList.get(position).getAciklama());
+                        intent.putExtra("tarih", kasaList.get(position).getTarih());
+                        intent.putExtra("tutar", kasaList.get(position).getTutar());
+                        intent.putExtra("incele", 1);
+                        startActivityForResult(intent, 202);
+                        break;
+                    case 2:
                         if (ziyaretSistemiKullanimi.equals("1")) {
                             if (session.getKeyVisit() != -1 && session.getKeyVisit() == kasaList.get(position).getZiyaretKayitNo().intValue()) {
                                 if (kasaList.get(position).getErpGonderildi() < 1) {
@@ -457,7 +469,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                             }
                         }
                         break;
-                    case 2:
+                    case 3:
                         if (ziyaretSistemiKullanimi.equals("1")) {
                             if (session.getKeyVisit() != -1 && session.getKeyVisit() == kasaList.get(position).getZiyaretKayitNo().intValue()) {
                                 closeVisitBeforeDialog();
@@ -476,7 +488,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                             }
                         }
                         break;
-                    case 3:
+                    case 4:
                         if (ziyaretSistemiKullanimi.equals("1")) {
                             if (session.getKeyVisit() != -1 && session.getKeyVisit() == kasaList.get(position).getZiyaretKayitNo().intValue()) {
                                 if (kasaList.get(position).getErpGonderildi() > 0) {
@@ -491,7 +503,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                             }
                         }
                         break;
-                    case 4:
+                    case 5:
                         chooseShareOptions(position);
                         break;
                 }

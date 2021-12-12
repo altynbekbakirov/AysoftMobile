@@ -95,7 +95,6 @@ public class ClientsExtractActivity extends AppCompatActivity {
     private void initViews() {
         Intent intent = getIntent();
         clientKayitNo = intent.getIntExtra("clientKayitNo", -1);
-
         databaseHandler = DatabaseHandler.getInstance(this);
 
         if (clientKayitNo != -1) {
@@ -287,7 +286,6 @@ public class ClientsExtractActivity extends AppCompatActivity {
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
-
         switch (code) {
             case "Türkçe":
                 countryCode = "tr";

@@ -106,7 +106,6 @@ public class DataExportActivity extends AppCompatActivity implements DataExportA
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
-
         switch (code) {
             case "Türkçe":
                 countryCode = "tr";
@@ -120,7 +119,6 @@ public class DataExportActivity extends AppCompatActivity implements DataExportA
             default:
                 countryCode = "en";
         }
-
         setLocale(this, countryCode);
     }
 

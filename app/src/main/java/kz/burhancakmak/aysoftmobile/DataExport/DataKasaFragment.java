@@ -5,8 +5,10 @@ import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 import kz.burhancakmak.aysoftmobile.Adapters.DataExportAdapter;
+import kz.burhancakmak.aysoftmobile.Clients.KasaIslemleriActivity;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientKasa;
@@ -112,7 +116,15 @@ public class DataKasaFragment extends Fragment implements DataExportAdapter.Data
 
     @Override
     public void onItemClick(int position) {
-
+        Intent intent = new Intent(getActivity(), KasaIslemleriActivity.class);
+        intent.putExtra("position", position);
+        intent.putExtra("kayitNo", listKasa.get(position).getCariKayitNo());
+        intent.putExtra("makbuzNo", listKasa.get(position).getMakbuzNo());
+        intent.putExtra("aciklama", listKasa.get(position).getAciklama());
+        intent.putExtra("tarih", listKasa.get(position).getTarih());
+        intent.putExtra("tutar", listKasa.get(position).getTutar());
+        intent.putExtra("incele", 1);
+        startActivityForResult(intent, 202);
     }
 
     @Override
@@ -165,9 +177,7 @@ public class DataKasaFragment extends Fragment implements DataExportAdapter.Data
         String login = userSettingMap.get(KEY_NAME);
         String password = userSettingMap.get(KEY_PASSWORD);
         RetrofitApi retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
-        Call<ClientsSiparisResponse> siparisList;
         Call<ClientsKasaResponse> kasaList;
-        List<ClientSepet> sepetList = new ArrayList<>();
         boolean isFailed = false;
 
         @Override
@@ -187,7 +197,7 @@ public class DataKasaFragment extends Fragment implements DataExportAdapter.Data
                             FIRMA_NO,
                             DONEM_NO,
                             listKasa.get(i).getIslemTipi(),
-                            listKasa.get(i).getKayitNo(),
+                            (int) (long) listKasa.get(i).getKayitNo(),
                             listKasa.get(i).getTarih(),
                             listKasa.get(i).getCariKayitNo(),
                             listKasa.get(i).getKod(),
@@ -215,7 +225,7 @@ public class DataKasaFragment extends Fragment implements DataExportAdapter.Data
                                 isFailed = true;
                             }
                         }
-                    } catch (IOException e) {
+                    } catch (IllegalStateException | JsonSyntaxException | IOException e) {
                         e.printStackTrace();
                     }
                 }
