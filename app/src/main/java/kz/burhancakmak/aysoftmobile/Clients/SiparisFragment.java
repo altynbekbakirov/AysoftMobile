@@ -92,89 +92,6 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         return view;
     }
 
-    private void initViews() {
-        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
-        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
-        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
-        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi", "0");
-        CariIslemlerToptanSatisFaturasi = parametreGetir("CariIslemlerToptanSatisFaturasi", "0");
-        CariIslemlerToptanSatisIadeFaturasi = parametreGetir("CariIslemlerToptanSatisIadeFaturasi", "0");
-        CariIslemlerPerakendeSatisFaturasi = parametreGetir("CariIslemlerPerakendeSatisFaturasi", "0");
-        CariIslemlerPerakendeSatisIadeFaturasi = parametreGetir("CariIslemlerPerakendeSatisIadeFaturasi", "0");
-        CariIslemlerAlinanSiparis = parametreGetir("CariIslemlerAlinanSiparis", "0");
-        CariIslemlerVerilenSiparis = parametreGetir("CariIslemlerVerilenSiparis", "0");
-        CariIslemlerAlimFaturasi = parametreGetir("CariIslemlerAlimFaturasi", "0");
-        CariIslemlerAlimIadeFaturasi = parametreGetir("CariIslemlerAlimIadeFaturasi", "0");
-        CariIslemlerSayimFisi = parametreGetir("CariIslemlerSayimFisi", "0");
-        CariIslemlerTalepFisi = parametreGetir("CariIslemlerTalepFisi", "0");
-
-        if (CariIslemlerToptanSatisFaturasi.equals("1")) {
-            taskList.add(8);
-        }
-        if (CariIslemlerToptanSatisIadeFaturasi.equals("1")) {
-            taskList.add(3);
-        }
-        if (CariIslemlerPerakendeSatisFaturasi.equals("1")) {
-            taskList.add(7);
-        }
-        if (CariIslemlerPerakendeSatisIadeFaturasi.equals("1")) {
-            taskList.add(2);
-        }
-        if (CariIslemlerAlinanSiparis.equals("1")) {
-            taskList.add(108);
-        }
-        if (CariIslemlerVerilenSiparis.equals("1")) {
-            taskList.add(101);
-        }
-        if (CariIslemlerAlimFaturasi.equals("1")) {
-            taskList.add(1);
-        }
-        if (CariIslemlerAlimIadeFaturasi.equals("1")) {
-            taskList.add(6);
-        }
-        if (CariIslemlerTalepFisi.equals("1")) {
-            taskList.add(200);
-        }
-        if (CariIslemlerSayimFisi.equals("1")) {
-            taskList.add(201);
-        }
-
-
-        recyclerView = view.findViewById(R.id.siparisRecyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(20);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        adapter = new SiparisAdapter(getActivity(), siparisList, this, Integer.parseInt(KurusHaneSayisiStokTutar));
-        recyclerView.setAdapter(adapter);
-        fabSiparis = view.findViewById(R.id.fabSiparis);
-        fabSiparis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ziyaretSistemiKullanimi.equals("1")) {
-                    if (session.getKeyVisit() != -1) {
-                        chooseOrderOperation();
-                    } else {
-                        startVisitDialog();
-                    }
-                } else {
-                    chooseOrderOperation();
-                }
-            }
-        });
-
-        setHasOptionsMenu(true);
-        myCalendar = Calendar.getInstance();
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        date1 = dateFormat.format(date);
-        date2 = dateFormat.format(date);
-
-        new GetDataFromDatabase().execute(date1, date2);
-    }
-
     @Override
     public void orderClick(int position) {
         chooseMenuOptions(position);
@@ -438,6 +355,89 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         }
     }
 
+    private void initViews() {
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
+        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
+        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi", "0");
+        CariIslemlerToptanSatisFaturasi = parametreGetir("CariIslemlerToptanSatisFaturasi", "0");
+        CariIslemlerToptanSatisIadeFaturasi = parametreGetir("CariIslemlerToptanSatisIadeFaturasi", "0");
+        CariIslemlerPerakendeSatisFaturasi = parametreGetir("CariIslemlerPerakendeSatisFaturasi", "0");
+        CariIslemlerPerakendeSatisIadeFaturasi = parametreGetir("CariIslemlerPerakendeSatisIadeFaturasi", "0");
+        CariIslemlerAlinanSiparis = parametreGetir("CariIslemlerAlinanSiparis", "0");
+        CariIslemlerVerilenSiparis = parametreGetir("CariIslemlerVerilenSiparis", "0");
+        CariIslemlerAlimFaturasi = parametreGetir("CariIslemlerAlimFaturasi", "0");
+        CariIslemlerAlimIadeFaturasi = parametreGetir("CariIslemlerAlimIadeFaturasi", "0");
+        CariIslemlerSayimFisi = parametreGetir("CariIslemlerSayimFisi", "0");
+        CariIslemlerTalepFisi = parametreGetir("CariIslemlerTalepFisi", "0");
+
+        if (CariIslemlerToptanSatisFaturasi.equals("1")) {
+            taskList.add(8);
+        }
+        if (CariIslemlerToptanSatisIadeFaturasi.equals("1")) {
+            taskList.add(3);
+        }
+        if (CariIslemlerPerakendeSatisFaturasi.equals("1")) {
+            taskList.add(7);
+        }
+        if (CariIslemlerPerakendeSatisIadeFaturasi.equals("1")) {
+            taskList.add(2);
+        }
+        if (CariIslemlerAlinanSiparis.equals("1")) {
+            taskList.add(108);
+        }
+        if (CariIslemlerVerilenSiparis.equals("1")) {
+            taskList.add(101);
+        }
+        if (CariIslemlerAlimFaturasi.equals("1")) {
+            taskList.add(1);
+        }
+        if (CariIslemlerAlimIadeFaturasi.equals("1")) {
+            taskList.add(6);
+        }
+        if (CariIslemlerTalepFisi.equals("1")) {
+            taskList.add(200);
+        }
+        if (CariIslemlerSayimFisi.equals("1")) {
+            taskList.add(201);
+        }
+
+
+        recyclerView = view.findViewById(R.id.siparisRecyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        adapter = new SiparisAdapter(getActivity(), siparisList, this, Integer.parseInt(KurusHaneSayisiStokTutar));
+        recyclerView.setAdapter(adapter);
+        fabSiparis = view.findViewById(R.id.fabSiparis);
+        fabSiparis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ziyaretSistemiKullanimi.equals("1")) {
+                    if (session.getKeyVisit() != -1) {
+                        chooseOrderOperation();
+                    } else {
+                        startVisitDialog();
+                    }
+                } else {
+                    chooseOrderOperation();
+                }
+            }
+        });
+
+        setHasOptionsMenu(true);
+        myCalendar = Calendar.getInstance();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        date1 = dateFormat.format(date);
+        date2 = dateFormat.format(date);
+
+        new GetDataFromDatabase().execute(date1, date2);
+    }
+
     private void chooseOrderOperation() {
         String[] items = new String[taskList.size()];
         for (int i = 0; i < taskList.size(); i++) {
@@ -491,6 +491,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getActivity(), SiparisIslemleriActivity.class);
                 intent.putExtra("islemTuru", taskList.get(selectedMenu[0]));
+                intent.putExtra("kayitNo", clientKayitNo);
                 intent.putExtra("KurusHaneSayisiStokMiktar", KurusHaneSayisiStokMiktar);
                 intent.putExtra("KurusHaneSayisiStokTutar", KurusHaneSayisiStokTutar);
                 startActivityForResult(intent, 88);

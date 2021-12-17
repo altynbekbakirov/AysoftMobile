@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,6 +70,8 @@ public class ClientsExtractActivity extends AppCompatActivity {
     ClCard card;
     Calendar myCalendar;
     String kurusHaneSayisiStok;
+    TextView bottomDeposit, bottomCredit, bottomBalance;
+    LinearLayout layoutBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,6 @@ public class ClientsExtractActivity extends AppCompatActivity {
         session = new SessionManagement(getApplicationContext());
         userSettingMap = session.getUserDetails();
         webSettingsMap = session.getWebSettings();
-
 
         if (!(userSettingMap.get(KEY_LANG) == null)) {
             setPhoneDefaultLanguage(userSettingMap.get(KEY_LANG));
@@ -116,6 +119,10 @@ public class ClientsExtractActivity extends AppCompatActivity {
 
         myCalendar = Calendar.getInstance();
 
+        bottomBalance = findViewById(R.id.bottomBalance);
+        bottomCredit = findViewById(R.id.bottomCredit);
+        bottomDeposit = findViewById(R.id.bottomDeposit);
+        layoutBottom = findViewById(R.id.layoutBottom);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ClientsExtractActivity.this));
         recyclerView.setHasFixedSize(true);
@@ -132,6 +139,7 @@ public class ClientsExtractActivity extends AppCompatActivity {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
         RetrofitApi retrofitApi;
         Call<ClientExtractQuery> queryList;
+        Double creditSum = 0.0, depositSum = 0.0, balanceSum = 0.0;
 
         @Override
         protected void onPreExecute() {
@@ -199,6 +207,23 @@ public class ClientsExtractActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             adapter.setList(clientExtractList);
             products_progressBar.setVisibility(View.GONE);
+            if (clientExtractList.size() > 0) {
+                for (int i = 0; i < clientExtractList.size(); i++) {
+                    if (clientExtractList.get(i).getAlacak() != null) {
+                        depositSum += clientExtractList.get(i).getAlacak();
+                    }
+                    if (clientExtractList.get(i).getBorc() != null) {
+                        creditSum += clientExtractList.get(i).getBorc();
+                    }
+                    if (clientExtractList.get(i).getYBakiye() != null) {
+                        balanceSum = clientExtractList.get(i).getYBakiye();
+                    }
+                }
+                layoutBottom.setVisibility(View.VISIBLE);
+                bottomBalance.setText(String.format("%." + Integer.parseInt(kurusHaneSayisiStok) + "f", balanceSum));
+                bottomCredit.setText(String.format("%." + Integer.parseInt(kurusHaneSayisiStok) + "f", creditSum));
+                bottomDeposit.setText(String.format("%." + Integer.parseInt(kurusHaneSayisiStok) + "f", depositSum));
+            }
         }
     }
 

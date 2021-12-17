@@ -96,8 +96,9 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         setContentView(R.layout.activity_siparis_islemleri);
 
         databaseHandler = DatabaseHandler.getInstance(this);
+        card = databaseHandler.selectClientById(kayitNo);
         initViews();
-        new ClientSepetTask().execute();
+        new ClientCartTask().execute();
     }
 
     @Override
@@ -241,7 +242,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         updateCart = intent.getIntExtra("updateCart", -1);
         KurusHaneSayisiStokMiktar = intent.getStringExtra("KurusHaneSayisiStokMiktar");
         KurusHaneSayisiStokTutar = intent.getStringExtra("KurusHaneSayisiStokTutar");
-        card = databaseHandler.selectClientById(kayitNo);
+        Log.d("KayitNo", "initViews: " + kayitNo);
         if (intent.getDoubleExtra("discountPercent", -1) != -1) {
             discountPercent = intent.getDoubleExtra("discountPercent", -1);
             if (discountPercent > 0) {
@@ -313,7 +314,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         });
     }
 
-    private class ClientSepetTask extends AsyncTask<Void, Void, Void> {
+    private class ClientCartTask extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
 
         @Override
@@ -818,7 +819,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
     private ValueAnimator slideAnimator(int start, int end) {
 
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
-
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
