@@ -70,7 +70,7 @@ public class ClientsExtractActivity extends AppCompatActivity {
     ClCard card;
     Calendar myCalendar;
     String kurusHaneSayisiStok;
-    TextView bottomDeposit, bottomCredit, bottomBalance;
+    TextView bottomDeposit, bottomCredit, bottomBalance, bottomTitle;
     LinearLayout layoutBottom;
 
     @Override
@@ -122,6 +122,7 @@ public class ClientsExtractActivity extends AppCompatActivity {
         bottomBalance = findViewById(R.id.bottomBalance);
         bottomCredit = findViewById(R.id.bottomCredit);
         bottomDeposit = findViewById(R.id.bottomDeposit);
+        bottomTitle = findViewById(R.id.bottomTitle);
         layoutBottom = findViewById(R.id.layoutBottom);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(ClientsExtractActivity.this));
@@ -219,10 +220,10 @@ public class ClientsExtractActivity extends AppCompatActivity {
                         balanceSum = clientExtractList.get(i).getYBakiye();
                     }
                 }
-                layoutBottom.setVisibility(View.VISIBLE);
-                bottomBalance.setText(String.format("%." + Integer.parseInt(kurusHaneSayisiStok) + "f", balanceSum));
-                bottomCredit.setText(String.format("%." + Integer.parseInt(kurusHaneSayisiStok) + "f", creditSum));
-                bottomDeposit.setText(String.format("%." + Integer.parseInt(kurusHaneSayisiStok) + "f", depositSum));
+                bottomBalance.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStok) + "f", creditSum - depositSum));
+                bottomCredit.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStok) + "f", depositSum));
+                bottomDeposit.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStok) + "f", creditSum));
+                bottomTitle.setVisibility(View.VISIBLE);
             }
         }
     }

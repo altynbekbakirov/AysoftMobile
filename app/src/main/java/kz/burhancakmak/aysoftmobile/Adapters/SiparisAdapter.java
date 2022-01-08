@@ -6,12 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSiparis;
 import kz.burhancakmak.aysoftmobile.R;
+
 public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHolder> {
     private List<ClientSiparis> orderList;
     OrderClickListener orderClickListener;
@@ -46,9 +51,41 @@ public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHol
     public void onBindViewHolder(@NonNull @NotNull OrderHolder holder, int position) {
         holder.siparisNo.setText(String.valueOf(orderList.get(position).getKayitNo()));
         holder.siparisDate.setText(orderList.get(position).getTarih());
-        holder.siparisTutar.setText(String.format("%." + digit + "f", orderList.get(position).getTutar()));
-        holder.siparisNetTutar.setText(String.format("%." + digit + "f", orderList.get(position).getNetTutar()));
-        holder.siparisIndirim.setText(String.format("%." + digit + "f", orderList.get(position).getGenelIndirimTutari()));
+        String islemTipi = "";
+        if (orderList.get(position).getIslemTipi() == 8) {
+            islemTipi = context.getString(R.string.alert_siparis_sale_invoice);
+        }
+        if (orderList.get(position).getIslemTipi() == 3) {
+            islemTipi = context.getString(R.string.alert_siparis_sale_return_invoice);
+        }
+        if (orderList.get(position).getIslemTipi() == 7) {
+            islemTipi = context.getString(R.string.alert_siparis_sale_retail);
+        }
+        if (orderList.get(position).getIslemTipi() == 2) {
+            islemTipi = context.getString(R.string.alert_siparis_sale_retail_return);
+        }
+        if (orderList.get(position).getIslemTipi() == 108) {
+            islemTipi = context.getString(R.string.alert_siparis_purchases);
+        }
+        if (orderList.get(position).getIslemTipi() == 101) {
+            islemTipi = context.getString(R.string.alert_siparis_sales);
+        }
+        if (orderList.get(position).getIslemTipi() == 1) {
+            islemTipi = context.getString(R.string.alert_siparis_purchase_invoice);
+        }
+        if (orderList.get(position).getIslemTipi() == 6) {
+            islemTipi = context.getString(R.string.alert_siparis_purchase_return_invoice);
+        }
+        if (orderList.get(position).getIslemTipi() == 200) {
+            islemTipi = context.getString(R.string.alert_siparis_request_slip);
+        }
+        if (orderList.get(position).getIslemTipi() == 201) {
+            islemTipi = context.getString(R.string.alert_siparis_inventory);
+        }
+        holder.siparisIslem.setText(islemTipi);
+        holder.siparisTutar.setText(String.format("%,." + digit + "f", orderList.get(position).getTutar()));
+        holder.siparisNetTutar.setText(String.format("%,." + digit + "f", orderList.get(position).getNetTutar()));
+        holder.siparisIndirim.setText(String.format("%,." + digit + "f", orderList.get(position).getGenelIndirimTutari()));
         if (orderList.get(position).getErpGonderildi() < 1) {
             holder.siparisDurum.setText(context.getString(R.string.client_order_status_pending));
             holder.siparisImage.setImageResource(R.drawable.ic_check);
@@ -64,7 +101,7 @@ public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHol
     }
 
     static class OrderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView siparisNo, siparisDurum, siparisDate, siparisTutar, siparisIndirim, siparisNetTutar;
+        TextView siparisNo, siparisDurum, siparisDate, siparisTutar, siparisIndirim, siparisNetTutar, siparisIslem;
         ImageView siparisImage;
         OrderClickListener orderClickListener;
 
@@ -77,6 +114,7 @@ public class SiparisAdapter extends RecyclerView.Adapter<SiparisAdapter.OrderHol
             siparisTutar = itemView.findViewById(R.id.siparisTutar);
             siparisNetTutar = itemView.findViewById(R.id.siparisNetTutar);
             siparisIndirim = itemView.findViewById(R.id.siparisIndirim);
+            siparisIslem = itemView.findViewById(R.id.siparisIslem);
             siparisImage = itemView.findViewById(R.id.siparisImage);
             itemView.setOnClickListener(this);
         }

@@ -46,9 +46,9 @@ public class ItemsExtractAdapter extends RecyclerView.Adapter<ItemsExtractAdapte
         ItemsExtract product = list.get(position);
         holder.productDate.setText(product.getTarih());
         holder.productOperation.setText(product.getIslemTipi());
-        holder.productGiren.setText(String.format("%." + digit1 + "f", product.getGirenMiktar()));
-        holder.productCikan.setText(String.format("%." + digit1 + "f", product.getCikanMiktar()));
-        holder.productToplam.setText(String.format("%." + digit2 + "f", product.getToplam()));
+        holder.productGiren.setText(String.format("%,." + digit1 + "f", product.getGirenMiktar()));
+        holder.productCikan.setText(String.format("%,." + digit1 + "f", product.getCikanMiktar()));
+        holder.productToplam.setText(String.format("%,." + digit2 + "f", product.getKalanMiktar()));
     }
 
     @Override

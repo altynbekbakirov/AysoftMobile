@@ -129,9 +129,9 @@ public class ClientsInfoActivity extends AppCompatActivity {
         clientOzellik3.setText(card.getOzelKod3());
         clientOzellik4.setText(card.getOzelKod4());
         clientOzellik5.setText(card.getOzelKod5());
-        clientSale.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", card.getNetSatis()));
-        clientCollection.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", card.getNetTahsilat()));
-        clientBalance.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", card.getBakiye()));
+        clientSale.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", card.getNetSatis()));
+        clientCollection.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", card.getNetTahsilat()));
+        clientBalance.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", card.getBakiye()));
 
     }
 

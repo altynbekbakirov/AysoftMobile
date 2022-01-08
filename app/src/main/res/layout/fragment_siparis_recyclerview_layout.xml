@@ -28,7 +28,7 @@
                 android:fontFamily="@font/open_sans_bold"
                 android:text="@string/client_order_no"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/siparisNo"
@@ -37,7 +37,7 @@
                 android:layout_weight="3"
                 android:fontFamily="@font/open_sans_semibold_italic"
                 android:text="006450"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/siparisDurumTitle"
@@ -47,7 +47,7 @@
                 android:fontFamily="@font/open_sans_bold"
                 android:text="@string/client_order_status"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:fontFamily="@font/open_sans_semibold_italic"
                 android:maxLines="1"
                 android:text="@string/client_order_status_pending"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 
@@ -70,27 +70,49 @@
             android:layout_below="@id/layout1"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            android:weightSum="12">
+            android:weightSum="17">
 
             <TextView
                 android:id="@+id/siparisDateTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:fontFamily="@font/open_sans_bold"
                 android:text="@string/client_kasa_date_title"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/siparisDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="4"
                 android:fontFamily="@font/open_sans_semibold_italic"
                 android:text="15.06.2021"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/siparisIslemTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="@string/client_operation_type_label"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/siparisIslem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:ellipsize="end"
+                android:fontFamily="@font/open_sans_semibold_italic"
+                android:maxLines="1"
+                android:text="@string/client_order_status_pending"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -102,7 +124,7 @@
             android:layout_marginTop="10dp"
             android:gravity="end"
             android:orientation="horizontal"
-            android:weightSum="12">
+            android:weightSum="14">
 
             <TextView
                 android:id="@+id/siparisTutarTitle"
@@ -112,16 +134,16 @@
                 android:fontFamily="@font/nova_square"
                 android:text="@string/items_tutar_label"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/siparisTutar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:fontFamily="@font/open_sans_semibold_italic"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/siparisIndirimTitle"
@@ -131,7 +153,7 @@
                 android:fontFamily="@font/nova_square"
                 android:text="@string/client_order_bottom_panel_discount"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -140,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:fontFamily="@font/open_sans_semibold_italic"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/siparisNetTutarTitle"
@@ -150,16 +172,16 @@
                 android:fontFamily="@font/nova_square"
                 android:text="@string/client_order_bottom_panel_net"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/siparisNetTutar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:fontFamily="@font/open_sans_semibold_italic"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

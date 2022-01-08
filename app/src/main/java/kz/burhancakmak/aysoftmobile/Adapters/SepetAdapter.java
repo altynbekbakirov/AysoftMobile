@@ -58,10 +58,10 @@ public class SepetAdapter extends RecyclerView.Adapter<SepetAdapter.CardHolder> 
         holder.orderCode.setText(orderList.get(position).getStokKodu());
         holder.orderInfo.setText("(" + orderList.get(position).getStokMiktar() + " "
                 + orderList.get(position).getStokBirim() + " X "
-                + String.format("%." + digitTotal + "f", orderList.get(position).getStokFiyat()) + ") = "
-                + String.format("%." + digitTotal + "f", orderList.get(position).getStokMiktar() * orderList.get(position).getStokFiyat())
+                + String.format("%,." + digitTotal + "f", orderList.get(position).getStokFiyat()) + ") = "
+                + String.format("%,." + digitTotal + "f", orderList.get(position).getStokMiktar() * orderList.get(position).getStokFiyat())
         );
-        holder.orderTotal.setText(sum + ": " + String.format("%." + digitTotal + "f", orderList.get(position).getStokMiktar() * orderList.get(position).getStokFiyat()));
+        holder.orderTotal.setText(sum + ": " + String.format("%,." + digitTotal + "f", orderList.get(position).getStokMiktar() * orderList.get(position).getStokFiyat()));
 
         if (!orderList.get(position).getStokResim1().isEmpty()) {
             String path = context.getExternalFilesDir("/aysoft") + File.separator + orderList.get(position).getStokResim1();

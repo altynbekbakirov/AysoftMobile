@@ -335,13 +335,13 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         ItemsWithPrices items = productItemList.get(position);
         stokKodu.setText(items.getStokKodu());
         stokAciklama.setText(items.getStokAdi1());
-        stokFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
-        stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
+        stokFiyat.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
+        stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
 
         for (int i = 0; i < sepetList.size(); i++) {
             if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
                 editMiktar.setText(String.valueOf(sepetList.get(i).getStokMiktar()));
-                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+                stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
                 break;
             }
         }
@@ -364,7 +364,7 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!editMiktar.getText().toString().isEmpty() && !stokFiyat.getText().toString().isEmpty()) {
-                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+                    stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
                 }
             }
 

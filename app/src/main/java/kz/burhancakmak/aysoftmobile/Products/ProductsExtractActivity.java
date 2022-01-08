@@ -3,19 +3,30 @@ package kz.burhancakmak.aysoftmobile.Products;
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -57,10 +68,10 @@ public class ProductsExtractActivity extends AppCompatActivity {
     List<ItemsExtract> itemsExtractList = new ArrayList<>();
     ItemsExtractAdapter adapter;
     Calendar myCalendar;
-    String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar;
+    String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar, kayitKod, kayitAciklama;
     Toolbar toolbar;
     int kayitNo;
-    String kayitKod, kayitAciklama;
+    TextView bottomGiren, bottomCikan, bottomKalan, bottomTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +94,24 @@ public class ProductsExtractActivity extends AppCompatActivity {
             initViews();
             new GetDataFromWeb().execute();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.clients_extract_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.client_extract_refresh) {
+            new GetDataFromWeb().execute();
+        }
+        if (item.getItemId() == R.id.client_extract_filter) {
+            showFilterDialog();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViews() {
@@ -117,6 +146,11 @@ public class ProductsExtractActivity extends AppCompatActivity {
             kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "kurusHaneSayisiStokTutar", "0");
         }
 
+        bottomKalan = findViewById(R.id.bottomKalan);
+        bottomCikan = findViewById(R.id.bottomCikan);
+        bottomGiren = findViewById(R.id.bottomGiren);
+        bottomTitle = findViewById(R.id.bottomTitle);
+
         myCalendar = Calendar.getInstance();
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -125,7 +159,6 @@ public class ProductsExtractActivity extends AppCompatActivity {
         recyclerView.setItemViewCacheSize(1);
         adapter = new ItemsExtractAdapter(itemsExtractList, Integer.parseInt(kurusHaneSayisiStokMiktar), Integer.parseInt(kurusHaneSayisiStokTutar));
         recyclerView.setAdapter(adapter);
-
     }
 
     private class GetDataFromWeb extends AsyncTask<Void, String, Void> {
@@ -136,6 +169,7 @@ public class ProductsExtractActivity extends AppCompatActivity {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
         RetrofitApi retrofitApi;
         Call<ItemsExtractQuery> queryList;
+        Double girenMiktar = 0.0, cikanMiktar = 0.0, kalanMiktar = 0.0;
 
         @Override
         protected void onPreExecute() {
@@ -200,7 +234,88 @@ public class ProductsExtractActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             adapter.setList(itemsExtractList);
             products_progressBar.setVisibility(View.GONE);
+            if (itemsExtractList.size() > 0) {
+                for (int i = 0; i < itemsExtractList.size(); i++) {
+                    if (itemsExtractList.get(i).getGirenMiktar() != null) {
+                        girenMiktar += itemsExtractList.get(i).getGirenMiktar();
+                    }
+                    if (itemsExtractList.get(i).getCikanMiktar() != null) {
+                        cikanMiktar += itemsExtractList.get(i).getCikanMiktar();
+                    }
+                    if (itemsExtractList.get(i).getKalanMiktar() != null) {
+                        kalanMiktar += itemsExtractList.get(i).getKalanMiktar();
+                    }
+                }
+                bottomGiren.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStokMiktar) + "f", girenMiktar));
+                bottomCikan.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStokMiktar) + "f", cikanMiktar));
+                bottomKalan.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStokMiktar) + "f", girenMiktar - cikanMiktar));
+                bottomTitle.setVisibility(View.VISIBLE);
+            }
         }
+    }
+
+    private void showFilterDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setCancelable(true);
+        View view = getLayoutInflater().inflate(R.layout.client_extract_filter_layout, null);
+        builder.setView(view);
+
+        EditText editDate1 = view.findViewById(R.id.editDate1);
+        editDate1.setText(date1);
+        EditText editDate2 = view.findViewById(R.id.editDate2);
+        editDate2.setText(date2);
+
+        DatePickerDialog.OnDateSetListener datePicker1 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                editDate1.setText(sdf.format(myCalendar.getTime()));
+                date1 = sdf.format(myCalendar.getTime());
+            }
+        };
+        DatePickerDialog.OnDateSetListener datePicker2 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                editDate2.setText(sdf.format(myCalendar.getTime()));
+                date2 = sdf.format(myCalendar.getTime());
+            }
+        };
+        editDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] date1Array = date1.split("-");
+                new DatePickerDialog(ProductsExtractActivity.this, datePicker1,
+                        Integer.parseInt(date1Array[0]),
+                        Integer.parseInt(date1Array[1]) - 1,
+                        Integer.parseInt(date1Array[2])).show();
+            }
+        });
+        editDate2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] date1Array = date2.split("-");
+                new DatePickerDialog(ProductsExtractActivity.this, datePicker2,
+                        Integer.parseInt(date1Array[0]),
+                        Integer.parseInt(date1Array[1]) - 1,
+                        Integer.parseInt(date1Array[2])).show();
+            }
+        });
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                new GetDataFromWeb().execute();
+            }
+        });
+        builder.show();
     }
 
     /*private void showFilterDialog() {
@@ -269,7 +384,6 @@ public class ProductsExtractActivity extends AppCompatActivity {
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
-
         switch (code) {
             case "Türkçe":
                 countryCode = "tr";

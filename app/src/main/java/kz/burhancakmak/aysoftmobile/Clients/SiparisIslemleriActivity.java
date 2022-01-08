@@ -96,7 +96,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         setContentView(R.layout.activity_siparis_islemleri);
 
         databaseHandler = DatabaseHandler.getInstance(this);
-        card = databaseHandler.selectClientById(kayitNo);
         initViews();
         new ClientCartTask().execute();
     }
@@ -242,7 +241,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         updateCart = intent.getIntExtra("updateCart", -1);
         KurusHaneSayisiStokMiktar = intent.getStringExtra("KurusHaneSayisiStokMiktar");
         KurusHaneSayisiStokTutar = intent.getStringExtra("KurusHaneSayisiStokTutar");
-        Log.d("KayitNo", "initViews: " + kayitNo);
+        card = databaseHandler.selectClientById(kayitNo);
         if (intent.getDoubleExtra("discountPercent", -1) != -1) {
             discountPercent = intent.getDoubleExtra("discountPercent", -1);
             if (discountPercent > 0) {
@@ -433,11 +432,11 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                         if (position == 0) {
                             discountPercent = Double.parseDouble(priceTypeValue.getText().toString());
                             discountTotal = Double.parseDouble(priceOrderTotal.getText().toString()) * (discountPercent / 100);
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         } else if (position == 1) {
                             discountPercent = 0;
                             discountTotal = Double.parseDouble(priceTypeValue.getText().toString());
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         }
                     }
                 } else {
@@ -465,20 +464,20 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             }
         }
         priceTypeSpinner.setSelection(spinnerSelected);
-        priceOrderTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+        priceOrderTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
         priceTypeValue.requestFocus();
         if (discountPercent > 0) {
             if (priceTypeSpinner.getSelectedItemPosition() == 0) {
-                priceTypeValue.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountPercent));
-                priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total - (discountPercent * total) / 100));
+                priceTypeValue.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountPercent));
+                priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total - (discountPercent * total) / 100));
             } else {
-                priceTypeValue.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
-                priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
+                priceTypeValue.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
+                priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
             }
             priceTypeValue.setSelectAllOnFocus(true);
         } else {
-            priceTypeValue.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
-            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
+            priceTypeValue.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
+            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
             priceTypeValue.setSelectAllOnFocus(true);
         }
         priceTypeValue.addTextChangedListener(new TextWatcher() {
@@ -494,15 +493,15 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                         if (priceTypeSpinner.getSelectedItemPosition() == 0) {
                             discountPercent = Double.parseDouble(priceTypeValue.getText().toString());
                             discountTotal = Double.parseDouble(priceOrderTotal.getText().toString()) * (discountPercent / 100);
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         } else if (priceTypeSpinner.getSelectedItemPosition() == 1) {
                             discountPercent = 0;
                             discountTotal = Double.parseDouble(priceTypeValue.getText().toString());
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         }
                     }
                 } else {
-                    priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString())));
+                    priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString())));
                 }
             }
 
@@ -628,12 +627,12 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         ImageView stokResim = view.findViewById(R.id.stokResim);
         stokKodu.setText(sepetList.get(position).getStokKodu());
         stokAciklama.setText(sepetList.get(position).getStokAdi());
-        stokFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokFiyat()));
-        stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokTutar()));
+        stokFiyat.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokFiyat()));
+        stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokTutar()));
 
         if (sepetList.get(position).getStokMiktar() != null) {
             editMiktar.setText(String.valueOf(sepetList.get(position).getStokMiktar()));
-            stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+            stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
         }
 
         Klavye klavye = view.findViewById(R.id.keyboard);
@@ -654,7 +653,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!editMiktar.getText().toString().isEmpty() && !stokFiyat.getText().toString().isEmpty()) {
-                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+                    stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
                 }
             }
 
@@ -842,9 +841,9 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                 total += sepets.get(i).getStokTutar();
                 net += sepets.get(i).getStokTutar();
             }
-            bottomPanelTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
-            bottomPanelSale.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
-            bottomPanelNet.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total - discountTotal));
+            bottomPanelTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+            bottomPanelSale.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
+            bottomPanelNet.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total - discountTotal));
             bottomPanelRowCount.setText(String.valueOf(sepets.size()));
             bottomPanelCount.setText(String.valueOf(count));
         } else {

@@ -308,6 +308,36 @@
     <string name="client_popup_empty_error">Поле обязательное</string>
     <string name="client_popup_wrong_format">Неверный формат</string>
     <string name="alert_kasa_menu_view">Просмотр</string>
+    <string name="month_january">Январь</string>
+    <string name="month_february">Февраль</string>
+    <string name="month_mart">Март</string>
+    <string name="month_april">Апрель</string>
+    <string name="month_may">Май</string>
+    <string name="month_june">Июнь</string>
+    <string name="month_july">Июль</string>
+    <string name="month_august">Август</string>
+    <string name="month_september">Сентябрь</string>
+    <string name="month_october">Октябрь</string>
+    <string name="month_november">Ноябрь</string>
+    <string name="month_december">Декабрь</string>
+    <string name="client_dashboard_sales_by_month">Продажи / сборы по месяцам</string>
+    <string name="client_dashboard_list_of_products_count">Список проданных товаров по количеству</string>
+    <string name="client_dashboard_list_of_products_sum">Перечень проданных товаров по количеству</string>
+    <string name="client_dashboard_sales_by_mark_count">По объему продаж на основе бренда(кол)</string>
+    <string name="client_dashboard_sales_by_mark_sum">По объему продаж на основе бренда(сумма)</string>
+    <string name="client_dashboard_group_count">Количество по группам</string>
+    <string name="client_dashboard_group_sum">Сумма на групповой основе</string>
+    <string name="client_dashboard_special_count">Количество продаж по специальному коду1</string>
+    <string name="client_dashboard_special_sum">Сумма продаж по специальному коду1</string>
+    <string name="client_dashboard_month_collections">Сборы</string>
+    <string name="client_dashboard_special_count2">Количество продаж по специальному коду2</string>
+    <string name="client_dashboard_special_sum2">Сумма продаж по специальному коду2</string>
+    <string name="client_dashboard_special_count3">Количество продаж по специальному коду3</string>
+    <string name="client_dashboard_special_sum3">Сумма продаж по специальному коду3</string>
+    <string name="client_dashboard_special_count4">Количество продаж по специальному коду4</string>
+    <string name="client_dashboard_special_sum4">Сумма продаж по специальному коду4</string>
+    <string name="client_dashboard_special_count5">Количество продаж по специальному коду5</string>
+    <string name="client_dashboard_special_sum5">Сумма продаж по специальному коду5</string>
 
 
 </resources>

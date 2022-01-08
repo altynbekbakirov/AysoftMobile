@@ -27,13 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import kz.burhancakmak.aysoftmobile.Adapters.DataExportAdapter;
+import kz.burhancakmak.aysoftmobile.Adapters.DataExportSiparisAdapter;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
-import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportTask;
+import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportSiparisTask;
 import kz.burhancakmak.aysoftmobile.R;
 
-public class DataSatisFragment extends Fragment implements DataExportAdapter.DataExportListener{
+public class DataSatisFragment extends Fragment implements DataExportSiparisAdapter.DataExportSiparisListener {
     SessionManagement session;
     DatabaseHandler databaseHandler;
     HashMap<String, String> userSettingMap;
@@ -42,8 +42,8 @@ public class DataSatisFragment extends Fragment implements DataExportAdapter.Dat
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LANG = "language";
     RecyclerView recyclerView;
-    DataExportAdapter adapter;
-    List<DataExportTask> listSiparis = new ArrayList<>();
+    DataExportSiparisAdapter adapter;
+    List<DataExportSiparisTask> listSiparis = new ArrayList<>();
     CheckBox cbSelectAll;
     String currentDate;
     int spinnerSelected;
@@ -85,7 +85,7 @@ public class DataSatisFragment extends Fragment implements DataExportAdapter.Dat
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        adapter = new DataExportAdapter(listSiparis, this);
+        adapter = new DataExportSiparisAdapter(listSiparis, this, 0);
         recyclerView.setAdapter(adapter);
     }
 
@@ -119,8 +119,6 @@ public class DataSatisFragment extends Fragment implements DataExportAdapter.Dat
             products_progressBar.setVisibility(View.GONE);
         }
     }
-
-
 
     private void showFilterDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());

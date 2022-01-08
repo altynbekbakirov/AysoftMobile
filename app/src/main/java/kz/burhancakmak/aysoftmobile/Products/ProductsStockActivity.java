@@ -108,8 +108,8 @@ public class ProductsStockActivity extends AppCompatActivity {
             for (int i = 0; i < toplamlarList.size(); i++) {
                 total += toplamlarList.get(i).getToplam();
             }
-            stockActual.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
-            stockPhysical.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+            stockActual.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+            stockPhysical.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
             products_progressBar.setVisibility(View.GONE);
         }
     }

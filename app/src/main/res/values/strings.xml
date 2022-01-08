@@ -308,6 +308,36 @@
     <string name="client_popup_empty_error">Value required</string>
     <string name="client_popup_wrong_format">Wrong format</string>
     <string name="alert_kasa_menu_view">View</string>
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_mart">Mart</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+    <string name="client_dashboard_sales_by_month">Sales / collection by month</string>
+    <string name="client_dashboard_list_of_products_count">List of products sold by quantity</string>
+    <string name="client_dashboard_list_of_products_sum">List of products sold by amount</string>
+    <string name="client_dashboard_sales_by_mark_count">According to the sales amount on the basis of the brand</string>
+    <string name="client_dashboard_sales_by_mark_sum">According to the sales amount on the basis of the brand</string>
+    <string name="client_dashboard_group_count">Quantity by group</string>
+    <string name="client_dashboard_group_sum">Amount on a group basis</string>
+    <string name="client_dashboard_special_count">Sales quantity based on special code1</string>
+    <string name="client_dashboard_special_sum">Sales amount based on special code1</string>
+    <string name="client_dashboard_month_collections">Collections</string>
+    <string name="client_dashboard_special_count2">Sales quantity based on special code2</string>
+    <string name="client_dashboard_special_sum2">Sales amount based on special code2</string>
+    <string name="client_dashboard_special_count3">Sales quantity based on special code3</string>
+    <string name="client_dashboard_special_sum3">Sales amount based on special code3</string>
+    <string name="client_dashboard_special_count4">Sales quantity based on special code4</string>
+    <string name="client_dashboard_special_sum4">Sales amount based on special code4</string>
+    <string name="client_dashboard_special_count5">Sales quantity based on special code5</string>
+    <string name="client_dashboard_special_sum5">Sales amount based on special code5</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

@@ -45,9 +45,9 @@ public class ClientsExtractAdapter extends RecyclerView.Adapter<ClientsExtractAd
         ClientExtract client = list.get(position);
         holder.clientDate.setText(client.getTarih());
         holder.clientOperation.setText(client.getIslemTipi());
-        holder.clientDebit.setText(String.format("%." + digit + "f", client.getAlacak()));
-        holder.clientCredit.setText(String.format("%." + digit + "f", client.getBorc()));
-        holder.clientBalance.setText(String.format("%." + digit + "f", client.getYBakiye()));
+        holder.clientDebit.setText(String.format("%,." + digit + "f", client.getAlacak()));
+        holder.clientCredit.setText(String.format("%,." + digit + "f", client.getBorc()));
+        holder.clientBalance.setText(String.format("%,." + digit + "f", client.getYBakiye()));
     }
 
     @Override

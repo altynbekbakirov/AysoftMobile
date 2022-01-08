@@ -81,9 +81,9 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LinearHolder linearHolder = (LinearHolder) holder;
                 linearHolder.StokAdi1.setText(itemsList.get(position).getStokAdi1());
                 linearHolder.StokKodu.setText(itemsList.get(position).getStokKodu());
-                linearHolder.Kalan1.setText(String.format("%." + digitCount + "f", itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim().toLowerCase());
-                linearHolder.Kalan2.setText(String.format("%." + digitCount + "f", itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim().toLowerCase());
-                linearHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                linearHolder.Kalan1.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim().toLowerCase());
+                linearHolder.Kalan2.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim().toLowerCase());
+                linearHolder.Fiyat1.setText(String.format("%,." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
 
                 if (!itemsList.get(position).getStokResim().isEmpty()) {
                     String path = activity.getExternalFilesDir("/aysoft") + File.separator + itemsList.get(position).getStokResim();
@@ -137,9 +137,9 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 GridHolder gridHolder = (GridHolder) holder;
                 gridHolder.StokAdi1.setText(itemsList.get(position).getStokAdi1());
                 gridHolder.StokKodu.setText(itemsList.get(position).getStokKodu());
-                gridHolder.Kalan1.setText(String.format("%." + digitCount + "f", itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim().toLowerCase());
-                gridHolder.Kalan2.setText(String.format("%." + digitCount + "f", itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim().toLowerCase());
-                gridHolder.Fiyat1.setText(String.format("%." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
+                gridHolder.Kalan1.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim().toLowerCase());
+                gridHolder.Kalan2.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim().toLowerCase());
+                gridHolder.Fiyat1.setText(String.format("%,." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
 
                 if (!itemsList.get(position).getStokResim().isEmpty()) {
                     String path = activity.getExternalFilesDir("/aysoft") + File.separator + itemsList.get(position).getStokResim();

@@ -44,8 +44,8 @@ public class ItemsStockAdapter extends RecyclerView.Adapter<ItemsStockAdapter.St
         ItemsToplamlar toplamlar = list.get(position);
         holder.stockAmbarNo.setText(String.valueOf(toplamlar.getDepoNo()));
         holder.stockAmbarAdi.setText(toplamlar.getDepoAdi());
-        holder.stockFiiliStok.setText(String.format("%." + digit + "f", toplamlar.getToplam()));
-        holder.stockGercekStok.setText(String.format("%." + digit + "f", toplamlar.getToplam()));
+        holder.stockFiiliStok.setText(String.format("%,." + digit + "f", toplamlar.getToplam()));
+        holder.stockGercekStok.setText(String.format("%,." + digit + "f", toplamlar.getToplam()));
         holder.stockYeriKodu.setText(toplamlar.getStokYeriKodu());
     }
 

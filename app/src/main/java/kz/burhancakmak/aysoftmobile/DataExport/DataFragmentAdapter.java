@@ -19,17 +19,15 @@ public class DataFragmentAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new DataKasaFragment();
-            case 1:
                 return new DataSiparisFragment();
-            case 2:
-                return new DataSatisFragment();
+            case 1:
+                return new DataKasaFragment();
         }
         return new DataSiparisFragment();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }

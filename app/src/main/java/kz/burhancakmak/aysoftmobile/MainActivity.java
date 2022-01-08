@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 import kz.burhancakmak.aysoftmobile.Clients.ClientsActivity;
-import kz.burhancakmak.aysoftmobile.DataExport.DataExportActivity;
+import kz.burhancakmak.aysoftmobile.DataExport.DataExportSiparisActivity;
 import kz.burhancakmak.aysoftmobile.DataImport.DataImportActivity;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(new Intent(this, DataImportActivity.class), 4);
                 break;
             case R.id.nav_dataOut:
-                startActivityForResult(new Intent(this, DataExportActivity.class), 5);
+                startActivityForResult(new Intent(this, DataExportSiparisActivity.class), 5);
                 break;
             case R.id.nav_changeLang:
                 alertOnLanguageChange();

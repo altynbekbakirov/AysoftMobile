@@ -21,7 +21,8 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSepet;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSiparis;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientZiyaret;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ShipInfo;
-import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportTask;
+import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportKasaTask;
+import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportSiparisTask;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirma;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarMenu;
@@ -1909,11 +1910,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return sepetList;
     }
 
-    public List<DataExportTask> selectDataExportSiparis(String date) {
+    public List<DataExportSiparisTask> selectDataExportSiparis(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<DataExportTask> list = new ArrayList<>();
+        List<DataExportSiparisTask> list = new ArrayList<>();
         String sql = "SELECT client.KayitNo AS CariKayitno, client.Kod, client.Unvani1, siparis.KayitNo, siparis.Tarih, siparis.IslemTipi, " +
-                "siparis.ErpGonderildi, siparis.ErpSiparisFisNo, siparis.ErpKayitNo, siparis.NetTutar, siparis.Aciklama, '1' AS tur " +
+                "siparis.ErpGonderildi, siparis.ErpSiparisFisNo, siparis.ErpKayitNo, siparis.NetTutar, siparis.Aciklama, '1' AS tur,  " +
+                "siparis.Tutar, siparis.GenelIndirimTutari " +
                 "FROM AY_" + FIRMA_NO + "_ClCard AS client " +
                 "INNER JOIN AY_" + FIRMA_NO + "_Siparis AS siparis ON client.KayitNo = siparis.CariKayitNo " +
                 "WHERE siparis.Tarih = '" + date + "' " +
@@ -1921,7 +1923,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             do {
-                DataExportTask task = new DataExportTask();
+                DataExportSiparisTask task = new DataExportSiparisTask();
                 task.setCariKayitNo(cursor.getInt(0));
                 task.setKod(cursor.getString(1));
                 task.setUnvani(cursor.getString(2));
@@ -1931,9 +1933,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 task.setErpGonderildi(cursor.getInt(6));
                 task.setErpFisNo(cursor.getString(7));
                 task.setErpKayitNo(cursor.getInt(8));
-                task.setTutar(cursor.getDouble(9));
+                task.setNetTutar(cursor.getDouble(9));
                 task.setAciklama(cursor.getString(10));
                 task.setTur(cursor.getInt(11));
+                task.setTutar(cursor.getDouble(12));
+                task.setGenelIndirimTutari(cursor.getDouble(13));
                 list.add(task);
             } while (cursor.moveToNext());
         }
@@ -1942,9 +1946,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    public List<DataExportTask> selectDataExportKasa(String date) {
+    public List<DataExportKasaTask> selectDataExportKasa(String date) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<DataExportTask> list = new ArrayList<>();
+        List<DataExportKasaTask> list = new ArrayList<>();
         String sql = "SELECT client.KayitNo AS CariKayitno, client.Kod, client.Unvani1, kasa.KayitNo, kasa.Tarih, kasa.IslemTipi, " +
                 "kasa.ErpGonderildi, kasa.ErpFisNo, kasa.ErpKayitNo, kasa.Tutar, kasa.Aciklama, '2' AS tur, kasa.KasaKodu " +
                 "FROM  AY_" + FIRMA_NO + "_ClCard AS client " +
@@ -1954,7 +1958,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             do {
-                DataExportTask task = new DataExportTask();
+                DataExportKasaTask task = new DataExportKasaTask();
                 task.setCariKayitNo(cursor.getInt(0));
                 task.setKod(cursor.getString(1));
                 task.setUnvani(cursor.getString(2));

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:weightSum="15">
+        android:weightSum="16">
 
         <TextView
             android:id="@+id/clientDate"
@@ -44,7 +44,7 @@
             android:id="@+id/clientCredit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:background="@drawable/recyclerview_border"
             android:fontFamily="@font/open_sans_light"
             android:gravity="center_vertical|right"

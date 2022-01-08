@@ -110,10 +110,10 @@ public class KasaIslemleriActivity extends AppCompatActivity {
             if (tutar < 0) {
                 islemTuru = 1;
                 tutar *= -1;
-                edtTutar.setText(String.format("%." + KurusHaneSayisiStokTutar + "f", tutar));
+                edtTutar.setText(String.format("%,." + KurusHaneSayisiStokTutar + "f", tutar));
             } else {
                 islemTuru = 0;
-                edtTutar.setText(String.format("%." + KurusHaneSayisiStokTutar + "f", tutar));
+                edtTutar.setText(String.format("%,." + KurusHaneSayisiStokTutar + "f", tutar));
             }
         } else {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -154,13 +154,13 @@ public class ProductsInfoActivity extends AppCompatActivity {
 
                 itemsName.setText(items.getStokAdi1());
                 itemsCode.setText(items.getStokKodu());
-                infoStok1.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokMiktar) + "f", items.getKalan1()));
+                infoStok1.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokMiktar) + "f", items.getKalan1()));
 
                 infoStok1Label.setText(depo1Aciklama1 + " " + getString(R.string.items_kalan1_label));
                 if (Integer.parseInt(IkiDepoKullanimi) == 1) {
                     if (!depo2Aciklama1.isEmpty()) {
                         infoStok2Label.setText(depo2Aciklama1 + " " + getString(R.string.items_kalan2_label));
-                        infoStok2.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokMiktar) + "f", items.getKalan2()));
+                        infoStok2.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokMiktar) + "f", items.getKalan2()));
                     } else {
                         infoStok2Label.setVisibility(View.GONE);
                         infoStok2.setVisibility(View.GONE);
@@ -174,7 +174,7 @@ public class ProductsInfoActivity extends AppCompatActivity {
                 infoOzellik3.setText(items.getOzelKod3());
                 infoOzellik4.setText(items.getOzelKod4());
                 infoOzellik5.setText(items.getOzelKod5());
-//                infoFiyat1.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()) + " (" + items.getBirim() + ")");
+//                infoFiyat1.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()) + " (" + items.getBirim() + ")");
                 infoUretim.setText(items.getUreticiKodu());
                 infoSiparisSatin.setText(String.valueOf(items.getSiparisSatinalma()));
                 infoSiparisSatis.setText(String.valueOf(items.getSiparisSatis()));
@@ -235,23 +235,23 @@ public class ProductsInfoActivity extends AppCompatActivity {
                     for (int i = 0; i < prclists.size(); i++) {
                         if (i == 0) {
                             infoFiyatLayout1.setVisibility(View.VISIBLE);
-                            infoFiyat1.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
+                            infoFiyat1.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
                             infoFiyatLabel1.setText(prclists.get(i).getFiyatGrubu() + " " + getResources().getString(R.string.items_fiyat1_label));
                         } else if (i == 1) {
                             infoFiyatLayout2.setVisibility(View.VISIBLE);
-                            infoFiyat2.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
+                            infoFiyat2.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
                             infoFiyatLabel2.setText(prclists.get(i).getFiyatGrubu() + " " + getResources().getString(R.string.items_fiyat1_label));
                         } else if (i == 2) {
                             infoFiyatLayout3.setVisibility(View.VISIBLE);
-                            infoFiyat3.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
+                            infoFiyat3.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
                             infoFiyatLabel3.setText(prclists.get(i).getFiyatGrubu() + " " + getResources().getString(R.string.items_fiyat1_label));
                         } else if (i == 3) {
                             infoFiyatLayout4.setVisibility(View.VISIBLE);
-                            infoFiyat3.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
+                            infoFiyat3.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
                             infoFiyatLabel4.setText(prclists.get(i).getFiyatGrubu() + " " + getResources().getString(R.string.items_fiyat1_label));
                         } else if (i == 4) {
                             infoFiyatLayout5.setVisibility(View.VISIBLE);
-                            infoFiyat5.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
+                            infoFiyat5.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", prclists.get(i).getFiyat()) + " " + prclists.get(i).getDovizIsareti() + " (" + prclists.get(i).getBaslangicTarih() + ")");
                             infoFiyatLabel5.setText(prclists.get(i).getFiyatGrubu() + " " + getResources().getString(R.string.items_fiyat1_label));
                         }
                     }

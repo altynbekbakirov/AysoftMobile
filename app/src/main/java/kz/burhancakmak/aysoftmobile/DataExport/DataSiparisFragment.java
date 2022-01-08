@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,14 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import kz.burhancakmak.aysoftmobile.Adapters.DataExportAdapter;
+import kz.burhancakmak.aysoftmobile.Adapters.DataExportSiparisAdapter;
 import kz.burhancakmak.aysoftmobile.Clients.SiparisIslemleriActivity;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSepet;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSiparis;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsSiparisResponse;
-import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportTask;
+import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportSiparisTask;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
@@ -54,7 +53,7 @@ import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class DataSiparisFragment extends Fragment implements DataExportAdapter.DataExportListener {
+public class DataSiparisFragment extends Fragment implements DataExportSiparisAdapter.DataExportSiparisListener {
     SessionManagement session;
     DatabaseHandler databaseHandler;
     HashMap<String, String> userSettingMap;
@@ -63,8 +62,8 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LANG = "language";
     RecyclerView recyclerView;
-    DataExportAdapter adapter;
-    List<DataExportTask> listSiparis = new ArrayList<>();
+    DataExportSiparisAdapter adapter;
+    List<DataExportSiparisTask> listSiparis = new ArrayList<>();
     List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     CheckBox cbSelectAll;
     String currentDate;
@@ -82,7 +81,6 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
 
         initViews();
         new GetOrdersFromDatabase().execute();
-
         return view;
     }
 
@@ -114,7 +112,7 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        adapter = new DataExportAdapter(listSiparis, this);
+        adapter = new DataExportSiparisAdapter(listSiparis, this, Integer.parseInt(KurusHaneSayisiStokTutar));
         recyclerView.setAdapter(adapter);
     }
 
@@ -195,7 +193,7 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
         protected Void doInBackground(Void... items) {
             for (int i = 0; i < listSiparis.size(); i++) {
                 if (listSiparis.get(i).getTur() == 1 && listSiparis.get(i).getErpGonderildi() < 1 && listSiparis.get(i).getCbChecked()) {
-                    DataExportTask siparis = listSiparis.get(i);
+                    DataExportSiparisTask siparis = listSiparis.get(i);
                     StringBuilder satir = new StringBuilder();
                     StringBuilder baslik = new StringBuilder();
                     baslik
@@ -305,40 +303,6 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
         EditText dataDialogDate = view.findViewById(R.id.dataDialogDate);
         dataDialogDate.setText(currentDate);
 
-        /*SwitchCompat dataSwitch = view.findViewById(R.id.dataSwitch);
-        dataSwitch.setChecked(dataBoolean);
-        dataSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    dataBoolean = true;
-                } else {
-                    dataBoolean = false;
-                }
-            }
-        });*/
-
-        /*Spinner dataSpinner = view.findViewById(R.id.dataSpinner);
-        String[] deliveryArray = new String[]{
-                getString(R.string.data_export_fiche_type_all),
-                getString(R.string.data_export_fiche_type_order),
-                getString(R.string.data_export_fiche_type_finance)};
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_order_item_layout, deliveryArray);
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_order_dropdownitem_layout);
-        dataSpinner.setAdapter(arrayAdapter);
-        dataSpinner.setSelection(spinnerSelected);
-        dataSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinnerSelected = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-
         final Calendar myCalendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -356,9 +320,11 @@ public class DataSiparisFragment extends Fragment implements DataExportAdapter.D
         dataDialogDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getActivity(), date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                String[] date1Array = currentDate.split("-");
+                new DatePickerDialog(getActivity(), date,
+                        Integer.parseInt(date1Array[0]),
+                        Integer.parseInt(date1Array[1]) - 1,
+                        Integer.parseInt(date1Array[2])).show();
             }
         });
         builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {

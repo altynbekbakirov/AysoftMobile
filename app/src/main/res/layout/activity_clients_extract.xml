@@ -23,7 +23,7 @@
         android:layout_marginTop="2dp"
         android:background="@color/green"
         android:orientation="horizontal"
-        android:weightSum="15">
+        android:weightSum="16">
 
         <TextView
             android:layout_width="0dp"
@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:background="@drawable/recyclerview_border"
             android:fontFamily="@font/open_sans_bold"
             android:gravity="center"
@@ -103,6 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/layout"
         android:scrollbars="vertical"
+        android:layout_marginBottom="40dp"
         tools:listitem="@layout/clients_extract_recyclerview_layout" />
 
     <LinearLayout
@@ -110,16 +111,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/recyclerView"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="-50dp"
+        android:padding="5dp"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:weightSum="15">
+        android:weightSum="16">
 
         <TextView
+            android:id="@+id/bottomTitle"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="match_parent"
-            android:layout_weight="7"
+            android:layout_weight="8"
             android:background="@drawable/recyclerview_border"
             android:fontFamily="@font/open_sans_bold"
             android:gravity="right"
@@ -138,10 +141,9 @@
             android:layout_weight="2"
             android:background="@drawable/recyclerview_border"
             android:fontFamily="@font/open_sans_bold"
-            android:gravity="center"
+            android:gravity="end"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="@string/client_debit_label"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -153,10 +155,9 @@
             android:layout_weight="3"
             android:background="@drawable/recyclerview_border"
             android:fontFamily="@font/open_sans_bold"
-            android:gravity="center"
+            android:gravity="end"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="@string/client_credit_label"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -168,10 +169,9 @@
             android:layout_weight="3"
             android:background="@drawable/recyclerview_border"
             android:fontFamily="@font/open_sans_bold"
-            android:gravity="center"
+            android:gravity="end"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="@string/client_balance_label"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />

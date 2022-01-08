@@ -55,7 +55,7 @@
         android:layout_below="@id/cardView1"
         android:layout_gravity="center"
         android:padding="5dp"
-        tools:listitem="@layout/data_export_recyclerview_layout" />
+        tools:listitem="@layout/data_export_siparis_recyclerview_layout" />
 
     <RelativeLayout
         android:id="@+id/dataExport_progressBar_layout"

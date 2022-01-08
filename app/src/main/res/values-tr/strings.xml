@@ -285,5 +285,35 @@
     <string name="client_popup_empty_error">Boş olamaz</string>
     <string name="client_popup_wrong_format">Yanlış format</string>
     <string name="alert_kasa_menu_view">Incele</string>
+    <string name="month_january">Ocak</string>
+    <string name="month_february">Şubat</string>
+    <string name="month_mart">Mart</string>
+    <string name="month_april">Nisan</string>
+    <string name="month_may">Mayis</string>
+    <string name="month_june">Haziran</string>
+    <string name="month_july">Temmuz</string>
+    <string name="month_august">Ağustos</string>
+    <string name="month_september">Eylül</string>
+    <string name="month_october">Ekim</string>
+    <string name="month_november">Kasım</string>
+    <string name="month_december">December</string>
+    <string name="client_dashboard_sales_by_month">Aylara gore satış / tahsilat</string>
+    <string name="client_dashboard_list_of_products_count">Satılan ürün listesi miktara göre</string>
+    <string name="client_dashboard_list_of_products_sum">Satılan ürün listesi tutara göre</string>
+    <string name="client_dashboard_sales_by_mark_count">Marka bazinda satış miktara göre</string>
+    <string name="client_dashboard_sales_by_mark_sum">Marka bazinda satış tutara göre</string>
+    <string name="client_dashboard_group_count">Grup bazında miktar</string>
+    <string name="client_dashboard_group_sum">Grup bazında tutar</string>
+    <string name="client_dashboard_special_count">Özelkod1 bazında satış miktari</string>
+    <string name="client_dashboard_special_sum">Özelkod1 bazında satış tutar</string>
+    <string name="client_dashboard_month_collections">Tahsilat</string>
+    <string name="client_dashboard_special_count2">Özelkod2 bazında satış miktari</string>
+    <string name="client_dashboard_special_sum2">Özelkod2 bazında satış tutar</string>
+    <string name="client_dashboard_special_count3">Özelkod3 bazında satış miktari</string>
+    <string name="client_dashboard_special_sum3">Özelkod3 bazında satış tutar</string>
+    <string name="client_dashboard_special_count4">Özelkod4 bazında satış miktari</string>
+    <string name="client_dashboard_special_sum4">Özelkod4 bazında satış tutar</string>
+    <string name="client_dashboard_special_count5">Özelkod5 bazında satış miktari</string>
+    <string name="client_dashboard_special_sum5">Özelkod5 bazında satış tutar</string>
 
 </resources>

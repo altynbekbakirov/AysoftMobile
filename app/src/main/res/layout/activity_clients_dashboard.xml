@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".Clients.ClientsDashboardActivity">
 
-    <!--<androidx.appcompat.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -16,11 +16,12 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
-        app:titleTextAppearance="@style/ToolbarTitleAppearance" />-->
+        app:titleTextAppearance="@style/ToolbarTitleAppearance" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:layout_marginBottom="20dp"
         android:scrollbars="vertical">
 
@@ -44,7 +45,7 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Aylara gore satis / tahsilat" />
+                    android:text="@string/client_dashboard_sales_by_month" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart"
@@ -65,12 +66,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Satilan urun listesi miktara gore" />
+                    android:text="@string/client_dashboard_list_of_products_count" />
 
-                <com.github.mikephil.charting.charts.BarChart
+                <com.github.mikephil.charting.charts.HorizontalBarChart
                     android:id="@+id/barChartMiktar"
                     android:layout_width="match_parent"
                     android:layout_height="600dp" />
@@ -89,10 +98,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Satilan urun listesi tutara gore" />
+                    android:text="@string/client_dashboard_list_of_products_sum" />
 
                 <com.github.mikephil.charting.charts.HorizontalBarChart
                     android:id="@+id/barChartTutar"
@@ -113,10 +130,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Marka bazinda satis miktara gore" />
+                    android:text="@string/client_dashboard_sales_by_mark_count" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartMarkaSatisMiktar"
@@ -137,10 +162,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Marka bazinda satis tutara gore" />
+                    android:text="@string/client_dashboard_sales_by_mark_sum" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartMarkaSatisTutar"
@@ -156,6 +189,14 @@
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -185,6 +226,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
@@ -209,10 +258,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis miktara gore" />
+                    android:text="@string/client_dashboard_special_count" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel1Miktar"
@@ -233,10 +290,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis tutara gore" />
+                    android:text="@string/client_dashboard_special_sum" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel1Tutar"
@@ -257,10 +322,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis miktara gore" />
+                    android:text="@string/client_dashboard_special_count2" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel2Miktar"
@@ -281,10 +354,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis tutara gore" />
+                    android:text="@string/client_dashboard_special_sum2" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel2Tutar"
@@ -305,10 +386,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis miktara gore" />
+                    android:text="@string/client_dashboard_special_count3" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel3Miktar"
@@ -329,10 +418,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis tutara gore" />
+                    android:text="@string/client_dashboard_special_sum3" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel3Tutar"
@@ -353,10 +450,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis miktara gore" />
+                    android:text="@string/client_dashboard_special_count4" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel4Miktar"
@@ -377,10 +482,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis tutara gore" />
+                    android:text="@string/client_dashboard_special_sum4" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel4Tutar"
@@ -401,10 +514,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis miktara gore" />
+                    android:text="@string/client_dashboard_special_count5" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel5Miktar"
@@ -425,10 +546,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Ozel kod bazinda satis tutara gore" />
+                    android:text="@string/client_dashboard_special_sum5" />
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChartOzel5Tutar"

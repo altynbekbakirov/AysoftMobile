@@ -1,6 +1,6 @@
 package kz.burhancakmak.aysoftmobile.Models.DataExport;
 
-public class DataExportTask {
+public class DataExportSiparisTask {
     private Long KayitNo;
     private Integer CariKayitNo;
     private String Kod;
@@ -16,8 +16,10 @@ public class DataExportTask {
     private Boolean cbChecked;
     private Integer tur;
     private String KasaKodu;
+    private Double GenelIndirimTutari;
+    private Double NetTutar;
 
-    public DataExportTask() {
+    public DataExportSiparisTask() {
     }
 
     public Integer getCariKayitNo() {
@@ -139,5 +141,21 @@ public class DataExportTask {
 
     public void setErpFisNo(String erpFisNo) {
         ErpFisNo = erpFisNo;
+    }
+
+    public Double getGenelIndirimTutari() {
+        return GenelIndirimTutari;
+    }
+
+    public void setGenelIndirimTutari(Double genelIndirimTutari) {
+        GenelIndirimTutari = genelIndirimTutari;
+    }
+
+    public Double getNetTutar() {
+        return NetTutar;
+    }
+
+    public void setNetTutar(Double netTutar) {
+        NetTutar = netTutar;
     }
 }

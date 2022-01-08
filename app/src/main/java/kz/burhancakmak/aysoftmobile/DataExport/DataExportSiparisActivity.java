@@ -16,12 +16,12 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.HashMap;
 import java.util.Locale;
 
-import kz.burhancakmak.aysoftmobile.Adapters.DataExportAdapter;
+import kz.burhancakmak.aysoftmobile.Adapters.DataExportSiparisAdapter;
 import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.R;
 
-public class DataExportActivity extends AppCompatActivity implements DataExportAdapter.DataExportListener {
+public class DataExportSiparisActivity extends AppCompatActivity implements DataExportSiparisAdapter.DataExportSiparisListener {
     SessionManagement session;
     HashMap<String, String> userSettingMap;
     HashMap<String, String> webSettingsMap;

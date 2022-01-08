@@ -49,7 +49,7 @@ public class KasaAdapter extends RecyclerView.Adapter<KasaAdapter.KasaHolder> {
     @Override
     public void onBindViewHolder(@NonNull @NotNull KasaHolder holder, int position) {
         holder.txtDate.setText(kasaList.get(position).getTarih());
-        holder.txtSum.setText(String.format("%." + digit + "f", kasaList.get(position).getTutar()));
+        holder.txtSum.setText(String.format("%,." + digit + "f", kasaList.get(position).getTutar()));
         if (kasaList.get(position).getTutar() < 0) {
             holder.txtSum.setTextColor(Color.RED);
         }

@@ -73,7 +73,7 @@ public class ClientsAdapter extends RecyclerView.Adapter<ClientsAdapter.ClientsH
         holder.client_code.setText(card.getKod());
         holder.client_tel.setText(card.getTelefon1());
         holder.client_address.setText(card.getAdres1());
-        holder.client_balance.setText(String.format("%." + digit + "f", card.getBakiye()));
+        holder.client_balance.setText(String.format("%,." + digit + "f", card.getBakiye()));
 
         if (card.getKordinatLongitude() != 0.0 && card.getKordinatLatitute() != 0.0) {
             holder.locationLayout.setVisibility(View.INVISIBLE);
