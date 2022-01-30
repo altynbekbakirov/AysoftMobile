@@ -3,6 +3,7 @@ package kz.burhancakmak.aysoftmobile.Login;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
@@ -61,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     private boolean phonePermissionGranted;
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     private String firmaNo;
     private String resimAdresi;
     SessionManagement session;
@@ -93,10 +96,10 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isConnected(LoginActivity.this)) {
+                /*if (!isConnected(LoginActivity.this)) {
                     showInternetDialogConnection();
                     return;
-                }
+                }*/
                 if (!login_validate_name()) {
                     return;
                 }
@@ -117,6 +120,24 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        phonePermissionGranted = false;
+        if (requestCode == PERMISSIONS_REQUEST_ALL) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[2] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+                phonePermissionGranted = true;
+            }
+        }
+
     }
 
     public static boolean hasPermissions(Context context, String... permissions) {
@@ -143,24 +164,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST_ALL);
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        phonePermissionGranted = false;
-        if (requestCode == PERMISSIONS_REQUEST_ALL) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[2] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-                phonePermissionGranted = true;
-            }
-        }
-
     }
 
     private void spinnerInitList() {
@@ -203,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+//                        startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
                     }
                 })
                 .setNegativeButton(getString(R.string.login_internet_connection_btnCancel), new DialogInterface.OnClickListener() {
@@ -282,178 +286,190 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pd.setMessage(getString(R.string.login_progress_loading));
-        pd.setIndeterminate(true);
-        pd.setCancelable(false);
-        pd.show();
+        if (isConnected(this)) {
+            final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.setMessage(getString(R.string.login_progress_loading));
+            pd.setIndeterminate(true);
+            pd.setCancelable(false);
+            pd.show();
 
-        RetrofitApi retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
-        Call<CihazlarQuery> call = retrofitApi.getUser(phoneId, username, password);
+            RetrofitApi retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
+            Call<CihazlarQuery> call = retrofitApi.getUser(phoneId, username, password);
 
-        call.enqueue(new Callback<CihazlarQuery>() {
+            call.enqueue(new Callback<CihazlarQuery>() {
 
-            @Override
-            public void onResponse(@NotNull Call<CihazlarQuery> call, @NotNull Response<CihazlarQuery> response) {
+                @Override
+                public void onResponse(@NotNull Call<CihazlarQuery> call, @NotNull Response<CihazlarQuery> response) {
 
-                if (response.isSuccessful() && response.body() != null) {
-                    CihazlarQuery cihazlarQuery = response.body();
+                    if (response.isSuccessful() && response.body() != null) {
+                        CihazlarQuery cihazlarQuery = response.body();
 
-                    if (!cihazlarQuery.getHata()) {
-                        databaseHandler.deleteParametreTables();
+                        if (!cihazlarQuery.getHata()) {
+                            databaseHandler.deleteParametreTables();
 
-                        if (cihazlarQuery.getCihazlarFirmalar().size() > 2) {
-                            for (int i = 2; i < cihazlarQuery.getCihazlarFirmalar().size(); i++) {
-                                CihazlarFirma firma = new CihazlarFirma();
-                                String[] firmalar = cihazlarQuery.getCihazlarFirmalar().get(i).split("\\|");
-                                firma.setKayitNo(Integer.parseInt(firmalar[0]));
-                                firma.setCihazKayitNo(Integer.parseInt(firmalar[1]));
-                                firma.setMenuGrupKayitNo(Integer.parseInt(firmalar[2]));
-                                firmaNo = firmalar[3];
-                                firma.setFirmaNo(firmalar[3]);
-                                firma.setDonemNo(firmalar[4]);
-                                firma.setSatisElemaniKodu(firmalar[5]);
-                                firma.setTicariIslemGrubu(firmalar[6]);
-                                firma.setIsyeri(Integer.parseInt(firmalar[7]));
-                                firma.setDepo(Integer.parseInt(firmalar[8]));
-                                firma.setOndegerFiyatGrubu1(firmalar[9]);
-                                firma.setOndegerFiyatGrubu2(firmalar[10]);
-                                firma.setOndegerKasaKodu(firmalar[11]);
-                                firma.setOndegerAciklamaAlani(firmalar[12]);
-                                firma.setDepoListesi1(firmalar[13]);
-                                firma.setDepoListesi2(firmalar[14]);
-                                firma.setCariFiltre(firmalar[15]);
-                                firma.setCariSevkiyatAdresiFiltre(firmalar[16]);
-                                firma.setStokFiltre(firmalar[17]);
-                                firma.setFiyatFiltre(firmalar[18]);
-                                resimAdresi = firmalar[19];
-                                firma.setResimAdresi(resimAdresi);
-                                firma.setDepo1Aciklama1(firmalar[20]);
-                                firma.setDepo1Aciklama2(firmalar[21]);
-                                firma.setDepo2Aciklama1(firmalar[22]);
-                                firma.setDepo2Aciklama2(firmalar[23]);
-                                firma.setStokEkraniGorunumSekli(firmalar[24]);
-                                firma.setKullanim(firmalar[25]);
-                                firma.setGecmisFirmaNo(firmalar[26]);
-                                firma.setGecmisDonemNo(firmalar[27]);
-                                firma.setFirmaAdi1(firmalar[28]);
-                                firma.setFirmaAdi2(firmalar[29]);
-                                firma.setFirmaAdi3(firmalar[30]);
-                                firma.setYerelDovizKayitNo(Integer.parseInt(firmalar[31]));
-                                firma.setRaporlamaDoviziKayitNo(Integer.parseInt(firmalar[32]));
-                                databaseHandler.insertCihazlarFirma(firma);
-                                databaseHandler.createTables(firmaNo);
+                            if (cihazlarQuery.getCihazlarFirmalar().size() > 2) {
+                                for (int i = 2; i < cihazlarQuery.getCihazlarFirmalar().size(); i++) {
+                                    CihazlarFirma firma = new CihazlarFirma();
+                                    String[] firmalar = cihazlarQuery.getCihazlarFirmalar().get(i).split("\\|");
+                                    firma.setKayitNo(Integer.parseInt(firmalar[0]));
+                                    firma.setCihazKayitNo(Integer.parseInt(firmalar[1]));
+                                    firma.setMenuGrupKayitNo(Integer.parseInt(firmalar[2]));
+                                    firmaNo = firmalar[3];
+                                    firma.setFirmaNo(firmalar[3]);
+                                    firma.setDonemNo(firmalar[4]);
+                                    firma.setSatisElemaniKodu(firmalar[5]);
+                                    firma.setTicariIslemGrubu(firmalar[6]);
+                                    firma.setIsyeri(Integer.parseInt(firmalar[7]));
+                                    firma.setDepo(Integer.parseInt(firmalar[8]));
+                                    firma.setOndegerFiyatGrubu1(firmalar[9]);
+                                    firma.setOndegerFiyatGrubu2(firmalar[10]);
+                                    firma.setOndegerKasaKodu(firmalar[11]);
+                                    firma.setOndegerAciklamaAlani(firmalar[12]);
+                                    firma.setDepoListesi1(firmalar[13]);
+                                    firma.setDepoListesi2(firmalar[14]);
+                                    firma.setCariFiltre(firmalar[15]);
+                                    firma.setCariSevkiyatAdresiFiltre(firmalar[16]);
+                                    firma.setStokFiltre(firmalar[17]);
+                                    firma.setFiyatFiltre(firmalar[18]);
+                                    resimAdresi = firmalar[19];
+                                    firma.setResimAdresi(resimAdresi);
+                                    firma.setDepo1Aciklama1(firmalar[20]);
+                                    firma.setDepo1Aciklama2(firmalar[21]);
+                                    firma.setDepo2Aciklama1(firmalar[22]);
+                                    firma.setDepo2Aciklama2(firmalar[23]);
+                                    firma.setStokEkraniGorunumSekli(firmalar[24]);
+                                    firma.setKullanim(firmalar[25]);
+                                    firma.setGecmisFirmaNo(firmalar[26]);
+                                    firma.setGecmisDonemNo(firmalar[27]);
+                                    firma.setFirmaAdi1(firmalar[28]);
+                                    firma.setFirmaAdi2(firmalar[29]);
+                                    firma.setFirmaAdi3(firmalar[30]);
+                                    firma.setYerelDovizKayitNo(Integer.parseInt(firmalar[31]));
+                                    firma.setRaporlamaDoviziKayitNo(Integer.parseInt(firmalar[32]));
+                                    databaseHandler.insertCihazlarFirma(firma);
+                                    databaseHandler.createTables(firmaNo);
+                                }
                             }
-                        }
 
-                        if (cihazlarQuery.getCihazlarMenu().size() > 2) {
-                            for (int i = 2; i < cihazlarQuery.getCihazlarMenu().size(); i++) {
-                                CihazlarMenu menu = new CihazlarMenu();
-                                String[] menuler = cihazlarQuery.getCihazlarMenu().get(i).split("\\|");
-                                menu.setKayitNo(Integer.parseInt(menuler[0]));
-                                menu.setMenuGrupKayitNo(Integer.parseInt(menuler[1]));
-                                menu.setTip(Integer.parseInt(menuler[2]));
-                                menu.setAciklama1(menuler[3]);
-                                menu.setAciklama2(menuler[4]);
-                                menu.setFiltre(menuler[5]);
-                                menu.setSiralama(menuler[6]);
-                                menu.setOndeger(Integer.parseInt(menuler[7]));
-                                menu.setKullanim(menuler[8]);
-                                if (!menuler[9].isEmpty()) menu.setSiraNo(menuler[9]);
-                                if (!menuler[10].isEmpty())
-                                    menu.setUstMenuKayitNo(Integer.parseInt(menuler[10]));
-                                if (!menuler[11].isEmpty())
-                                    menu.setMenuTipi(Integer.parseInt(menuler[11]));
-                                databaseHandler.insertCihazlarMenu(menu);
+                            if (cihazlarQuery.getCihazlarMenu().size() > 2) {
+                                for (int i = 2; i < cihazlarQuery.getCihazlarMenu().size(); i++) {
+                                    CihazlarMenu menu = new CihazlarMenu();
+                                    String[] menuler = cihazlarQuery.getCihazlarMenu().get(i).split("\\|");
+                                    menu.setKayitNo(Integer.parseInt(menuler[0]));
+                                    menu.setMenuGrupKayitNo(Integer.parseInt(menuler[1]));
+                                    menu.setTip(Integer.parseInt(menuler[2]));
+                                    menu.setAciklama1(menuler[3]);
+                                    menu.setAciklama2(menuler[4]);
+                                    menu.setFiltre(menuler[5]);
+                                    menu.setSiralama(menuler[6]);
+                                    menu.setOndeger(Integer.parseInt(menuler[7]));
+                                    menu.setKullanim(menuler[8]);
+                                    if (!menuler[9].isEmpty()) menu.setSiraNo(menuler[9]);
+                                    if (!menuler[10].isEmpty())
+                                        menu.setUstMenuKayitNo(Integer.parseInt(menuler[10]));
+                                    if (!menuler[11].isEmpty())
+                                        menu.setMenuTipi(Integer.parseInt(menuler[11]));
+                                    databaseHandler.insertCihazlarMenu(menu);
+                                }
                             }
-                        }
 
-                        if (cihazlarQuery.getCihazlarFirmaParametreler().size() > 2) {
-                            for (int i = 2; i < cihazlarQuery.getCihazlarFirmaParametreler().size(); i++) {
-                                CihazlarFirmaParametreler parametreler = new CihazlarFirmaParametreler();
-                                String[] params = cihazlarQuery.getCihazlarFirmaParametreler().get(i).split("\\|");
-                                parametreler.setKayitNo(Integer.parseInt(params[0]));
-                                parametreler.setCihazlarFirmaKayitNo(Integer.parseInt(params[1]));
-                                parametreler.setParametreTipi(params[2]);
-                                parametreler.setParametreAdi(params[3]);
-                                parametreler.setParametreDegeri(params[4]);
-                                parametreler.setAciklama(params[5]);
-                                parametreler.setMobilCihazdaDegistirebilir(Integer.parseInt(params[6]));
-                                parametreler.setGrup(params[7]);
-                                databaseHandler.insertCihazlarFirmaParametreler(parametreler);
+                            if (cihazlarQuery.getCihazlarFirmaParametreler().size() > 2) {
+                                for (int i = 2; i < cihazlarQuery.getCihazlarFirmaParametreler().size(); i++) {
+                                    CihazlarFirmaParametreler parametreler = new CihazlarFirmaParametreler();
+                                    String[] params = cihazlarQuery.getCihazlarFirmaParametreler().get(i).split("\\|");
+                                    parametreler.setKayitNo(Integer.parseInt(params[0]));
+                                    parametreler.setCihazlarFirmaKayitNo(Integer.parseInt(params[1]));
+                                    parametreler.setParametreTipi(params[2]);
+                                    parametreler.setParametreAdi(params[3]);
+                                    parametreler.setParametreDegeri(params[4]);
+                                    parametreler.setAciklama(params[5]);
+                                    parametreler.setMobilCihazdaDegistirebilir(Integer.parseInt(params[6]));
+                                    parametreler.setGrup(params[7]);
+                                    databaseHandler.insertCihazlarFirmaParametreler(parametreler);
+                                }
                             }
-                        }
 
-                        if (cihazlarQuery.getDoviz().size() > 2) {
-                            for (int i = 2; i < cihazlarQuery.getDoviz().size(); i++) {
-                                Doviz doviz = new Doviz();
-                                String[] params = cihazlarQuery.getDoviz().get(i).split("\\|");
-                                doviz.setKayitNo(Integer.parseInt(params[0]));
-                                doviz.setDovizKayitNo(Integer.parseInt(params[1]));
-                                doviz.setDovizIsareti(params[2]);
-                                doviz.setAciklama(params[3]);
-                                databaseHandler.insertDoviz(doviz);
+                            if (cihazlarQuery.getDoviz().size() > 2) {
+                                for (int i = 2; i < cihazlarQuery.getDoviz().size(); i++) {
+                                    Doviz doviz = new Doviz();
+                                    String[] params = cihazlarQuery.getDoviz().get(i).split("\\|");
+                                    doviz.setKayitNo(Integer.parseInt(params[0]));
+                                    doviz.setDovizKayitNo(Integer.parseInt(params[1]));
+                                    doviz.setDovizIsareti(params[2]);
+                                    doviz.setAciklama(params[3]);
+                                    databaseHandler.insertDoviz(doviz);
+                                }
                             }
-                        }
 
-                        if (cihazlarQuery.getCihazlarFirmaOdemeSekli().size() > 2) {
-                            for (int i = 2; i < cihazlarQuery.getCihazlarFirmaOdemeSekli().size(); i++) {
-                                CihazlarFirmaOdemeSekli odemeSekli = new CihazlarFirmaOdemeSekli();
-                                String[] params = cihazlarQuery.getCihazlarFirmaOdemeSekli().get(i).split("\\|");
-                                odemeSekli.setKayitNo(Integer.parseInt(params[0]));
-                                odemeSekli.setCihazlarFirmaKayitNo(Integer.parseInt(params[1]));
-                                odemeSekli.setIslemYonu(params[2]);
-                                odemeSekli.setAciklama1(params[3]);
-                                odemeSekli.setAciklama2(params[4]);
-                                odemeSekli.setAciklama3(params[5]);
-                                databaseHandler.insertCihazlarFirmaOdemeSekli(odemeSekli);
+                            if (cihazlarQuery.getCihazlarFirmaOdemeSekli().size() > 2) {
+                                for (int i = 2; i < cihazlarQuery.getCihazlarFirmaOdemeSekli().size(); i++) {
+                                    CihazlarFirmaOdemeSekli odemeSekli = new CihazlarFirmaOdemeSekli();
+                                    String[] params = cihazlarQuery.getCihazlarFirmaOdemeSekli().get(i).split("\\|");
+                                    odemeSekli.setKayitNo(Integer.parseInt(params[0]));
+                                    odemeSekli.setCihazlarFirmaKayitNo(Integer.parseInt(params[1]));
+                                    odemeSekli.setIslemYonu(params[2]);
+                                    odemeSekli.setAciklama1(params[3]);
+                                    odemeSekli.setAciklama2(params[4]);
+                                    odemeSekli.setAciklama3(params[5]);
+                                    databaseHandler.insertCihazlarFirmaOdemeSekli(odemeSekli);
+                                }
                             }
-                        }
 
-                        if (cihazlarQuery.getCihazlarFirmaDepolar().size() > 2) {
-                            for (int i = 2; i < cihazlarQuery.getCihazlarFirmaDepolar().size(); i++) {
-                                CihazlarFirmaDepolar depolar = new CihazlarFirmaDepolar();
-                                String[] params = cihazlarQuery.getCihazlarFirmaDepolar().get(i).split("\\|");
-                                depolar.setKayitNo(Integer.parseInt(params[0]));
-                                depolar.setFirmaKayitNo(Integer.parseInt(params[1]));
-                                depolar.setDepoNo(Integer.parseInt(params[2]));
-                                depolar.setDepoIsmi(params[3]);
-                                depolar.setDepoAciklama1(params[4]);
-                                depolar.setDepoAciklama2(params[5]);
-                                depolar.setDepoAciklama3(params[6]);
-                                databaseHandler.insertCihazlarFirmaDepolar(depolar);
+                            if (cihazlarQuery.getCihazlarFirmaDepolar().size() > 2) {
+                                for (int i = 2; i < cihazlarQuery.getCihazlarFirmaDepolar().size(); i++) {
+                                    CihazlarFirmaDepolar depolar = new CihazlarFirmaDepolar();
+                                    String[] params = cihazlarQuery.getCihazlarFirmaDepolar().get(i).split("\\|");
+                                    depolar.setKayitNo(Integer.parseInt(params[0]));
+                                    depolar.setFirmaKayitNo(Integer.parseInt(params[1]));
+                                    depolar.setDepoNo(Integer.parseInt(params[2]));
+                                    depolar.setDepoIsmi(params[3]);
+                                    depolar.setDepoAciklama1(params[4]);
+                                    depolar.setDepoAciklama2(params[5]);
+                                    depolar.setDepoAciklama3(params[6]);
+                                    databaseHandler.insertCihazlarFirmaDepolar(depolar);
+                                }
                             }
-                        }
 
-                        if (checkBoxRemember.isChecked()) {
-                            session.createLoginSession(username, password, spinnerCountryList.get(spinnerCountries.getSelectedItemPosition()).getCountryName());
+                            if (checkBoxRemember.isChecked()) {
+                                session.createLoginSession(username, password, spinnerCountryList.get(spinnerCountries.getSelectedItemPosition()).getCountryName());
+                            }
+                            pd.dismiss();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+
+                        } else {
+                            username_Text.setError(getString(R.string.login_validate_error));
+                            password_text.setError(getString(R.string.login_validate_error));
+                            username_Text.requestFocus();
+                            pd.dismiss();
                         }
-                        pd.dismiss();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
 
                     } else {
-                        username_Text.setError(getString(R.string.login_validate_error));
-                        password_text.setError(getString(R.string.login_validate_error));
-                        username_Text.requestFocus();
+                        Toast.makeText(LoginActivity.this, R.string.login_user_is_not_found, Toast.LENGTH_SHORT).show();
                         pd.dismiss();
                     }
+                }
 
-                } else {
-                    Toast.makeText(LoginActivity.this, R.string.login_user_is_not_found, Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<CihazlarQuery> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, R.string.login_connection_failed, Toast.LENGTH_SHORT).show();
                     pd.dismiss();
                 }
+            });
+        } else {
+            if (username.equals(userSettingMap.get(KEY_NAME)) && password.equals(userSettingMap.get(KEY_PASSWORD))) {
+                session.createLoginBoolean(spinnerCountryList.get(spinnerCountries.getSelectedItemPosition()).getCountryName());
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            } else {
+                username_Text.setError(getString(R.string.login_validate_error));
+                password_text.setError(getString(R.string.login_validate_error));
+                username_Text.requestFocus();
             }
+        }
 
-            @Override
-            public void onFailure(Call<CihazlarQuery> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, R.string.login_connection_failed, Toast.LENGTH_SHORT).show();
-                pd.dismiss();
-            }
-        });
     }
-
 
     public static void setLocale(Activity activity, String languageCode) {
         Locale locale = new Locale(languageCode);
@@ -462,5 +478,15 @@ public class LoginActivity extends AppCompatActivity {
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
         resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
+    private String parametreGetir(String parametre, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(parametre)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
+        }
+        return parametreDeger;
     }
 }

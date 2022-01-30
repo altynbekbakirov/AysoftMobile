@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -848,7 +847,7 @@ public class ClientsDashboardActivity extends AppCompatActivity {
             super.onPreExecute();
             products_progressBar.setVisibility(View.VISIBLE);
             retrofitApi = RetrofitClient.getInstance(webSettingsMap.get("web")).create(RetrofitApi.class);
-            queryList = retrofitApi.clientDashboard(
+            queryList = retrofitApi.getClientDashboard(
                     webSettingsMap.get("uuid"),
                     userSettingMap.get(KEY_NAME),
                     userSettingMap.get(KEY_PASSWORD),
@@ -1097,7 +1096,7 @@ public class ClientsDashboardActivity extends AppCompatActivity {
                         }
                     }
                 }
-            } catch (NullPointerException | IllegalStateException | JsonSyntaxException | IOException e) {
+            } catch (Exception e) {
                 hata = e.getMessage();
             }
             return null;

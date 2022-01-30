@@ -24,6 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.JsonSyntaxException;
+
+import org.json.JSONException;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -141,7 +144,6 @@ public class DataImportActivity extends AppCompatActivity {
         });
     }
 
-
     private class DatabaseDefaultValues extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = findViewById(R.id.progressBar_layout);
 
@@ -182,7 +184,6 @@ public class DataImportActivity extends AppCompatActivity {
             products_progressBar.setVisibility(View.GONE);
         }
     }
-
 
     private class DownloadCihazlarMenu extends AsyncTask<Void, Void, Void> {
         String webAddress = webSettingsMap.get("web");
@@ -357,13 +358,13 @@ public class DataImportActivity extends AppCompatActivity {
         }
     }
 
-
     private class DownloadClients extends AsyncTask<Void, String, Void> {
         String webAddress = webSettingsMap.get("web");
         String phoneId = webSettingsMap.get("uuid");
         ProgressDialog pd;
         RetrofitApi retrofitApi;
         Call<ClientsQuery> queryList;
+        String hata = null;
 
         @Override
         protected void onPreExecute() {
@@ -541,8 +542,8 @@ public class DataImportActivity extends AppCompatActivity {
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_shipinfo), clientsQuery.getShipInfo().size() - 2));
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (NullPointerException | IllegalStateException | JsonSyntaxException | IOException e) {
+                hata = e.getMessage();
             }
             return null;
         }
@@ -551,6 +552,10 @@ public class DataImportActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
+            if (hata != null) {
+                sendDataToServerFailDialog("Clients " + hata);
+                return;
+            }
             if (dataimport_products.isChecked()) {
                 new DownloadProducts().execute();
             } else if (dataimport_pictures.isChecked()) {
@@ -567,13 +572,13 @@ public class DataImportActivity extends AppCompatActivity {
         }
     }
 
-
     private class DownloadProducts extends AsyncTask<Void, String, Void> {
         String webAddress = webSettingsMap.get("web");
         String phoneId = webSettingsMap.get("uuid");
         ProgressDialog pd;
         Call<ItemsQuery> queryList;
         RetrofitApi retrofitApi;
+        String hata = null;
 
         @Override
         protected void onProgressUpdate(String... values) {
@@ -764,8 +769,8 @@ public class DataImportActivity extends AppCompatActivity {
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_toplamlar), itemsQuery.getItemsToplamlar().size() - 2));
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (NullPointerException | IllegalStateException | JsonSyntaxException | IOException e) {
+                hata = e.getMessage();
             }
             return null;
         }
@@ -774,6 +779,10 @@ public class DataImportActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pd.dismiss();
+            if (hata != null) {
+                sendDataToServerFailDialog("Products " + hata);
+                return;
+            }
             if (dataimport_pictures.isChecked()) {
                 if (dataimport_pictures_not_existed.isChecked()) {
                     new DownloadNewImagesRetrofit().execute();
@@ -786,12 +795,9 @@ public class DataImportActivity extends AppCompatActivity {
                 showInfo();
             }
         }
-
     }
 
-
     private class DownloadAllImages extends AsyncTask<Void, Integer, Void> {
-
         String webAddress = webSettingsMap.get("web");
         String phoneId = webSettingsMap.get("uuid");
         int counter = 0;
@@ -860,7 +866,6 @@ public class DataImportActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private class DownloadNewImages extends AsyncTask<Void, Integer, Void> {
 
@@ -934,7 +939,6 @@ public class DataImportActivity extends AppCompatActivity {
         }
     }
 
-
     private class DownloadAllImagesRetrofit extends AsyncTask<Void, Integer, Void> {
 
         String webAddress = webSettingsMap.get("web");
@@ -996,7 +1000,6 @@ public class DataImportActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private class DownloadNewImagesRetrofit extends AsyncTask<Void, Integer, Void> {
 
@@ -1060,7 +1063,6 @@ public class DataImportActivity extends AppCompatActivity {
         }
     }
 
-
     private boolean writeResponseBodyToDisk(ResponseBody body, String filename) {
         try {
             File file = new File(getExternalFilesDir("/aysoft") + File.separator + filename);
@@ -1105,7 +1107,6 @@ public class DataImportActivity extends AppCompatActivity {
         }
     }
 
-
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;
 
@@ -1125,7 +1126,6 @@ public class DataImportActivity extends AppCompatActivity {
         setLocale(this, countryCode);
     }
 
-
     public static void setLocale(Activity activity, String languageCode) {
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
@@ -1134,7 +1134,6 @@ public class DataImportActivity extends AppCompatActivity {
         config.setLocale(locale);
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
-
 
     private void showInfo() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.alertStyle);
@@ -1160,7 +1159,6 @@ public class DataImportActivity extends AppCompatActivity {
         builder.show();
     }
 
-
     public static String fixedLengthString(String text, int length) {
         StringBuilder word = new StringBuilder();
         word.append(text);
@@ -1171,5 +1169,20 @@ public class DataImportActivity extends AppCompatActivity {
         }
 //        return String.format("%-" + length + "." + length + "s", text);
         return word.toString();
+    }
+
+    private void sendDataToServerFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }

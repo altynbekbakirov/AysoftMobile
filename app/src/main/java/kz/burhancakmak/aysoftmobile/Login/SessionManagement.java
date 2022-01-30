@@ -64,6 +64,12 @@ public class SessionManagement {
         editor.commit();
     }
 
+    public void createLoginBoolean(String language) {
+        editor.putBoolean(IS_LOGIN, true);
+        editor.putString(KEY_LANG, language);
+        editor.commit();
+    }
+
 
     public String getKeyLang() {
         return pref.getString(KEY_LANG, "en");

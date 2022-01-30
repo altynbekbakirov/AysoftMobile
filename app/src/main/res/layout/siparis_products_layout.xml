@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingStart="10dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="10dp"
+    tools:ignore="RtlSymmetry">
 
     <RelativeLayout
         android:id="@+id/rl1"
@@ -47,7 +50,6 @@
             android:text="@string/items_fiyat1_label"
             android:textSize="14sp" />
 
-
     </RelativeLayout>
 
     <LinearLayout
@@ -57,7 +59,7 @@
         android:layout_below="@id/rl1"
         android:background="@drawable/linearlayout_border_line"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
             android:layout_width="120dp"
@@ -71,6 +73,7 @@
             android:id="@+id/editMiktar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:background="@drawable/edittext_border_line"
             android:ems="10"
             android:focusable="false"
@@ -90,20 +93,30 @@
         android:layout_below="@id/ll1"
         android:background="@drawable/linearlayout_border_line"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
-            android:layout_width="120dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_semibold"
             android:text="@string/items_fiyat1_label"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
+        <Button
+            android:id="@+id/changePrice"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="@string/alert_siparis_change"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+
         <EditText
             android:id="@+id/editFiyat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:background="@drawable/edittext_border_line"
             android:clickable="false"
             android:cursorVisible="false"
@@ -124,7 +137,7 @@
         android:layout_below="@id/ll2"
         android:background="@drawable/linearlayout_border_line"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
             android:layout_width="120dp"
@@ -139,6 +152,7 @@
             android:id="@+id/stokTutar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:background="@drawable/edittext_border_line"
             android:ems="10"
             android:fontFamily="@font/open_sans_condensed_bold"
@@ -148,12 +162,21 @@
 
     </LinearLayout>
 
-    <kz.burhancakmak.aysoftmobile.Clients.Klavye
-        android:id="@+id/keyboard"
+    <LinearLayout
+        android:id="@+id/ll4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ll3"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical" />
+        android:background="@drawable/linearlayout_border_line"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <kz.burhancakmak.aysoftmobile.Clients.Klavye
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
 
 </RelativeLayout>

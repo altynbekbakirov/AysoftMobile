@@ -5,6 +5,7 @@ import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.menuGrupKayitNo;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -54,7 +58,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -77,6 +83,10 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
     DatabaseHandler databaseHandler;
     SearchView searchView;
     MenuItem searchItem;
+    SiparisProductsAdapter itemsAdapter;
+    RecyclerView recyclerView;
+    NavigationView navigationView;
+    DrawerLayout drawerLayout;
     ClCard card;
     private static int VIEW_TYPE;
     private static final String KEY_LANG = "language";
@@ -86,11 +96,9 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
     List<ClientSepet> sepetList = new ArrayList<>();
     List<CihazlarMenu> menuList = new ArrayList<>();
     List<String> priceList = new ArrayList<>();
-    SiparisProductsAdapter itemsAdapter;
-    RecyclerView recyclerView;
-    NavigationView navigationView;
-    DrawerLayout drawerLayout;
-    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, IkiFiyatKullanimi, IkiDepoKullanimi;
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
+    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, IkiFiyatKullanimi, IkiDepoKullanimi, SiparisteFiyatDegistirebilir;
+    private boolean isCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,10 +243,12 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         toggle.syncState();
 
         databaseHandler = DatabaseHandler.getInstance(this);
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
         menuList = databaseHandler.selectCihazlarMenu(1, menuGrupKayitNo);
         productPricesList = databaseHandler.selectPrclist();
-        IkiFiyatKullanimi = parametreGetir(FIRMA_NO, "IkiFiyatKullanimi", "0");
-        IkiDepoKullanimi = parametreGetir(FIRMA_NO, "IkiDepoKullanimi", "0");
+        IkiFiyatKullanimi = parametreGetir("IkiFiyatKullanimi", "0");
+        IkiDepoKullanimi = parametreGetir("IkiDepoKullanimi", "0");
+        SiparisteFiyatDegistirebilir = parametreGetir("SiparisteFiyatDegistirebilir", "0");
         priceList.add("");
         for (int i = 0; i < productPricesList.size(); i++) {
             priceList.add(productPricesList.get(i).getFiyatGrubu());
@@ -322,31 +332,105 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         }
     }
 
-    private void chooseProduct(int position) {
+    public void chooseProduct(int position) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog);
         View view = getLayoutInflater().inflate(R.layout.siparis_products_layout, null);
         builder.setView(view);
         TextView stokKodu = view.findViewById(R.id.stokKodu);
         TextView stokAciklama = view.findViewById(R.id.stokAciklama);
         TextView stokTutar = view.findViewById(R.id.stokTutar);
-        EditText stokFiyat = view.findViewById(R.id.editFiyat);
+        EditText editFiyat = view.findViewById(R.id.editFiyat);
         EditText editMiktar = view.findViewById(R.id.editMiktar);
         ImageView stokResim = view.findViewById(R.id.stokResim);
+        Button changePrice = view.findViewById(R.id.changePrice);
+        Klavye klavye = view.findViewById(R.id.keyboard);
+
+        isCount = false;
+
         ItemsWithPrices items = productItemList.get(position);
         stokKodu.setText(items.getStokKodu());
         stokAciklama.setText(items.getStokAdi1());
-        stokFiyat.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
-        stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
+        editFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
+        stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
 
         for (int i = 0; i < sepetList.size(); i++) {
             if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
                 editMiktar.setText(String.valueOf(sepetList.get(i).getStokMiktar()));
-                stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString())));
                 break;
             }
         }
 
-        Klavye klavye = view.findViewById(R.id.keyboard);
+        if (SiparisteFiyatDegistirebilir.equals("1")) {
+            changePrice.setVisibility(View.VISIBLE);
+        } else {
+            changePrice.setVisibility(View.GONE);
+        }
+
+        changePrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCount = !isCount;
+                if (isCount) {
+                    changePrice.setText("Ok");
+                    editFiyat.setTextIsSelectable(true);
+                    editFiyat.setSelectAllOnFocus(true);
+                    editFiyat.requestFocus();
+                    editFiyat.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                    editFiyat.setShowSoftInputOnFocus(false);
+                    InputConnection ic = editFiyat.onCreateInputConnection(new EditorInfo());
+                    klavye.setInputConnection(ic);
+
+                    editFiyat.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                } else {
+                    changePrice.setText(getString(R.string.alert_siparis_change));
+                    editMiktar.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                    editMiktar.setTextIsSelectable(true);
+                    editMiktar.requestFocus();
+                    editMiktar.setSelectAllOnFocus(true);
+                    editMiktar.setShowSoftInputOnFocus(false);
+                    InputConnection ic = editMiktar.onCreateInputConnection(new EditorInfo());
+                    klavye.setInputConnection(ic);
+
+                    editMiktar.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                }
+            }
+        });
+
         editMiktar.setRawInputType(InputType.TYPE_CLASS_TEXT);
         editMiktar.setTextIsSelectable(true);
         editMiktar.requestFocus();
@@ -363,8 +447,8 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!editMiktar.getText().toString().isEmpty() && !stokFiyat.getText().toString().isEmpty()) {
-                    stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+                if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
                 }
             }
 
@@ -433,6 +517,7 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
                         for (int i = 0; i < sepetList.size(); i++) {
                             if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
                                 sepetList.get(i).setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
+                                sepetList.get(i).setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
                                 sepetList.get(i).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
                                 sepetList.get(i).setSatirIndirimOrani(0.0);
                                 sepetList.get(i).setSatirIndirimTutari(0.0);
@@ -463,12 +548,40 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
                         }
                     }
                     productItemList.get(position).setMiktar(Integer.parseInt(editMiktar.getText().toString()));
+                    productItemList.get(position).setFiyat1(Double.parseDouble(editFiyat.getText().toString()));
                     productItemList.get(position).setClientNo(clientKayitNo);
                     itemsAdapter.notifyItemChanged(position);
                 }
             }
         });
         builder.show();
+    }
+
+    private void changePriceDialog(int position, double price) {
+        MaterialAlertDialogBuilder builder1 = new MaterialAlertDialogBuilder(this);
+        builder1.setCancelable(false);
+        View view1 = getLayoutInflater().inflate(R.layout.siparis_price_change_layout, null);
+        builder1.setView(view1);
+
+        EditText oldPrice = view1.findViewById(R.id.editPrice1);
+        EditText newPrice = view1.findViewById(R.id.editPrice2);
+
+        oldPrice.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", price));
+        newPrice.requestFocus();
+
+        builder1.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chooseProduct(position);
+            }
+        });
+        builder1.setNegativeButton(R.string.login_internet_connection_btnCancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder1.show();
     }
 
     private void alertOnLayoutViewChange() {
@@ -535,14 +648,14 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
-    private String parametreGetir(String firmaNo, String parametre, String deger) {
-        List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
-        String parametreDeger;
-        if (parametrelerList.size() == 1) {
-            parametreDeger = parametrelerList.get(0).getParametreDegeri();
-        } else {
-            parametreDeger = deger;
+    private String parametreGetir(String param, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(param)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
         }
         return parametreDeger;
     }
+
 }

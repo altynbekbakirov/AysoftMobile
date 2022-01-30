@@ -338,6 +338,10 @@
     <string name="client_dashboard_special_sum4">Sales amount based on special code4</string>
     <string name="client_dashboard_special_count5">Sales quantity based on special code5</string>
     <string name="client_dashboard_special_sum5">Sales amount based on special code5</string>
+    <string name="alert_siparis_change">Change</string>
+    <string name="alert_siparis_change_price">Change price</string>
+    <string name="alert_siparis_old_price">Old price</string>
+    <string name="alert_siparis_new_price">New price</string>
 
 
 </resources>

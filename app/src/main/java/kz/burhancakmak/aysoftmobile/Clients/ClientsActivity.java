@@ -674,6 +674,9 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                         startActivityForResult(intent4, 505);
                         break;
                     case 5: // Reports
+                        Intent intent5 = new Intent(ClientsActivity.this, ClientsReportsActivity.class);
+                        intent5.putExtra("clientKayitNo", cardList.get(position).getKayitNo());
+                        startActivityForResult(intent5, 605);
                         break;
                     case 6: // Route
                         alertOrderDaysDialog(position);

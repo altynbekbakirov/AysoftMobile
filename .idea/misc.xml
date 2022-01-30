@@ -12,10 +12,12 @@
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/drawable/ic_refresh.xml" value="0.1675925925925926" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_clients_dashboard.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_clients_extract.xml" value="0.1796875" />
+        <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_clients_reports.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_data_export.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_kasa_islemleri.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_products_extract.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_siparis_islemleri.xml" value="0.1796875" />
+        <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/activity_siparis_products.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/alert_change_price_layout.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/client_addnew_layout.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/client_extract_filter_layout.xml" value="0.1796875" />
@@ -28,7 +30,10 @@
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/data_export_siparis_recyclerview_layout.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/fragment_siparis_recyclerview_layout.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/item_filter_layout.xml" value="0.1796875" />
+        <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/main_nav_header.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/products_extract_recyclerview_layout.xml" value="0.1796875" />
+        <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/siparis_price_change_layout.xml" value="0.1796875" />
+        <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/layout/siparis_products_layout.xml" value="0.11481481481481481" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/clients_dashboard_menu.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/clients_extract_menu.xml" value="0.1796875" />
         <entry key="..\:/Users/BakirovAK/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/clients_menu.xml" value="0.1796875" />

@@ -7,6 +7,7 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsDashboardQuery;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsKasaResponse;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsMap;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsQuery;
+import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsReportsQuery;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsSiparisResponse;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarQuery;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsExtractQuery;
@@ -122,6 +123,30 @@ public interface RetrofitApi {
             @Field("Telefon2") String telefon2,
             @Field("EmailAdresi") String email);
 
+    @POST("CariDashboard.php")
+    @FormUrlEncoded
+    Call<ClientsDashboardQuery> getClientDashboard(
+            @Field("CihazId") String CihazId,
+            @Field("Login") String login,
+            @Field("Parola") String Parola,
+            @Field("FirmaNo") String firma,
+            @Field("DonemNo") String donem,
+            @Field("Tur") int tur,
+            @Field("CariKayitNo") int cariKayitNo,
+            @Field("CariKod") String cariKod);
+
+    @POST("CariHesapOzeti.php")
+    @FormUrlEncoded
+    Call<ClientsReportsQuery> getClientsReports(
+            @Field("CihazId") String CihazId,
+            @Field("Login") String login,
+            @Field("Parola") String Parola,
+            @Field("FirmaNo") String firma,
+            @Field("DonemNo") String donem,
+            @Field("Tur") int tur,
+            @Field("CariKayitNo") int cariKayitNo,
+            @Field("CariKod") String cariKod);
+
     @POST("KasaHareketEkle.php")
     @FormUrlEncoded
     Call<ClientsKasaResponse> kasaHareketleriGuncelle(
@@ -219,16 +244,6 @@ public interface RetrofitApi {
             @Field("YeniDeger") String yeniDeger,
             @Field("CariKayitNo") int cariKayitNo);
 
-    @POST("CariDashboard.php")
-    @FormUrlEncoded
-    Call<ClientsDashboardQuery> clientDashboard(
-            @Field("CihazId") String CihazId,
-            @Field("Login") String login,
-            @Field("Parola") String Parola,
-            @Field("FirmaNo") String firma,
-            @Field("DonemNo") String donem,
-            @Field("Tur") int tur,
-            @Field("CariKayitNo") int cariKayitNo,
-            @Field("CariKod") String cariKod);
+
 
 }

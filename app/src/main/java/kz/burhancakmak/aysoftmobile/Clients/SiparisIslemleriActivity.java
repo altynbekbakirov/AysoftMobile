@@ -1,5 +1,7 @@
 package kz.burhancakmak.aysoftmobile.Clients;
 
+import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
+
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -30,6 +32,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -65,10 +68,10 @@ import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSepet;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSiparis;
+import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
 
 public class SiparisIslemleriActivity extends AppCompatActivity implements SepetAdapter.OnOrderListener {
-
     SessionManagement session;
     HashMap<String, String> hashMap;
     DatabaseHandler databaseHandler;
@@ -79,11 +82,13 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
     RecyclerView recyclerView;
     SepetAdapter adapter;
     List<ClientSepet> sepetList = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     ClCard card;
     LinearLayout mainlayout, bottomPanelCollapsable;
     TextView bottomPanelTotal, bottomPanelSale, bottomPanelNet, bottomPanelRowCount, bottomPanelCount;
     ImageView bottomPanelImage;
-    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, Aciklama, SiparisTeslimTarihi;
+    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, Aciklama, SiparisTeslimTarihi, SiparisteFiyatDegistirebilir;
+    private boolean isCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +247,8 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         KurusHaneSayisiStokMiktar = intent.getStringExtra("KurusHaneSayisiStokMiktar");
         KurusHaneSayisiStokTutar = intent.getStringExtra("KurusHaneSayisiStokTutar");
         card = databaseHandler.selectClientById(kayitNo);
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        SiparisteFiyatDegistirebilir = parametreGetir("SiparisteFiyatDegistirebilir", "0");
         if (intent.getDoubleExtra("discountPercent", -1) != -1) {
             discountPercent = intent.getDoubleExtra("discountPercent", -1);
             if (discountPercent > 0) {
@@ -432,11 +439,11 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                         if (position == 0) {
                             discountPercent = Double.parseDouble(priceTypeValue.getText().toString());
                             discountTotal = Double.parseDouble(priceOrderTotal.getText().toString()) * (discountPercent / 100);
-                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         } else if (position == 1) {
                             discountPercent = 0;
                             discountTotal = Double.parseDouble(priceTypeValue.getText().toString());
-                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         }
                     }
                 } else {
@@ -464,20 +471,20 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             }
         }
         priceTypeSpinner.setSelection(spinnerSelected);
-        priceOrderTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+        priceOrderTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
         priceTypeValue.requestFocus();
         if (discountPercent > 0) {
             if (priceTypeSpinner.getSelectedItemPosition() == 0) {
-                priceTypeValue.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountPercent));
-                priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total - (discountPercent * total) / 100));
+                priceTypeValue.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountPercent));
+                priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total - (discountPercent * total) / 100));
             } else {
-                priceTypeValue.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
-                priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
+                priceTypeValue.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
+                priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
             }
             priceTypeValue.setSelectAllOnFocus(true);
         } else {
-            priceTypeValue.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
-            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
+            priceTypeValue.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discountTotal));
+            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net - discountTotal));
             priceTypeValue.setSelectAllOnFocus(true);
         }
         priceTypeValue.addTextChangedListener(new TextWatcher() {
@@ -493,15 +500,15 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                         if (priceTypeSpinner.getSelectedItemPosition() == 0) {
                             discountPercent = Double.parseDouble(priceTypeValue.getText().toString());
                             discountTotal = Double.parseDouble(priceOrderTotal.getText().toString()) * (discountPercent / 100);
-                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         } else if (priceTypeSpinner.getSelectedItemPosition() == 1) {
                             discountPercent = 0;
                             discountTotal = Double.parseDouble(priceTypeValue.getText().toString());
-                            priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
                         }
                     }
                 } else {
-                    priceOrderNetTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString())));
+                    priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString())));
                 }
             }
 
@@ -597,7 +604,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                     + "<i>" + sepetList.get(position).getStokKodu() + ", " + sepetList.get(position).getStokAdi() + "</i>"));
         }
 
-
         builder.setPositiveButton(R.string.alert_exit_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -622,20 +628,94 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         TextView stokKodu = view.findViewById(R.id.stokKodu);
         TextView stokAciklama = view.findViewById(R.id.stokAciklama);
         TextView stokTutar = view.findViewById(R.id.stokTutar);
-        EditText stokFiyat = view.findViewById(R.id.editFiyat);
+        EditText editFiyat = view.findViewById(R.id.editFiyat);
         EditText editMiktar = view.findViewById(R.id.editMiktar);
         ImageView stokResim = view.findViewById(R.id.stokResim);
+        Button changePrice = view.findViewById(R.id.changePrice);
+        Klavye klavye = view.findViewById(R.id.keyboard);
+
+        isCount = false;
+
         stokKodu.setText(sepetList.get(position).getStokKodu());
         stokAciklama.setText(sepetList.get(position).getStokAdi());
-        stokFiyat.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokFiyat()));
-        stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokTutar()));
+        editFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokFiyat()));
+        stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", sepetList.get(position).getStokTutar()));
 
         if (sepetList.get(position).getStokMiktar() != null) {
             editMiktar.setText(String.valueOf(sepetList.get(position).getStokMiktar()));
-            stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+            stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString())));
         }
 
-        Klavye klavye = view.findViewById(R.id.keyboard);
+        if (SiparisteFiyatDegistirebilir.equals("1")) {
+            changePrice.setVisibility(View.VISIBLE);
+        } else {
+            changePrice.setVisibility(View.GONE);
+        }
+
+        changePrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isCount = !isCount;
+                if (isCount) {
+                    changePrice.setText("Ok");
+                    editFiyat.setTextIsSelectable(true);
+                    editFiyat.setSelectAllOnFocus(true);
+                    editFiyat.requestFocus();
+                    editFiyat.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                    editFiyat.setShowSoftInputOnFocus(false);
+                    InputConnection ic = editFiyat.onCreateInputConnection(new EditorInfo());
+                    klavye.setInputConnection(ic);
+
+                    editFiyat.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                } else {
+                    changePrice.setText(getString(R.string.alert_siparis_change));
+                    editMiktar.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                    editMiktar.setTextIsSelectable(true);
+                    editMiktar.requestFocus();
+                    editMiktar.setSelectAllOnFocus(true);
+                    editMiktar.setShowSoftInputOnFocus(false);
+                    InputConnection ic = editMiktar.onCreateInputConnection(new EditorInfo());
+                    klavye.setInputConnection(ic);
+
+                    editMiktar.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                }
+            }
+        });
+
         editMiktar.setRawInputType(InputType.TYPE_CLASS_TEXT);
         editMiktar.setTextIsSelectable(true);
         editMiktar.requestFocus();
@@ -652,8 +732,8 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!editMiktar.getText().toString().isEmpty() && !stokFiyat.getText().toString().isEmpty()) {
-                    stokTutar.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(stokFiyat.getText().toString())));
+                if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString())));
                 }
             }
 
@@ -702,6 +782,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         } else {
             stokResim.setImageResource(R.drawable.items_image);
         }
+
         builder.setPositiveButton(R.string.clients_orders_menu_save, new DialogInterface.OnClickListener() {
             final boolean isFound = false;
 
@@ -710,11 +791,12 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                 if (!editMiktar.getText().toString().isEmpty()) {
                     if (Integer.parseInt(editMiktar.getText().toString()) > 0) {
                         sepetList.get(position).setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                        sepetList.get(position).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * sepetList.get(position).getStokFiyat());
+                        sepetList.get(position).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
+                        sepetList.get(position).setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
                         sepetList.get(position).setSatirIndirimOrani(0.0);
                         sepetList.get(position).setSatirIndirimTutari(0.0);
                         sepetList.get(position).setGenelIndirimTutari(0.0);
-                        sepetList.get(position).setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * sepetList.get(position).getStokFiyat());
+                        sepetList.get(position).setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                     }
                     adapter.notifyItemChanged(position);
                     showBottomPanel(sepetList);
@@ -749,6 +831,16 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             }
         });
         builder.show();
+    }
+
+    private String parametreGetir(String param, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(param)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
+        }
+        return parametreDeger;
     }
 
     private void setPhoneDefaultLanguage(String code) {
@@ -816,7 +908,6 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
     }
 
     private ValueAnimator slideAnimator(int start, int end) {
-
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -854,5 +945,4 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             bottomPanelCount.setText("0");
         }
     }
-
 }

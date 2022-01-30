@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -170,6 +171,7 @@ public class ProductsExtractActivity extends AppCompatActivity {
         RetrofitApi retrofitApi;
         Call<ItemsExtractQuery> queryList;
         Double girenMiktar = 0.0, cikanMiktar = 0.0, kalanMiktar = 0.0;
+        String hata = null;
 
         @Override
         protected void onPreExecute() {
@@ -223,8 +225,8 @@ public class ProductsExtractActivity extends AppCompatActivity {
                         }
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                hata = e.getMessage();
             }
             return null;
         }
@@ -234,6 +236,10 @@ public class ProductsExtractActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             adapter.setList(itemsExtractList);
             products_progressBar.setVisibility(View.GONE);
+            if (hata != null) {
+                sendDataToServerFailDialog("Clients " + hata);
+                return;
+            }
             if (itemsExtractList.size() > 0) {
                 for (int i = 0; i < itemsExtractList.size(); i++) {
                     if (itemsExtractList.get(i).getGirenMiktar() != null) {
@@ -381,6 +387,21 @@ public class ProductsExtractActivity extends AppCompatActivity {
         });
         builder.show();
     }*/
+
+    private void sendDataToServerFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 
     private void setPhoneDefaultLanguage(String code) {
         String countryCode;

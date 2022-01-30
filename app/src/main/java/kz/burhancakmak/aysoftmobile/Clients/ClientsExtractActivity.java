@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -95,6 +96,24 @@ public class ClientsExtractActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.clients_extract_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.client_extract_refresh) {
+            new GetDataFromWeb().execute();
+        }
+        if (item.getItemId() == R.id.client_extract_filter) {
+            showFilterDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initViews() {
         Intent intent = getIntent();
         clientKayitNo = intent.getIntExtra("clientKayitNo", -1);
@@ -141,6 +160,7 @@ public class ClientsExtractActivity extends AppCompatActivity {
         RetrofitApi retrofitApi;
         Call<ClientExtractQuery> queryList;
         Double creditSum = 0.0, depositSum = 0.0, balanceSum = 0.0;
+        String hata = null;
 
         @Override
         protected void onPreExecute() {
@@ -197,8 +217,8 @@ public class ClientsExtractActivity extends AppCompatActivity {
                         }
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                hata = e.getMessage();
             }
             return null;
         }
@@ -208,6 +228,10 @@ public class ClientsExtractActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             adapter.setList(clientExtractList);
             products_progressBar.setVisibility(View.GONE);
+            if (hata != null) {
+                sendDataToServerFailDialog("Clients " + hata);
+                return;
+            }
             if (clientExtractList.size() > 0) {
                 for (int i = 0; i < clientExtractList.size(); i++) {
                     if (clientExtractList.get(i).getAlacak() != null) {
@@ -226,24 +250,6 @@ public class ClientsExtractActivity extends AppCompatActivity {
                 bottomTitle.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.clients_extract_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.client_extract_refresh) {
-            new GetDataFromWeb().execute();
-        }
-        if (item.getItemId() == R.id.client_extract_filter) {
-            showFilterDialog();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void showFilterDialog() {
@@ -305,6 +311,21 @@ public class ClientsExtractActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 new GetDataFromWeb().execute();
+            }
+        });
+        builder.show();
+    }
+
+    private void sendDataToServerFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         builder.show();

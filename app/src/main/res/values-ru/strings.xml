@@ -338,6 +338,10 @@
     <string name="client_dashboard_special_sum4">Сумма продаж по специальному коду4</string>
     <string name="client_dashboard_special_count5">Количество продаж по специальному коду5</string>
     <string name="client_dashboard_special_sum5">Сумма продаж по специальному коду5</string>
+    <string name="alert_siparis_change">Изменить</string>
+    <string name="alert_siparis_change_price">Переоценка</string>
+    <string name="alert_siparis_old_price">Старая цена</string>
+    <string name="alert_siparis_new_price">Новая цена</string>
 
 
 </resources>

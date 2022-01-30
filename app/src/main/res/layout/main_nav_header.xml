@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/open_sans_condensed_bold"
-        android:text="V 1.01 (14.10.2021)"
+        android:text="V 1.03 (25.01.2022)"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="12sp"
