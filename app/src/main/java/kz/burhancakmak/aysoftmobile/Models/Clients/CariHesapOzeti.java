@@ -4,23 +4,47 @@ public class CariHesapOzeti {
     private String CariKayitNo;
     private String CariKod;
     private String CariUnvan;
-    private Double Ocak;
-    private Double Subat;
-    private Double Mart;
-    private Double Nisan;
-    private Double Mayis;
-    private Double Haziran;
-    private Double Temmuz;
-    private Double Agustos;
-    private Double Eylul;
-    private Double Ekim;
-    private Double Kasim;
-    private Double Aralik;
-    private Double ToplamSatis;
-    private Double ToplamTahsilat;
-    private Double ToplamBorc;
-    private Double ToplamAlacak;
-    private Double ToplamBakiye;
+    private Float Ocak;
+    private Float Subat;
+    private Float Mart;
+    private Float Nisan;
+    private Float Mayis;
+    private Float Haziran;
+    private Float Temmuz;
+    private Float Agustos;
+    private Float Eylul;
+    private Float Ekim;
+    private Float Kasim;
+    private Float Aralik;
+    private Float OcakTahsilat;
+    private Float SubatTahsilat;
+    private Float MartTahsilat;
+    private Float NisanTahsilat;
+    private Float MayisTahsilat;
+    private Float HaziranTahsilat;
+    private Float TemmuzTahsilat;
+    private Float AgustosTahsilat;
+    private Float EylulTahsilat;
+    private Float EkimTahsilat;
+    private Float KasimTahsilat;
+    private Float AralikTahsilat;
+    private Float OcakBakiye;
+    private Float SubatBakiye;
+    private Float MartBakiye;
+    private Float NisanBakiye;
+    private Float MayisBakiye;
+    private Float HaziranBakiye;
+    private Float TemmuzBakiye;
+    private Float AgustosBakiye;
+    private Float EylulBakiye;
+    private Float EkimBakiye;
+    private Float KasimBakiye;
+    private Float AralikBakiye;
+    private Float ToplamSatis;
+    private Float ToplamTahsilat;
+    private Float ToplamBorc;
+    private Float ToplamAlacak;
+    private Float ToplamBakiye;
 
     public String getCariKayitNo() {
         return CariKayitNo;
@@ -46,139 +70,331 @@ public class CariHesapOzeti {
         CariUnvan = cariUnvan;
     }
 
-    public Double getOcak() {
+    public Float getOcak() {
         return Ocak;
     }
 
-    public void setOcak(Double ocak) {
+    public void setOcak(Float ocak) {
         Ocak = ocak;
     }
 
-    public Double getSubat() {
+    public Float getSubat() {
         return Subat;
     }
 
-    public void setSubat(Double subat) {
+    public void setSubat(Float subat) {
         Subat = subat;
     }
 
-    public Double getMart() {
+    public Float getMart() {
         return Mart;
     }
 
-    public void setMart(Double mart) {
+    public void setMart(Float mart) {
         Mart = mart;
     }
 
-    public Double getNisan() {
+    public Float getNisan() {
         return Nisan;
     }
 
-    public void setNisan(Double nisan) {
+    public void setNisan(Float nisan) {
         Nisan = nisan;
     }
 
-    public Double getMayis() {
+    public Float getMayis() {
         return Mayis;
     }
 
-    public void setMayis(Double mayis) {
+    public void setMayis(Float mayis) {
         Mayis = mayis;
     }
 
-    public Double getHaziran() {
+    public Float getHaziran() {
         return Haziran;
     }
 
-    public void setHaziran(Double haziran) {
+    public void setHaziran(Float haziran) {
         Haziran = haziran;
     }
 
-    public Double getTemmuz() {
+    public Float getTemmuz() {
         return Temmuz;
     }
 
-    public void setTemmuz(Double temmuz) {
+    public void setTemmuz(Float temmuz) {
         Temmuz = temmuz;
     }
 
-    public Double getAgustos() {
+    public Float getAgustos() {
         return Agustos;
     }
 
-    public void setAgustos(Double agustos) {
+    public void setAgustos(Float agustos) {
         Agustos = agustos;
     }
 
-    public Double getEylul() {
+    public Float getEylul() {
         return Eylul;
     }
 
-    public void setEylul(Double eylul) {
+    public void setEylul(Float eylul) {
         Eylul = eylul;
     }
 
-    public Double getEkim() {
+    public Float getEkim() {
         return Ekim;
     }
 
-    public void setEkim(Double ekim) {
+    public void setEkim(Float ekim) {
         Ekim = ekim;
     }
 
-    public Double getKasim() {
+    public Float getKasim() {
         return Kasim;
     }
 
-    public void setKasim(Double kasim) {
+    public void setKasim(Float kasim) {
         Kasim = kasim;
     }
 
-    public Double getAralik() {
+    public Float getAralik() {
         return Aralik;
     }
 
-    public void setAralik(Double aralik) {
+    public void setAralik(Float aralik) {
         Aralik = aralik;
     }
 
-    public Double getToplamSatis() {
+    public Float getOcakTahsilat() {
+        return OcakTahsilat;
+    }
+
+    public void setOcakTahsilat(Float ocakTahsilat) {
+        OcakTahsilat = ocakTahsilat;
+    }
+
+    public Float getSubatTahsilat() {
+        return SubatTahsilat;
+    }
+
+    public void setSubatTahsilat(Float subatTahsilat) {
+        SubatTahsilat = subatTahsilat;
+    }
+
+    public Float getMartTahsilat() {
+        return MartTahsilat;
+    }
+
+    public void setMartTahsilat(Float martTahsilat) {
+        MartTahsilat = martTahsilat;
+    }
+
+    public Float getNisanTahsilat() {
+        return NisanTahsilat;
+    }
+
+    public void setNisanTahsilat(Float nisanTahsilat) {
+        NisanTahsilat = nisanTahsilat;
+    }
+
+    public Float getMayisTahsilat() {
+        return MayisTahsilat;
+    }
+
+    public void setMayisTahsilat(Float mayisTahsilat) {
+        MayisTahsilat = mayisTahsilat;
+    }
+
+    public Float getHaziranTahsilat() {
+        return HaziranTahsilat;
+    }
+
+    public void setHaziranTahsilat(Float haziranTahsilat) {
+        HaziranTahsilat = haziranTahsilat;
+    }
+
+    public Float getTemmuzTahsilat() {
+        return TemmuzTahsilat;
+    }
+
+    public void setTemmuzTahsilat(Float temmuzTahsilat) {
+        TemmuzTahsilat = temmuzTahsilat;
+    }
+
+    public Float getAgustosTahsilat() {
+        return AgustosTahsilat;
+    }
+
+    public void setAgustosTahsilat(Float agustosTahsilat) {
+        AgustosTahsilat = agustosTahsilat;
+    }
+
+    public Float getEylulTahsilat() {
+        return EylulTahsilat;
+    }
+
+    public void setEylulTahsilat(Float eylulTahsilat) {
+        EylulTahsilat = eylulTahsilat;
+    }
+
+    public Float getEkimTahsilat() {
+        return EkimTahsilat;
+    }
+
+    public void setEkimTahsilat(Float ekimTahsilat) {
+        EkimTahsilat = ekimTahsilat;
+    }
+
+    public Float getKasimTahsilat() {
+        return KasimTahsilat;
+    }
+
+    public void setKasimTahsilat(Float kasimTahsilat) {
+        KasimTahsilat = kasimTahsilat;
+    }
+
+    public Float getAralikTahsilat() {
+        return AralikTahsilat;
+    }
+
+    public void setAralikTahsilat(Float aralikTahsilat) {
+        AralikTahsilat = aralikTahsilat;
+    }
+
+    public Float getToplamSatis() {
         return ToplamSatis;
     }
 
-    public void setToplamSatis(Double toplamSatis) {
+    public void setToplamSatis(Float toplamSatis) {
         ToplamSatis = toplamSatis;
     }
 
-    public Double getToplamTahsilat() {
+    public Float getToplamTahsilat() {
         return ToplamTahsilat;
     }
 
-    public void setToplamTahsilat(Double toplamTahsilat) {
+    public void setToplamTahsilat(Float toplamTahsilat) {
         ToplamTahsilat = toplamTahsilat;
     }
 
-    public Double getToplamBorc() {
+    public Float getToplamBorc() {
         return ToplamBorc;
     }
 
-    public void setToplamBorc(Double toplamBorc) {
+    public void setToplamBorc(Float toplamBorc) {
         ToplamBorc = toplamBorc;
     }
 
-    public Double getToplamAlacak() {
+    public Float getToplamAlacak() {
         return ToplamAlacak;
     }
 
-    public void setToplamAlacak(Double toplamAlacak) {
+    public void setToplamAlacak(Float toplamAlacak) {
         ToplamAlacak = toplamAlacak;
     }
 
-    public Double getToplamBakiye() {
+    public Float getToplamBakiye() {
         return ToplamBakiye;
     }
 
-    public void setToplamBakiye(Double toplamBakiye) {
+    public void setToplamBakiye(Float toplamBakiye) {
         ToplamBakiye = toplamBakiye;
+    }
+
+    public Float getOcakBakiye() {
+        return OcakBakiye;
+    }
+
+    public void setOcakBakiye(Float ocakBakiye) {
+        OcakBakiye = ocakBakiye;
+    }
+
+    public Float getSubatBakiye() {
+        return SubatBakiye;
+    }
+
+    public void setSubatBakiye(Float subatBakiye) {
+        SubatBakiye = subatBakiye;
+    }
+
+    public Float getMartBakiye() {
+        return MartBakiye;
+    }
+
+    public void setMartBakiye(Float martBakiye) {
+        MartBakiye = martBakiye;
+    }
+
+    public Float getNisanBakiye() {
+        return NisanBakiye;
+    }
+
+    public void setNisanBakiye(Float nisanBakiye) {
+        NisanBakiye = nisanBakiye;
+    }
+
+    public Float getMayisBakiye() {
+        return MayisBakiye;
+    }
+
+    public void setMayisBakiye(Float mayisBakiye) {
+        MayisBakiye = mayisBakiye;
+    }
+
+    public Float getHaziranBakiye() {
+        return HaziranBakiye;
+    }
+
+    public void setHaziranBakiye(Float haziranBakiye) {
+        HaziranBakiye = haziranBakiye;
+    }
+
+    public Float getTemmuzBakiye() {
+        return TemmuzBakiye;
+    }
+
+    public void setTemmuzBakiye(Float temmuzBakiye) {
+        TemmuzBakiye = temmuzBakiye;
+    }
+
+    public Float getAgustosBakiye() {
+        return AgustosBakiye;
+    }
+
+    public void setAgustosBakiye(Float agustosBakiye) {
+        AgustosBakiye = agustosBakiye;
+    }
+
+    public Float getEylulBakiye() {
+        return EylulBakiye;
+    }
+
+    public void setEylulBakiye(Float eylulBakiye) {
+        EylulBakiye = eylulBakiye;
+    }
+
+    public Float getEkimBakiye() {
+        return EkimBakiye;
+    }
+
+    public void setEkimBakiye(Float ekimBakiye) {
+        EkimBakiye = ekimBakiye;
+    }
+
+    public Float getKasimBakiye() {
+        return KasimBakiye;
+    }
+
+    public void setKasimBakiye(Float kasimBakiye) {
+        KasimBakiye = kasimBakiye;
+    }
+
+    public Float getAralikBakiye() {
+        return AralikBakiye;
+    }
+
+    public void setAralikBakiye(Float aralikBakiye) {
+        AralikBakiye = aralikBakiye;
     }
 }

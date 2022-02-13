@@ -342,6 +342,20 @@
     <string name="alert_siparis_change_price">Change price</string>
     <string name="alert_siparis_old_price">Old price</string>
     <string name="alert_siparis_new_price">New price</string>
+    <string name="client_reports_sales">Sales</string>
+    <string name="client_reports_collections">Collections</string>
+    <string name="client_reports_debts">Debts</string>
+    <string name="client_reports_balance">Balance</string>
+    <string name="client_reports_credit">Credit</string>
+    <string name="client_reports_moths">Months</string>
+    <string name="client_reports_sum">Sum</string>
+    <string name="client_reports_sales_summary">Sales summary</string>
+    <string name="client_reports_collection_summary">Collections summary</string>
+    <string name="client_reports_collection_sale_summary">Sales and collections summary</string>
+    <string name="client_reports_debts_summary">Debts summary</string>
+    <string name="client_reports_credit_summary">Credits summary</string>
+    <string name="client_reports_balance_summary">Balance summary</string>
+    <string name="client_reports_debt_credit_balance">Debt, credit and balance summary</string>
 
 
 </resources>

@@ -7,6 +7,8 @@ public class DataExportKasaTask {
     private String Unvani;
     private String Tarih;
     private Double Tutar;
+    private String EklenmeSaati;
+    private String DegisiklikSaati;
     private String Aciklama;
     private String MakbuzNo;
     private Integer IslemTipi;
@@ -84,13 +86,28 @@ public class DataExportKasaTask {
         KayitNo = kayitNo;
     }
 
-
     public String getTarih() {
         return Tarih;
     }
 
     public void setTarih(String tarih) {
         Tarih = tarih;
+    }
+
+    public String getEklenmeSaati() {
+        return EklenmeSaati;
+    }
+
+    public void setEklenmeSaati(String eklenmeSaati) {
+        EklenmeSaati = eklenmeSaati;
+    }
+
+    public String getDegisiklikSaati() {
+        return DegisiklikSaati;
+    }
+
+    public void setDegisiklikSaati(String degisiklikSaati) {
+        DegisiklikSaati = degisiklikSaati;
     }
 
     public Double getTutar() {

@@ -10,16 +10,27 @@ public class ClientsReportsQuery {
     private List<String> CariHesapOzetiTahsilatGrafik = null;
     private List<String> CariHesapOzetiSatisTahsilatGrafik = null;
     private List<String> CariHesapOzetiBorcGrafik = null;
+    private List<String> CariHesapOzetiAlacakGrafik = null;
     private List<String> CariHesapOzetiBakiyeGrafik = null;
-    private List<String> CariHesapOzetiBorcTahsilatBakiyeGrafik = null;
+    private List<String> CariHesapOzetiBorcAlacakBakiyeGrafik = null;
     private List<String> CariHesapOzetiSatisTablo = null;
     private List<String> CariHesapOzetiTahsilatTablo = null;
     private List<String> CariHesapOzetiSatisTahsilatTablo = null;
+    private List<String> CariHesapOzetiBorcTablo = null;
+    private List<String> CariHesapOzetiAlacakTablo = null;
     private List<String> CariHesapOzetiBakiyeTablo = null;
-    private List<String> CariHesapOzetiBorcTahsilatBakiyeTablo = null;
+    private List<String> CariHesapOzetiBorcAlacakBakiyeTablo = null;
     private String _200;
 
     public ClientsReportsQuery() {
+    }
+
+    public List<String> getCariHesapOzetiAlacakTablo() {
+        return CariHesapOzetiAlacakTablo;
+    }
+
+    public void setCariHesapOzetiAlacakTablo(List<String> cariHesapOzetiAlacakTablo) {
+        CariHesapOzetiAlacakTablo = cariHesapOzetiAlacakTablo;
     }
 
     public Boolean getHata() {
@@ -30,12 +41,28 @@ public class ClientsReportsQuery {
         this.hata = hata;
     }
 
+    public List<String> getCariHesapOzetiBorcTablo() {
+        return CariHesapOzetiBorcTablo;
+    }
+
+    public void setCariHesapOzetiBorcTablo(List<String> cariHesapOzetiBorcTablo) {
+        CariHesapOzetiBorcTablo = cariHesapOzetiBorcTablo;
+    }
+
     public List<String> getCariHesapOzetiSatisGrafik() {
         return CariHesapOzetiSatisGrafik;
     }
 
     public void setCariHesapOzetiSatisGrafik(List<String> cariHesapOzetiSatisGrafik) {
         CariHesapOzetiSatisGrafik = cariHesapOzetiSatisGrafik;
+    }
+
+    public List<String> getCariHesapOzetiAlacakGrafik() {
+        return CariHesapOzetiAlacakGrafik;
+    }
+
+    public void setCariHesapOzetiAlacakGrafik(List<String> cariHesapOzetiAlacakGrafik) {
+        CariHesapOzetiAlacakGrafik = cariHesapOzetiAlacakGrafik;
     }
 
     public List<String> getCariHesapOzetiTahsilatGrafik() {
@@ -70,12 +97,12 @@ public class ClientsReportsQuery {
         CariHesapOzetiBakiyeGrafik = cariHesapOzetiBakiyeGrafik;
     }
 
-    public List<String> getCariHesapOzetiBorcTahsilatBakiyeGrafik() {
-        return CariHesapOzetiBorcTahsilatBakiyeGrafik;
+    public List<String> getCariHesapOzetiBorcAlacakBakiyeGrafik() {
+        return CariHesapOzetiBorcAlacakBakiyeGrafik;
     }
 
-    public void setCariHesapOzetiBorcTahsilatBakiyeGrafik(List<String> cariHesapOzetiBorcTahsilatBakiyeGrafik) {
-        CariHesapOzetiBorcTahsilatBakiyeGrafik = cariHesapOzetiBorcTahsilatBakiyeGrafik;
+    public void setCariHesapOzetiBorcAlacakBakiyeGrafik(List<String> cariHesapOzetiBorcAlacakBakiyeGrafik) {
+        CariHesapOzetiBorcAlacakBakiyeGrafik = cariHesapOzetiBorcAlacakBakiyeGrafik;
     }
 
     public List<String> getCariHesapOzetiSatisTablo() {
@@ -110,12 +137,12 @@ public class ClientsReportsQuery {
         CariHesapOzetiBakiyeTablo = cariHesapOzetiBakiyeTablo;
     }
 
-    public List<String> getCariHesapOzetiBorcTahsilatBakiyeTablo() {
-        return CariHesapOzetiBorcTahsilatBakiyeTablo;
+    public List<String> getCariHesapOzetiBorcAlacakBakiyeTablo() {
+        return CariHesapOzetiBorcAlacakBakiyeTablo;
     }
 
-    public void setCariHesapOzetiBorcTahsilatBakiyeTablo(List<String> cariHesapOzetiBorcTahsilatBakiyeTablo) {
-        CariHesapOzetiBorcTahsilatBakiyeTablo = cariHesapOzetiBorcTahsilatBakiyeTablo;
+    public void setCariHesapOzetiBorcAlacakBakiyeTablo(List<String> cariHesapOzetiBorcAlacakBakiyeTablo) {
+        CariHesapOzetiBorcAlacakBakiyeTablo = cariHesapOzetiBorcAlacakBakiyeTablo;
     }
 
     public String get_200() {

@@ -319,5 +319,19 @@
     <string name="alert_siparis_change_price">"Fiyat değiştir "</string>
     <string name="alert_siparis_old_price">Eski fiyat</string>
     <string name="alert_siparis_new_price">Yeni fiyat</string>
+    <string name="client_reports_sales">Satışlar</string>
+    <string name="client_reports_collections">Tahsilatlar</string>
+    <string name="client_reports_debts">Borc</string>
+    <string name="client_reports_balance">Bakiye</string>
+    <string name="client_reports_credit">Alacak</string>
+    <string name="client_reports_moths">Aylar</string>
+    <string name="client_reports_sum">Toplam</string>
+    <string name="client_reports_sales_summary">Cari hesap satış özeti</string>
+    <string name="client_reports_collection_summary">Cari hesap tahsilat özeti</string>
+    <string name="client_reports_collection_sale_summary">Cari hesap satış ve tahsilat özeti</string>
+    <string name="client_reports_debts_summary">Cari hesap borc özeti</string>
+    <string name="client_reports_credit_summary">Cari hesap alacak özeti</string>
+    <string name="client_reports_balance_summary">Cari hesap bakiye özeti</string>
+    <string name="client_reports_debt_credit_balance">Cari hesap borc alacak bakiye özeti</string>
 
 </resources>

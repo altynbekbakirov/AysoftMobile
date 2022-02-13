@@ -164,7 +164,9 @@ public interface RetrofitApi {
             @Field("Aciklama") String Aciklama,
             @Field("MakbuzNo") String MakbuzNo,
             @Field("KasaKodu") String KasaKodu,
-            @Field("ZiyaretSatiri") String ziyaretSatir);
+            @Field("ZiyaretSatiri") String ziyaretSatir,
+            @Field("CihazEklemeSaati") String cihazEklemeSaati,
+            @Field("CihazDegisiklikSaati") String cihazDegisiklikSaati);
 
     @POST("SiparisEkle.php")
     @FormUrlEncoded

@@ -2,7 +2,11 @@ package kz.burhancakmak.aysoftmobile.Clients;
 
 import static kz.burhancakmak.aysoftmobile.Clients.ClientsTasksActivity.clientKayitNo;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
+import static kz.burhancakmak.aysoftmobile.MainActivity.depo1Aciklama1;
+import static kz.burhancakmak.aysoftmobile.MainActivity.depo2Aciklama1;
 import static kz.burhancakmak.aysoftmobile.MainActivity.menuGrupKayitNo;
+import static kz.burhancakmak.aysoftmobile.MainActivity.ondegerFiyatGrubu1;
+import static kz.burhancakmak.aysoftmobile.MainActivity.ondegerFiyatGrubu2;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -97,7 +101,8 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
     List<CihazlarMenu> menuList = new ArrayList<>();
     List<String> priceList = new ArrayList<>();
     List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
-    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, IkiFiyatKullanimi, IkiDepoKullanimi, SiparisteFiyatDegistirebilir;
+    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar,
+            IkiFiyatKullanimi, IkiDepoKullanimi, SiparisteFiyatDegistirebilir;
     private boolean isCount;
 
     @Override
@@ -250,6 +255,7 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         IkiDepoKullanimi = parametreGetir("IkiDepoKullanimi", "0");
         SiparisteFiyatDegistirebilir = parametreGetir("SiparisteFiyatDegistirebilir", "0");
         priceList.add("");
+
         for (int i = 0; i < productPricesList.size(); i++) {
             priceList.add(productPricesList.get(i).getFiyatGrubu());
         }
@@ -327,7 +333,11 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
                     }
                 }
             }
-            itemsAdapter.setItemsList(productItemList, VIEW_TYPE);
+            itemsAdapter.setItemsList(productItemList, VIEW_TYPE,
+                    depo1Aciklama1 + " " + getString(R.string.items_kalan1_label),
+                    depo2Aciklama1.isEmpty() ? "" : depo2Aciklama1 + " " + getString(R.string.items_kalan2_label),
+                    ondegerFiyatGrubu1.isEmpty() ? "" : ondegerFiyatGrubu1 + " " + getString(R.string.items_fiyat1_label),
+                    ondegerFiyatGrubu2.isEmpty() ? "" : ondegerFiyatGrubu2 + " " + getString(R.string.items_fiyat2_label));
             products_progressBar.setVisibility(View.GONE);
         }
     }
@@ -356,6 +366,7 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         for (int i = 0; i < sepetList.size(); i++) {
             if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
                 editMiktar.setText(String.valueOf(sepetList.get(i).getStokMiktar()));
+                editFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
                 stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString())));
                 break;
             }
@@ -500,14 +511,14 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
                         sepet.setStokKayitNo(productItemList.get(position).getKayitNo());
                         sepet.setStokKodu(productItemList.get(position).getStokKodu());
                         sepet.setStokAdi(productItemList.get(position).getStokAdi1());
-                        sepet.setStokFiyat(productItemList.get(position).getFiyat1());
+                        sepet.setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
                         sepet.setStokBirim(productItemList.get(position).getBirim());
                         sepet.setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                        sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
+                        sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                         sepet.setSatirIndirimOrani(0.0);
                         sepet.setSatirIndirimTutari(0.0);
                         sepet.setGenelIndirimTutari(0.0);
-                        sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
+                        sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                         sepet.setStokResim1(productItemList.get(position).getStokResim());
                         sepet.setStokResim2(productItemList.get(position).getStokResim1());
                         sepet.setStokResim3(productItemList.get(position).getStokResim2());
@@ -518,11 +529,11 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
                             if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
                                 sepetList.get(i).setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
                                 sepetList.get(i).setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
-                                sepetList.get(i).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
+                                sepetList.get(i).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                                 sepetList.get(i).setSatirIndirimOrani(0.0);
                                 sepetList.get(i).setSatirIndirimTutari(0.0);
                                 sepetList.get(i).setGenelIndirimTutari(0.0);
-                                sepetList.get(i).setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
+                                sepetList.get(i).setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                                 isFound = true;
                                 break;
                             }
@@ -532,14 +543,14 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
                             sepet.setStokKayitNo(productItemList.get(position).getKayitNo());
                             sepet.setStokKodu(productItemList.get(position).getStokKodu());
                             sepet.setStokAdi(productItemList.get(position).getStokAdi1());
-                            sepet.setStokFiyat(productItemList.get(position).getFiyat1());
+                            sepet.setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
                             sepet.setStokBirim(productItemList.get(position).getBirim());
                             sepet.setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                            sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
+                            sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                             sepet.setSatirIndirimOrani(0.0);
                             sepet.setSatirIndirimTutari(0.0);
                             sepet.setGenelIndirimTutari(0.0);
-                            sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * productItemList.get(position).getFiyat1());
+                            sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
                             sepet.setStokResim1(productItemList.get(position).getStokResim());
                             sepet.setStokResim2(productItemList.get(position).getStokResim1());
                             sepet.setStokResim3(productItemList.get(position).getStokResim2());

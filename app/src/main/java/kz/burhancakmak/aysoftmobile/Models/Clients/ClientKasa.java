@@ -5,6 +5,8 @@ public class ClientKasa {
     private Integer CariKayitNo;
     private Integer ZiyaretKayitNo;
     private String Tarih;
+    private String EklenmeSaati;
+    private String DegisiklikSaati;
     private Double Tutar;
     private String Aciklama;
     private String MakbuzNo;
@@ -64,6 +66,22 @@ public class ClientKasa {
 
     public void setTarih(String tarih) {
         Tarih = tarih;
+    }
+
+    public String getEklenmeSaati() {
+        return EklenmeSaati;
+    }
+
+    public void setEklenmeSaati(String eklenmeSaati) {
+        EklenmeSaati = eklenmeSaati;
+    }
+
+    public String getDegisiklikSaati() {
+        return DegisiklikSaati;
+    }
+
+    public void setDegisiklikSaati(String degisiklikSaati) {
+        DegisiklikSaati = degisiklikSaati;
     }
 
     public Double getTutar() {

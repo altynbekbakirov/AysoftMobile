@@ -547,6 +547,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "CariKayitNo INTEGER, "
                 + "ZiyaretKayitNo INTEGER, "
                 + "Tarih TEXT, "
+                + "EklenmeSaati TEXT, "
+                + "DegisiklikSaati TEXT, "
                 + "Tutar REAL, "
                 + "Aciklama TEXT, "
                 + "MakbuzNo TEXT, "
@@ -566,6 +568,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "CariKayitNo INTEGER, "
                 + "ZiyaretKayitNo INTEGER, "
                 + "Tarih TEXT, "
+                + "EklenmeSaati TEXT, "
+                + "DegisiklikSaati TEXT, "
                 + "Aciklama TEXT, "
                 + "SiparisTeslimTarihi TEXT, "
                 + "IslemTipi  INTEGER, "
@@ -958,6 +962,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put("ZiyaretKayitNo", kasa.getZiyaretKayitNo());
         cv.put("Tarih", kasa.getTarih());
         cv.put("Tutar", kasa.getTutar());
+        cv.put("EklenmeSaati", kasa.getEklenmeSaati());
+        cv.put("DegisiklikSaati", kasa.getDegisiklikSaati());
         cv.put("Aciklama", kasa.getAciklama());
         cv.put("MakbuzNo", kasa.getMakbuzNo());
         cv.put("IslemTipi ", kasa.getIslemTipi());
@@ -976,6 +982,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put("CariKayitNo", order.getCariKayitNo());
         cv.put("ZiyaretKayitNo", order.getZiyaretKayitNo());
         cv.put("Tarih", order.getTarih());
+        cv.put("EklenmeSaati", order.getEklenmeSaati());
+        cv.put("DegisiklikSaati", order.getDegisiklikSaati());
         cv.put("Aciklama", order.getAciklama());
         cv.put("SiparisTeslimTarihi", order.getSiparisTeslimTarihi());
         cv.put("IslemTipi", order.getIslemTipi());
@@ -1096,7 +1104,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("CariKayitNo", order.getCariKayitNo());
-//        cv.put("Tarih", order.getTarih());
+        cv.put("DegisiklikSaati", order.getDegisiklikSaati());
         cv.put("Tutar", order.getTutar());
         cv.put("NetTutar", order.getNetTutar());
         cv.put("IslemTipi", order.getIslemTipi());
@@ -1133,6 +1141,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("Tarih", kasa.getTarih());
         cv.put("Tutar", kasa.getTutar());
+        cv.put("EklenmeSaati", kasa.getEklenmeSaati());
+        cv.put("DegisiklikSaati", kasa.getDegisiklikSaati());
         cv.put("Aciklama", kasa.getAciklama());
         cv.put("MakbuzNo", kasa.getMakbuzNo());
         db.update("AY_" + FIRMA_NO + "_KasaIslemleri", cv, "KayitNo = ?", new String[]{id});
@@ -1834,7 +1844,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "siparis.IslemTipi, siparis.OdemeSekli, siparis.ErpGonderildi, siparis.ErpKayitNo, siparis.ErpSiparisFisNo, " +
                 "siparis.KordinatLatitute, siparis.KordinatLongitude, siparis.SiparisOncesiFoto1, siparis.SiparisOncesiFoto2, siparis.SiparisOncesiFoto3, " +
                 "siparis.Tutar, siparis.GenelIndirimOrani, siparis.GenelIndirimTutari, siparis.SatirIndirimTutari, siparis.GenelIndirimYontemi, " +
-                "siparis.NetTutar, siparis.SevkiyatAdresiKayitno " +
+                "siparis.NetTutar, siparis.SevkiyatAdresiKayitno, siparis.EklenmeSaati, siparis.DegisiklikSaati " +
                 "FROM AY_" + FIRMA_NO + "_Siparis AS siparis INNER JOIN AY_" + FIRMA_NO + "_ClCard AS card ON siparis.CariKayitNo = card.KayitNo " +
                 "WHERE siparis.CariKayitNo = " + cariKayitno + " AND siparis.Tarih >= '" + date1 + "' AND siparis.Tarih <= '" + date2 + "'";
         Cursor cursor = db.rawQuery(sql, null);
@@ -1864,6 +1874,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 order.setGenelIndirimYontemi(cursor.getInt(20));
                 order.setNetTutar(cursor.getDouble(21));
                 order.setSevkiyatAdresiKayitno(cursor.getInt(22));
+                order.setEklenmeSaati(cursor.getString(23));
+                order.setDegisiklikSaati(cursor.getString(24));
                 orderList.add(order);
             } while (cursor.moveToNext());
         }
@@ -1950,7 +1962,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<DataExportKasaTask> list = new ArrayList<>();
         String sql = "SELECT client.KayitNo AS CariKayitno, client.Kod, client.Unvani1, kasa.KayitNo, kasa.Tarih, kasa.IslemTipi, " +
-                "kasa.ErpGonderildi, kasa.ErpFisNo, kasa.ErpKayitNo, kasa.Tutar, kasa.Aciklama, '2' AS tur, kasa.KasaKodu " +
+                "kasa.ErpGonderildi, kasa.ErpFisNo, kasa.ErpKayitNo, kasa.Tutar, kasa.Aciklama, '2' AS tur, kasa.KasaKodu, kasa.EklenmeSaati, kasa.DegisiklikSaati " +
                 "FROM  AY_" + FIRMA_NO + "_ClCard AS client " +
                 "INNER JOIN AY_" + FIRMA_NO + "_KasaIslemleri AS kasa ON client.KayitNo = kasa.CariKayitNo " +
                 "WHERE kasa.Tarih = '" + date + "' " +
@@ -1972,6 +1984,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 task.setAciklama(cursor.getString(10));
                 task.setTur(cursor.getInt(11));
                 task.setKasaKodu(cursor.getString(12));
+                task.setEklenmeSaati(cursor.getString(13));
+                task.setDegisiklikSaati(cursor.getString(14));
                 list.add(task);
             } while (cursor.moveToNext());
         }

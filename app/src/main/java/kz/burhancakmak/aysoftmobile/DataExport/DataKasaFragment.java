@@ -3,6 +3,8 @@ package kz.burhancakmak.aysoftmobile.DataExport;
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +19,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -48,6 +53,8 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClientKasa;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsKasaResponse;
 import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportKasaTask;
 import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportKasaTask;
+import kz.burhancakmak.aysoftmobile.Models.DataExport.DataExportSiparisTask;
+import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.R;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitClient;
@@ -65,10 +72,14 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
     RecyclerView recyclerView;
     DataExportKasaAdapter adapter;
     List<DataExportKasaTask> listKasa = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     CheckBox cbSelectAll;
     String currentDate;
-    int spinnerSelected;
     View view;
+    LinearLayout mainlayout, bottomPanelCollapsable;
+    TextView bottomPanelTotal, bottomPanelRowCount;
+    ImageView bottomPanelImage;
+    String KurusHaneSayisiStokTutar, KurusHaneSayisiStokMiktar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +114,10 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
         Date date1 = new Date();
         currentDate = dateFormat.format(date1);
 
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
+        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
+
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -111,6 +126,26 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         adapter = new DataExportKasaAdapter(listKasa, this);
         recyclerView.setAdapter(adapter);
+
+        mainlayout = view.findViewById(R.id.mainLinear);
+        bottomPanelCollapsable = view.findViewById(R.id.bottomPanelCollapsable);
+        bottomPanelCollapsable.setVisibility(View.GONE);
+        bottomPanelImage = view.findViewById(R.id.bottomPanelImage);
+        bottomPanelTotal = view.findViewById(R.id.bottomPanelTotal);
+        bottomPanelRowCount = view.findViewById(R.id.bottomPanelRowCount);
+
+        mainlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomPanelCollapsable.getVisibility() == View.GONE) {
+                    bottomPanelImage.setImageResource(R.drawable.ic_arrow_circle_down);
+                    expand();
+                } else {
+                    bottomPanelImage.setImageResource(R.drawable.ic_arrow_circle_up);
+                    collapse();
+                }
+            }
+        });
     }
 
     @Override
@@ -165,6 +200,7 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
                 listKasa.get(i).setCbChecked(false);
             }
             adapter.setDataList(listKasa);
+            showBottomPanel(listKasa);
             products_progressBar.setVisibility(View.GONE);
         }
     }
@@ -204,7 +240,9 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
                             listKasa.get(i).getAciklama(),
                             listKasa.get(i).getMakbuzNo(),
                             listKasa.get(i).getKasaKodu(),
-                            ""
+                            "",
+                            listKasa.get(i).getEklenmeSaati(),
+                            listKasa.get(i).getDegisiklikSaati()
                     );
                     try {
                         Response<ClientsKasaResponse> response = kasaList.execute();
@@ -224,7 +262,7 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
                                 isFailed = true;
                             }
                         }
-                    } catch (IllegalStateException | JsonSyntaxException | IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -238,6 +276,83 @@ public class DataKasaFragment extends Fragment implements DataExportKasaAdapter.
             products_progressBar.setVisibility(View.GONE);
             if (isFailed) uploadDataToWebFailDialog();
         }
+    }
+
+    private void expand() {
+        bottomPanelCollapsable.setVisibility(View.VISIBLE);
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        bottomPanelCollapsable.measure(widthSpec, heightSpec);
+        ValueAnimator mAnimator = slideAnimator(0, bottomPanelCollapsable.getMeasuredHeight());
+        mAnimator.start();
+    }
+
+    private void collapse() {
+        int finalHeight = bottomPanelCollapsable.getHeight();
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                bottomPanelCollapsable.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+        });
+        mAnimator.start();
+    }
+
+    private ValueAnimator slideAnimator(int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = bottomPanelCollapsable.getLayoutParams();
+                layoutParams.height = value;
+                bottomPanelCollapsable.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+
+    private void showBottomPanel(List<DataExportKasaTask> sepets) {
+        double total = 0;
+
+        if (sepets.size() > 0) {
+            for (int i = 0; i < sepets.size(); i++) {
+                total += sepets.get(i).getTutar();
+            }
+            bottomPanelTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+            bottomPanelRowCount.setText(String.valueOf(sepets.size()));
+        } else {
+            bottomPanelTotal.setText("0");
+            bottomPanelRowCount.setText("0");
+        }
+    }
+
+    private String parametreGetir(String parametre, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(parametre)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
+        }
+        return parametreDeger;
     }
 
     private void showFilterDialog() {

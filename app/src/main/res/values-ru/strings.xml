@@ -342,6 +342,20 @@
     <string name="alert_siparis_change_price">Переоценка</string>
     <string name="alert_siparis_old_price">Старая цена</string>
     <string name="alert_siparis_new_price">Новая цена</string>
+    <string name="client_reports_sales">Продажи</string>
+    <string name="client_reports_collections">Сборы</string>
+    <string name="client_reports_debts">Дебет</string>
+    <string name="client_reports_balance">Баланс</string>
+    <string name="client_reports_credit">Кредит</string>
+    <string name="client_reports_moths">Месяцы</string>
+    <string name="client_reports_sum">Сумма</string>
+    <string name="client_reports_sales_summary">Сводный отчет по продажам</string>
+    <string name="client_reports_collection_summary">Сводный отчет по сборам</string>
+    <string name="client_reports_collection_sale_summary">Сводный отчет по продажам и сборам</string>
+    <string name="client_reports_debts_summary">Сводный отчет по дебетам</string>
+    <string name="client_reports_credit_summary">Сводный отчет по кредитам</string>
+    <string name="client_reports_balance_summary">Сводный отчет по балансам</string>
+    <string name="client_reports_debt_credit_balance">Сводный отчет по дебетам, кредитам и балансам</string>
 
 
 </resources>

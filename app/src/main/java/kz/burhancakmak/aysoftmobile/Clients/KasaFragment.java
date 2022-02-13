@@ -121,7 +121,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int kayitNo, position;
-        String makbuzNo, aciklama, tarih;
+        String makbuzNo, aciklama, tarih, eklenmeSaati, degisiklikSaati;
         double tutar;
         int islemTuru;
         if (resultCode == RESULT_OK) {
@@ -129,10 +129,12 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                 makbuzNo = data.getStringExtra("makbuzNo");
                 aciklama = data.getStringExtra("aciklama");
                 tarih = data.getStringExtra("tarih");
+                eklenmeSaati = data.getStringExtra("eklenmeSaati");
+                degisiklikSaati = data.getStringExtra("degisiklikSaati");
                 tutar = data.getDoubleExtra("tutar", -1);
                 islemTuru = data.getIntExtra("islemTuru", -1);
                 if (tarih != null && aciklama != null) {
-                    addItem(tarih, tutar, makbuzNo, aciklama, islemTuru);
+                    addItem(tarih, tutar, makbuzNo, aciklama, islemTuru, eklenmeSaati, degisiklikSaati);
                 }
             }
             if (requestCode == 102) {
@@ -141,9 +143,11 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                 makbuzNo = data.getStringExtra("makbuzNo");
                 aciklama = data.getStringExtra("aciklama");
                 tarih = data.getStringExtra("tarih");
+                eklenmeSaati = data.getStringExtra("eklenmeSaati");
+                degisiklikSaati = data.getStringExtra("degisiklikSaati");
                 tutar = data.getDoubleExtra("tutar", -1);
                 if (kayitNo != -1) {
-                    updateItem(tarih, tutar, makbuzNo, aciklama, kayitNo, position);
+                    updateItem(tarih, tutar, makbuzNo, aciklama, kayitNo, position, eklenmeSaati, degisiklikSaati);
                 }
             }
         }
@@ -241,6 +245,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         ClCard card;
         ClientZiyaret ziyaret;
         boolean isFailed = false;
+        String hata = "";
 
         @Override
         protected void onPreExecute() {
@@ -289,7 +294,9 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                     kasaList.get(integers[0]).getAciklama(),
                     kasaList.get(integers[0]).getMakbuzNo(),
                     kasaList.get(integers[0]).getKasaKodu(),
-                    ziyaretSatiri
+                    ziyaretSatiri,
+                    kasaList.get(integers[0]).getEklenmeSaati(),
+                    kasaList.get(integers[0]).getDegisiklikSaati()
             );
             try {
                 Response<ClientsKasaResponse> response = list.execute();
@@ -309,8 +316,8 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                         isFailed = true;
                     }
                 }
-            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                hata = e.getMessage();
             }
             return null;
         }
@@ -319,6 +326,9 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             products_progressBar.setVisibility(View.GONE);
+            if (!hata.isEmpty()) {
+                sendDataToServerFailDialog(hata);
+            }
             if (isFailed) {
                 sendDataToServerFailDialog();
             }
@@ -634,7 +644,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         builder.show();
     }
 
-    private void addItem(String tarih, Double tutar, String makbuzNo, String aciklama, Integer islemTipi) {
+    private void addItem(String tarih, Double tutar, String makbuzNo, String aciklama, Integer islemTipi, String eklenmeSaati, String degisiklikSaati) {
         ClientKasa kasa = new ClientKasa();
         kasa.setTarih(tarih);
         kasa.setTutar(tutar);
@@ -645,18 +655,22 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         kasa.setIslemTipi(islemTipi);
         kasa.setErpGonderildi(0);
         kasa.setKapatildi(0);
+        kasa.setDegisiklikSaati(degisiklikSaati);
+        kasa.setEklenmeSaati(eklenmeSaati);
         long kayitno = databaseHandler.insertKasaIslemleri(kasa);
         kasa.setKayitNo(Integer.parseInt(String.valueOf(kayitno)));
         kasaList.add(kasa);
         clientsAdapter.notifyDataSetChanged();
     }
 
-    private void updateItem(String tarih, Double tutar, String makbuzNo, String aciklama, int kayitNo, int position) {
+    private void updateItem(String tarih, Double tutar, String makbuzNo, String aciklama, int kayitNo, int position, String eklenmeSaati, String degisiklikSaati) {
         ClientKasa kasa = new ClientKasa();
         kasa.setTarih(tarih);
         kasa.setTutar(tutar);
         kasa.setMakbuzNo(makbuzNo);
         kasa.setAciklama(aciklama);
+        kasa.setEklenmeSaati(eklenmeSaati);
+        kasa.setDegisiklikSaati(degisiklikSaati);
         databaseHandler.updateKasaIslemleri(kasa, String.valueOf(kayitNo));
         kasaList.get(position).setAciklama(aciklama);
         kasaList.get(position).setMakbuzNo(makbuzNo);
@@ -768,6 +782,21 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         builder.setCancelable(true);
         builder.setIcon(R.drawable.ic_dangerous);
         builder.setMessage(R.string.info_warning_message);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void sendDataToServerFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getActivity());
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
         builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

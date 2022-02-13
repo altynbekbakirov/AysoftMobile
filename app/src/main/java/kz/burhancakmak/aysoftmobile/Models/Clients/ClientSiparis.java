@@ -7,6 +7,8 @@ public class ClientSiparis {
     private Integer ZiyaretKayitNo;
     private String CariKod;
     private String Tarih;
+    private String EklenmeSaati;
+    private String DegisiklikSaati;
     private String Aciklama;
     private String SiparisTeslimTarihi;
     private Integer IslemTipi;
@@ -57,6 +59,22 @@ public class ClientSiparis {
 
     public void setSiparisTeslimTarihi(String siparisTeslimTarihi) {
         SiparisTeslimTarihi = siparisTeslimTarihi;
+    }
+
+    public String getEklenmeSaati() {
+        return EklenmeSaati;
+    }
+
+    public void setEklenmeSaati(String eklenmeSaati) {
+        EklenmeSaati = eklenmeSaati;
+    }
+
+    public String getDegisiklikSaati() {
+        return DegisiklikSaati;
+    }
+
+    public void setDegisiklikSaati(String degisiklikSaati) {
+        DegisiklikSaati = degisiklikSaati;
     }
 
     public String getCariKod() {

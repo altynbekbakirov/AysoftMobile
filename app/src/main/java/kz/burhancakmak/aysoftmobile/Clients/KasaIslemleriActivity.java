@@ -171,11 +171,15 @@ public class KasaIslemleriActivity extends AppCompatActivity {
                     edtAciklama.setError(getString(R.string.client_kasa_empty_value));
                 }
             } else {
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                Date date = new Date();
                 double tutar = Double.parseDouble(edtTutar.getText().toString());
                 Intent intent = new Intent();
                 intent.putExtra("kayitNo", kayitNo);
                 intent.putExtra("position", position);
                 intent.putExtra("tarih", edtTarih.getText().toString());
+                intent.putExtra("eklenmeSaati", dateFormat.format(date));
+                intent.putExtra("degisiklikSaati", dateFormat.format(date));
                 intent.putExtra("tutar", tutar);
                 intent.putExtra("islemTuru", islemTuru);
                 intent.putExtra("aciklama", edtAciklama.getText().toString());

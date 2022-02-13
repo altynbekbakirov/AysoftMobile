@@ -3,6 +3,8 @@ package kz.burhancakmak.aysoftmobile.DataExport;
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +19,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -68,6 +73,9 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
     CheckBox cbSelectAll;
     String currentDate;
     View view;
+    LinearLayout mainlayout, bottomPanelCollapsable;
+    TextView bottomPanelTotal, bottomPanelSale, bottomPanelNet, bottomPanelRowCount;
+    ImageView bottomPanelImage;
     String KurusHaneSayisiStokTutar, KurusHaneSayisiStokMiktar;
 
     @Override
@@ -114,6 +122,28 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         adapter = new DataExportSiparisAdapter(listSiparis, this, Integer.parseInt(KurusHaneSayisiStokTutar));
         recyclerView.setAdapter(adapter);
+
+        mainlayout = view.findViewById(R.id.mainLinear);
+        bottomPanelCollapsable = view.findViewById(R.id.bottomPanelCollapsable);
+        bottomPanelCollapsable.setVisibility(View.GONE);
+        bottomPanelImage = view.findViewById(R.id.bottomPanelImage);
+        bottomPanelTotal = view.findViewById(R.id.bottomPanelTotal);
+        bottomPanelSale = view.findViewById(R.id.bottomPanelSale);
+        bottomPanelNet = view.findViewById(R.id.bottomPanelNet);
+        bottomPanelRowCount = view.findViewById(R.id.bottomPanelRowCount);
+
+        mainlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bottomPanelCollapsable.getVisibility() == View.GONE) {
+                    bottomPanelImage.setImageResource(R.drawable.ic_arrow_circle_down);
+                    expand();
+                } else {
+                    bottomPanelImage.setImageResource(R.drawable.ic_arrow_circle_up);
+                    collapse();
+                }
+            }
+        });
     }
 
     @Override
@@ -147,7 +177,7 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
         return super.onOptionsItemSelected(item);
     }
 
-    class GetOrdersFromDatabase extends AsyncTask<Void, Void, Void> {
+    private class GetOrdersFromDatabase extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = view.findViewById(R.id.dataExport_progressBar_layout);
 
         @Override
@@ -169,11 +199,12 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
                 listSiparis.get(i).setCbChecked(false);
             }
             adapter.setDataList(listSiparis);
+            showBottomPanel(listSiparis);
             products_progressBar.setVisibility(View.GONE);
         }
     }
 
-    class UploadOrderToWeb extends AsyncTask<Void, Void, Void> {
+    private class UploadOrderToWeb extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = view.findViewById(R.id.dataExport_progressBar_layout);
         String webAddress = webSettingsMap.get("web");
         String phoneId = webSettingsMap.get("uuid");
@@ -225,7 +256,7 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
 //                    .append(siparisList.get(integers[0]).getSatirIndirimTutari()).append("|")
                             .append(0).append("|")
 //                    .append(siparisList.get(integers[0]).getNetTutar());
-                            .append(0);
+                            .append(siparis.getNetTutar()).append("|");
 
                     sepetList = databaseHandler.selectAllSepet(siparis.getKayitNo());
 
@@ -278,7 +309,7 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
                                 isFailed = true;
                             }
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -335,6 +366,79 @@ public class DataSiparisFragment extends Fragment implements DataExportSiparisAd
             }
         });
         builder.show();
+    }
+
+    private void expand() {
+        bottomPanelCollapsable.setVisibility(View.VISIBLE);
+        final int widthSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        final int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        bottomPanelCollapsable.measure(widthSpec, heightSpec);
+        ValueAnimator mAnimator = slideAnimator(0, bottomPanelCollapsable.getMeasuredHeight());
+        mAnimator.start();
+    }
+
+    private void collapse() {
+        int finalHeight = bottomPanelCollapsable.getHeight();
+        ValueAnimator mAnimator = slideAnimator(finalHeight, 0);
+        mAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                bottomPanelCollapsable.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+
+        });
+        mAnimator.start();
+    }
+
+    private ValueAnimator slideAnimator(int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                //Update Height
+                int value = (Integer) valueAnimator.getAnimatedValue();
+                ViewGroup.LayoutParams layoutParams = bottomPanelCollapsable.getLayoutParams();
+                layoutParams.height = value;
+                bottomPanelCollapsable.setLayoutParams(layoutParams);
+            }
+        });
+        return animator;
+    }
+
+    private void showBottomPanel(List<DataExportSiparisTask> sepets) {
+        double total = 0, net = 0, discount = 0;
+
+        if (sepets.size() > 0) {
+            for (int i = 0; i < sepets.size(); i++) {
+                total += sepets.get(i).getTutar();
+                net += sepets.get(i).getNetTutar();
+                discount += sepets.get(i).getGenelIndirimTutari();
+            }
+            bottomPanelTotal.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
+            bottomPanelSale.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", discount));
+            bottomPanelNet.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", net));
+            bottomPanelRowCount.setText(String.valueOf(sepets.size()));
+        } else {
+            bottomPanelTotal.setText("0");
+            bottomPanelSale.setText("0");
+            bottomPanelNet.setText("0");
+            bottomPanelRowCount.setText("0");
+        }
     }
 
     private void uploadDataToWebFailDialog() {

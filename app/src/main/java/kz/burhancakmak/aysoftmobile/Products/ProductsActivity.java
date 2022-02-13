@@ -98,9 +98,9 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
     List<CihazlarMenu> menuList = new ArrayList<>();
     List<ItemsPrclist> productPricesList = new ArrayList<>();
     List<String> priceList = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     final int[] selectedItem = {0};
-    String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar, ikiDepoKullanimi;
-    int ikiFiyatKullanimi;
+    String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar, ikiDepoKullanimi, ikiFiyatKullanimi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,10 +251,11 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
         databaseHandler = DatabaseHandler.getInstance(this);
         menuList = databaseHandler.selectCihazlarMenu(1, menuGrupKayitNo);
-        kurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokMiktar", "0");
-        kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokTutar", "0");
-        ikiFiyatKullanimi = Integer.parseInt(parametreGetir(FIRMA_NO, "IkiFiyatKullanimi", "0"));
-        ikiDepoKullanimi = parametreGetir(FIRMA_NO, "IkiDepoKullanimi", "0");
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+        kurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
+        kurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
+        ikiFiyatKullanimi = parametreGetir("IkiFiyatKullanimi", "0");
+        ikiDepoKullanimi = parametreGetir("IkiDepoKullanimi", "0");
         productPricesList = databaseHandler.selectPrclist();
         priceList.add("");
         for (int i = 0; i < productPricesList.size(); i++) {
@@ -275,7 +276,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 this,
                 Integer.parseInt(kurusHaneSayisiStokMiktar),
                 Integer.parseInt(kurusHaneSayisiStokTutar),
-                ikiFiyatKullanimi,
+                Integer.parseInt(ikiFiyatKullanimi),
                 Integer.parseInt(ikiDepoKullanimi)
         );
         recyclerView.setAdapter(itemsAdapter);
@@ -639,7 +640,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         spinner1.setAdapter(priceAdapter);
         spinner1.setSelection(priceAdapter.getPosition(ondegerFiyatGrubu1));
 
-        if (ikiFiyatKullanimi == 1) {
+        if (ikiFiyatKullanimi.equals("1")) {
 //            if (!ondegerFiyatGrubu2.isEmpty()) {
             spinner2.setAdapter(priceAdapter);
             spinner2.setSelection(priceAdapter.getPosition(ondegerFiyatGrubu2));
@@ -657,7 +658,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ondegerFiyatGrubu1 = spinner1.getSelectedItem().toString();
-                if (ikiFiyatKullanimi == 1) {
+                if (ikiFiyatKullanimi.equals("1")) {
 //                    if (!ondegerFiyatGrubu2.trim().isEmpty()) {
                     ondegerFiyatGrubu2 = spinner2.getSelectedItem().toString();
 //                    }
@@ -705,13 +706,12 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         alertDialog.show();
     }
 
-    private String parametreGetir(String firmaNo, String parametre, String deger) {
-        List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
-        String parametreDeger;
-        if (parametrelerList.size() == 1) {
-            parametreDeger = parametrelerList.get(0).getParametreDegeri();
-        } else {
-            parametreDeger = deger;
+    private String parametreGetir(String param, String deger) {
+        String parametreDeger = deger;
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(param)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
         }
         return parametreDeger;
     }

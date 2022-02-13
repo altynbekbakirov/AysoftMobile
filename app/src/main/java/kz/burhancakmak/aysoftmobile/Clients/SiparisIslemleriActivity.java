@@ -145,10 +145,13 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         if (item.getItemId() == R.id.client_orders_save) {
             if (sepetList.size() > 0) {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat dateFormat1 = new SimpleDateFormat("HH:mm:ss");
                 Date date = new Date();
                 ClientSiparis siparis = new ClientSiparis();
                 siparis.setCariKayitNo(kayitNo);
                 siparis.setTarih(dateFormat.format(date));
+                siparis.setEklenmeSaati(dateFormat1.format(date));
+                siparis.setDegisiklikSaati(dateFormat1.format(date));
                 siparis.setAciklama(Aciklama);
                 siparis.setOdemeSekli(OdemeSekli);
                 siparis.setSiparisTeslimTarihi(SiparisTeslimTarihi == null ? dateFormat.format(date) : SiparisTeslimTarihi);

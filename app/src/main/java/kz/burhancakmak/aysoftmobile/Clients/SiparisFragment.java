@@ -161,6 +161,7 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         ClCard card;
         String ziyaretSatiri;
         String errorMessage;
+        String hata = "";
 
         @Override
         protected void onPreExecute() {
@@ -243,7 +244,9 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
 //                    0 + "|" +
 //                    siparisList.get(integers[0]).getSatirIndirimTutari() + "|" +
                     0 + "|" +
-                    siparisList.get(integers[0]).getNetTutar();
+                    siparisList.get(integers[0]).getNetTutar()
+                    + "|" + siparisList.get(integers[0]).getEklenmeSaati()
+                    + "|" + siparisList.get(integers[0]).getDegisiklikSaati();
 //                    0;
             queryList = retrofitApi.siparisHareketleriGuncelle(
                     phoneId,
@@ -274,8 +277,8 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                         isFailed = true;
                     }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                hata = e.getMessage();
             }
             return null;
         }
@@ -284,6 +287,9 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             products_progressBar.setVisibility(View.GONE);
+            if (!hata.isEmpty()) {
+                sendDataToServerFailDialog(hata);
+            }
             if (isFailed) {
                 sendDataToServerFailDialog();
             }

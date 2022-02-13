@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Clients.ClientsReportsActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -43,14 +43,14 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari HesapOzeti Satis Grafik" />
+                    android:text="@string/client_reports_sales_summary" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart1"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-            </LinearLayout>
+            </LinearLayout> <!--  CariHesapOzetiSatisGrafik  -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiTahsilatGrafik"
@@ -75,14 +75,14 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Tahsilat Grafik" />
+                    android:text="@string/client_reports_collection_summary" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart2"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiTahsilatGrafik -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiSatisTahsilatGrafik"
@@ -107,14 +107,14 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Satis Tahsilat Grafik" />
+                    android:text="@string/client_reports_collection_sale_summary" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart3"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiSatisTahsilatGrafik -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiBorcGrafik"
@@ -139,14 +139,46 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Borc Grafik" />
+                    android:text="@string/client_reports_debts_summary" />
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart4"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiBorcGrafik -->
+
+            <LinearLayout
+                android:id="@+id/layoutCariHesapOzetiAlacakGrafik"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="@string/client_reports_credit_summary" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart5"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+
+            </LinearLayout> <!-- CariHesapOzetiAlacakGrafik -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiBakiyeGrafik"
@@ -171,17 +203,17 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Bakiye Grafik" />
+                    android:text="@string/client_reports_balance_summary" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart5"
+                    android:id="@+id/barChart6"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiBakiyeGrafik -->
 
             <LinearLayout
-                android:id="@+id/layoutCariHesapOzetiBorcTahsilatBakiyeGrafik"
+                android:id="@+id/layoutCariHesapOzetiBorcAlacakBakiyeGrafik"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -203,14 +235,14 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Borc Tahsilat Bakiye Grafik" />
+                    android:text="@string/client_reports_debt_credit_balance" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart6"
+                    android:id="@+id/barChart7"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
 
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiBorcAlacakBakiyeGrafik -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiSatisTablo"
@@ -235,14 +267,9 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Satis Tablo" />
+                    android:text="@string/client_reports_sales_summary" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart7"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp" />
-
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiSatisTablo -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiTahsilatTablo"
@@ -267,14 +294,9 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Tahsilat Tablo" />
+                    android:text="@string/client_reports_collection_summary" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart8"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp" />
-
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiTahsilatTablo -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiSatisTahsilatTablo"
@@ -299,14 +321,63 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Satis Tahsilat Tablo" />
+                    android:text="@string/client_reports_collection_sale_summary" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart9"
+            </LinearLayout> <!-- CariHesapOzetiSatisTahsilatTablo -->
+
+            <LinearLayout
+                android:id="@+id/layoutCariHesapOzetiBorcTablo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="400dp" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
 
-            </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="@string/client_reports_debts_summary" />
+
+            </LinearLayout> <!-- CariHesapOzetiBorcTablo -->
+
+            <LinearLayout
+                android:id="@+id/layoutCariHesapOzetiAlacakTablo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/textview_border_line"
+                    android:fontFamily="@font/open_sans_condensed_bold"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp"
+                    android:text="@string/client_reports_credit_summary" />
+
+            </LinearLayout> <!-- CariHesapOzetiAlacakTablo -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiBakiyeTablo"
@@ -331,14 +402,9 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Bakiye Tablo" />
+                    android:text="@string/client_reports_balance_summary" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart10"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp" />
-
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiBakiyeTablo -->
 
             <LinearLayout
                 android:id="@+id/layoutCariHesapOzetiBorcTahsilatBakiyeTablo"
@@ -363,14 +429,9 @@
                     android:fontFamily="@font/open_sans_condensed_bold"
                     android:gravity="center_horizontal"
                     android:padding="20dp"
-                    android:text="Cari Hesap Ozeti Borc Tahsilat Bakiye Tablo" />
+                    android:text="@string/client_reports_debt_credit_balance" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart11"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp" />
-
-            </LinearLayout>
+            </LinearLayout> <!-- CariHesapOzetiBorcAlacakBakiyeTablo -->
 
         </LinearLayout>
 

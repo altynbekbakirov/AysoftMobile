@@ -41,7 +41,6 @@ public class ProductsDashboardActivity extends AppCompatActivity {
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LANG = "language";
-    LineChart lineChart;
     BarChart barChart;
     PieChart pieChart;
     ItemsWithPrices items;

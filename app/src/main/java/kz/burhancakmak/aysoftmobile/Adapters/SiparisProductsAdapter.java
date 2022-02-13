@@ -31,6 +31,10 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int VIEW_TYPE = 0;
     public static final int ITEM_LINEAR = 0;
     public static final int ITEM_GRID = 1;
+    private String kalan1;
+    private String kalan2;
+    private String fiyat1;
+    private String fiyat2;
     int digitCount, digitPrice, ikiDepoKullanimi;
 
     public interface OnOrderClickListener {
@@ -46,10 +50,14 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.ikiDepoKullanimi = ikiDepoKullanimi;
     }
 
-    public void setItemsList(List<ItemsWithPrices> itemsList, int VIEW_TYPE) {
+    public void setItemsList(List<ItemsWithPrices> itemsList, int VIEW_TYPE, String kalan1, String kalan2, String fiyat1, String fiyat2) {
         this.itemsList = itemsList;
         itemsSearch = new ArrayList<>(itemsList);
         this.VIEW_TYPE = VIEW_TYPE;
+        this.kalan1 = kalan1;
+        this.kalan2 = kalan2;
+        this.fiyat1 = fiyat1;
+        this.fiyat2 = fiyat2;
         notifyDataSetChanged();
     }
 
@@ -81,6 +89,9 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LinearHolder linearHolder = (LinearHolder) holder;
                 linearHolder.StokAdi1.setText(itemsList.get(position).getStokAdi1());
                 linearHolder.StokKodu.setText(itemsList.get(position).getStokKodu());
+                linearHolder.Kalan1Label.setText(kalan1);
+                linearHolder.Kalan2Label.setText(kalan2);
+                linearHolder.fiyat1Label.setText(fiyat1);
                 linearHolder.Kalan1.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim().toLowerCase());
                 linearHolder.Kalan2.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim().toLowerCase());
                 linearHolder.Fiyat1.setText(String.format("%,." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
@@ -137,6 +148,9 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 GridHolder gridHolder = (GridHolder) holder;
                 gridHolder.StokAdi1.setText(itemsList.get(position).getStokAdi1());
                 gridHolder.StokKodu.setText(itemsList.get(position).getStokKodu());
+                gridHolder.Kalan1Label.setText(kalan1);
+                gridHolder.Kalan2Label.setText(kalan2);
+                gridHolder.fiyat1Label.setText(fiyat1);
                 gridHolder.Kalan1.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim().toLowerCase());
                 gridHolder.Kalan2.setText(String.format("%,." + digitCount + "f", itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim().toLowerCase());
                 gridHolder.Fiyat1.setText(String.format("%,." + digitPrice + "f", itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim().toLowerCase() + ")");
@@ -198,7 +212,7 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     class LinearHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView StokAdi1, StokKodu, Kalan1, Kalan2, Fiyat1, txtCounter, Kalan2Label;
+        TextView StokAdi1, StokKodu, Kalan1, Kalan2, Fiyat1, txtCounter, Kalan1Label, Kalan2Label, fiyat1Label;
         ImageView StokResim;
         OnOrderClickListener onOrderClickListener;
 
@@ -209,9 +223,11 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             StokAdi1 = itemView.findViewById(R.id.StokAdi1);
             StokKodu = itemView.findViewById(R.id.StokKodu);
             Kalan1 = itemView.findViewById(R.id.Kalan1);
+            Kalan1Label = itemView.findViewById(R.id.kalan1_label);
             Kalan2Label = itemView.findViewById(R.id.kalan2_label);
             Kalan2 = itemView.findViewById(R.id.Kalan2);
             Fiyat1 = itemView.findViewById(R.id.Fiyat1);
+            fiyat1Label = itemView.findViewById(R.id.fiyat1_label);
             txtCounter = itemView.findViewById(R.id.txtCounter);
             itemView.setOnClickListener(this);
 
@@ -228,7 +244,7 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     class GridHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView StokAdi1, StokKodu, Kalan1, Kalan2, Fiyat1, txtCounter, Kalan2Label;
+        TextView StokAdi1, StokKodu, Kalan1, Kalan2, Fiyat1, txtCounter, Kalan2Label, Kalan1Label, fiyat1Label;
         ImageView StokResim;
         OnOrderClickListener onOrderClickListener;
 
@@ -239,9 +255,11 @@ public class SiparisProductsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             StokAdi1 = itemView.findViewById(R.id.StokAdi1);
             StokKodu = itemView.findViewById(R.id.StokKodu);
             Kalan1 = itemView.findViewById(R.id.Kalan1);
+            Kalan1Label = itemView.findViewById(R.id.kalan1_label);
             Kalan2Label = itemView.findViewById(R.id.kalan2_label);
             Kalan2 = itemView.findViewById(R.id.Kalan2);
             Fiyat1 = itemView.findViewById(R.id.Fiyat1);
+            fiyat1Label = itemView.findViewById(R.id.fiyat1_label);
             txtCounter = itemView.findViewById(R.id.txtCounter);
             itemView.setOnClickListener(this);
 
