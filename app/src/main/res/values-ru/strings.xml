@@ -320,7 +320,7 @@
     <string name="month_october">Октябрь</string>
     <string name="month_november">Ноябрь</string>
     <string name="month_december">Декабрь</string>
-    <string name="client_dashboard_sales_by_month">Продажи / сборы по месяцам</string>
+    <string name="client_dashboard_sales_by_month">Продажи / поступления по месяцам</string>
     <string name="client_dashboard_list_of_products_count">Список проданных товаров по количеству</string>
     <string name="client_dashboard_list_of_products_sum">Перечень проданных товаров по количеству</string>
     <string name="client_dashboard_sales_by_mark_count">По объему продаж на основе бренда(кол)</string>
@@ -329,7 +329,7 @@
     <string name="client_dashboard_group_sum">Сумма на групповой основе</string>
     <string name="client_dashboard_special_count">Количество продаж по специальному коду1</string>
     <string name="client_dashboard_special_sum">Сумма продаж по специальному коду1</string>
-    <string name="client_dashboard_month_collections">Сборы</string>
+    <string name="client_dashboard_month_collections">Поступления</string>
     <string name="client_dashboard_special_count2">Количество продаж по специальному коду2</string>
     <string name="client_dashboard_special_sum2">Сумма продаж по специальному коду2</string>
     <string name="client_dashboard_special_count3">Количество продаж по специальному коду3</string>
@@ -343,15 +343,15 @@
     <string name="alert_siparis_old_price">Старая цена</string>
     <string name="alert_siparis_new_price">Новая цена</string>
     <string name="client_reports_sales">Продажи</string>
-    <string name="client_reports_collections">Сборы</string>
+    <string name="client_reports_collections">Поступления</string>
     <string name="client_reports_debts">Дебет</string>
     <string name="client_reports_balance">Баланс</string>
     <string name="client_reports_credit">Кредит</string>
     <string name="client_reports_moths">Месяцы</string>
     <string name="client_reports_sum">Сумма</string>
     <string name="client_reports_sales_summary">Сводный отчет по продажам</string>
-    <string name="client_reports_collection_summary">Сводный отчет по сборам</string>
-    <string name="client_reports_collection_sale_summary">Сводный отчет по продажам и сборам</string>
+    <string name="client_reports_collection_summary">Сводный отчет по поступлениям</string>
+    <string name="client_reports_collection_sale_summary">Сводный отчет по продажам и поступлениям</string>
     <string name="client_reports_debts_summary">Сводный отчет по дебетам</string>
     <string name="client_reports_credit_summary">Сводный отчет по кредитам</string>
     <string name="client_reports_balance_summary">Сводный отчет по балансам</string>

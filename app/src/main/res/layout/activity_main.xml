@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/lightWhite"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity"
-    tools:openDrawer="start">
+    tools:context=".MainActivity">
+    <!--    tools:openDrawer="start"-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,18 +24,23 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <!--<LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="10"
-            android:layout_margin="10dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/mainProducts"
                 android:layout_width="0dp"
-                android:layout_height="165dp"
-                android:layout_weight="5"
+                android:layout_height="125dp"
                 android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:clickable="true"
+                android:focusable="true"
                 android:padding="10dp"
                 app:cardCornerRadius="5dp">
 
@@ -45,16 +50,22 @@
                     android:fontFamily="sans-serif-condensed"
                     android:padding="20dp"
                     android:text="@string/main_nav_product"
+                    android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:drawableTopCompat="@drawable/ic_products" />
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/mainClients"
                 android:layout_width="0dp"
-                android:layout_height="165dp"
-                android:layout_weight="5"
+                android:layout_height="125dp"
                 android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:clickable="true"
+                android:focusable="true"
                 android:padding="10dp"
                 app:cardCornerRadius="5dp">
 
@@ -64,12 +75,245 @@
                     android:fontFamily="sans-serif-condensed"
                     android:padding="20dp"
                     android:text="@string/main_nav_clients"
+                    android:textAlignment="center"
                     android:textColor="@color/blue"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:drawableTopCompat="@drawable/ic_client" />
 
             </androidx.cardview.widget.CardView>
 
-        </LinearLayout>-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mainImport"
+                android:layout_width="0dp"
+                android:layout_height="125dp"
+                android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="20dp"
+                    android:text="@string/main_nav_dataImport"
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:drawableTopCompat="@drawable/ic_import" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mainReports"
+                android:layout_width="0dp"
+                android:layout_height="125dp"
+                android:layout_margin="5dp"
+                android:layout_weight="5"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                app:cardCornerRadius="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif-condensed"
+                    android:padding="20dp"
+                    android:text="@string/main_nav_reports"
+                    android:textAlignment="center"
+                    android:textColor="@color/blue"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:drawableTopCompat="@drawable/ic_reports" />
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:paddingStart="10dp"
+            app:cardCornerRadius="5dp"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:fontFamily="sans-serif-black"
+                android:padding="7dp"
+                android:text="@string/client_popup_analyze"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Gidilecek musteri sayisi"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/gidilecekToplam"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="0"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Alinan siparis miktari"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/siparisMiktar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="0"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Siparis alinan musteri"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/gidilecekAlinan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="0"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Alinan siparis tutari"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/siparisTutar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="0"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Kalan musteri sayisi"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/gidilecekKalan"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="0"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="Toplam alinan tahsilat"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/kasaTahsilat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="0"
+                        android:textColor="@color/blue"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

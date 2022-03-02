@@ -5,11 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +22,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +44,7 @@ import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Login.Spinner_Country;
 import kz.burhancakmak.aysoftmobile.Login.Spinner_Country_Adapter;
+import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirma;
 import kz.burhancakmak.aysoftmobile.Products.ProductsActivity;
 
@@ -62,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String depo2Aciklama1;
     List<CihazlarFirma> firmaList = new ArrayList<>();
     List<String> firmaAlertList = new ArrayList<>();
+    List<ClCard> clientList = new ArrayList<>();
     CihazlarFirma firma;
     DatabaseHandler databaseHandler;
-    TextView headerFirma;
+    TextView headerFirma, gidilecekToplam, gidilecekAlinan, gidilecekKalan, siparisMiktar, siparisTutar, kasaTahsilat;
+    CardView mainProducts, mainClients, mainImport, mainReports;
     final int[] selectedItem = {0};
     private long backPressedTime;
     private Toast backToast;
@@ -104,10 +113,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivityForResult(new Intent(MainActivity.this, ClientsActivity.class), 3);
                 break;
             case R.id.nav_dataIn:
-                startActivityForResult(new Intent(this, DataImportActivity.class), 4);
+                startActivityForResult(new Intent(MainActivity.this, DataImportActivity.class), 4);
                 break;
             case R.id.nav_dataOut:
-                startActivityForResult(new Intent(this, DataExportSiparisActivity.class), 5);
+                startActivityForResult(new Intent(MainActivity.this, DataExportSiparisActivity.class), 5);
                 break;
             case R.id.nav_changeLang:
                 alertOnLanguageChange();
@@ -136,6 +145,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         backPressedTime = System.currentTimeMillis();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAnalytics();
+    }
+
     private void initViews() {
         starterIntent = getIntent();
 
@@ -144,6 +159,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mainProducts = findViewById(R.id.mainProducts);
+        mainClients = findViewById(R.id.mainClients);
+        mainImport = findViewById(R.id.mainImport);
+        mainReports = findViewById(R.id.mainReports);
+
+        mainProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, ProductsActivity.class), 2);
+            }
+        });
+
+        mainClients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, ClientsActivity.class), 3);
+            }
+        });
+
+        mainImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, DataImportActivity.class), 4);
+            }
+        });
 
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -163,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FIRMA_NO = firma.getFirmaNo();
             headerFirma.setText(firmaList.get(0).getFirmaNo() + " - " + firmaList.get(0).getFirmaAdi1());
             setDefaultValues();
+            getAnalytics();
         } else {
             for (int i = 0; i < firmaList.size(); i++) {
                 firmaAlertList.add(firmaList.get(i).getFirmaNo() + "");
@@ -178,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             }
+            getAnalytics();
         }
 
         headerFirma.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +234,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-
     }
 
     private void setDefaultValues() {
@@ -385,9 +427,103 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 session.createFirmaNo(FIRMA_NO);
                 headerFirma.setText(firmaList.get(selectedItem[0]).getFirmaNo() + " - " + firmaList.get(selectedItem[0]).getFirmaAdi1());
                 setDefaultValues();
+                getAnalytics();
             }
         });
         builder.show();
+    }
+
+    private void getAnalytics() {
+        if (FIRMA_NO != null) {
+            if (clientList.size() > 0) clientList.clear();
+            clientList = databaseHandler.selectAllClientsMain();
+
+            gidilecekToplam = findViewById(R.id.gidilecekToplam);
+            gidilecekAlinan = findViewById(R.id.gidilecekAlinan);
+            gidilecekKalan = findViewById(R.id.gidilecekKalan);
+            siparisMiktar = findViewById(R.id.siparisMiktar);
+            siparisTutar = findViewById(R.id.siparisTutar);
+            kasaTahsilat = findViewById(R.id.kasaTahsilat);
+
+            if (clientList.size() == 0) {
+                gidilecekToplam.setText("0");
+                gidilecekAlinan.setText("0");
+                gidilecekKalan.setText("0");
+                siparisMiktar.setText("0");
+                siparisTutar.setText("0");
+                kasaTahsilat.setText("0");
+            } else {
+                double gidToplam = 0;
+                double gidAlinan = 0;
+                double sipToplam = 0;
+                double sipMiktar = 0;
+                double tahsilat = 0;
+
+                String currentDay = getCurrentDay();
+                for (ClCard client : clientList) {
+                    switch (currentDay) {
+                        case "Sunday":
+                            if (client.getPazar().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                        case "Monday":
+                            if (client.getPazartesi().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                        case "Tuesday":
+                            if (client.getSali().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                        case "Wednesday":
+                            if (client.getCarsamba().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                        case "Thursday":
+                            if (client.getPersembe().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                        case "Friday":
+                            if (client.getCuma().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                        case "Saturday":
+                            if (client.getCumartesi().equals("1")) {
+                                gidToplam += 1;
+                                gidAlinan += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                            }
+                            break;
+                    }
+                    sipMiktar += client.getSiparisMiktar() != null ? client.getSiparisMiktar() : 0;
+                    sipToplam += client.getSiparisTutar() != null ? client.getSiparisTutar() : 0;
+                    tahsilat += client.getKasaTutar() != null ? client.getKasaTutar() : 0;
+                }
+                gidilecekToplam.setText(String.format(Locale.getDefault(), "%,.0f", gidToplam));
+                gidilecekAlinan.setText(String.format(Locale.getDefault(), "%,.0f", gidAlinan));
+                gidilecekKalan.setText(String.format(Locale.getDefault(), "%,.0f", gidToplam - gidAlinan));
+                siparisMiktar.setText(String.format(Locale.getDefault(), "%,.0f", sipMiktar));
+                siparisTutar.setText(String.format(Locale.getDefault(), "%,.0f", sipToplam));
+                kasaTahsilat.setText(String.format(Locale.getDefault(), "%,.0f", tahsilat));
+            }
+        }
+    }
+
+    public static String getCurrentDay() {
+        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.US);
+        Calendar calendar = Calendar.getInstance();
+        return dayFormat.format(calendar.getTime());
+
     }
 
 }

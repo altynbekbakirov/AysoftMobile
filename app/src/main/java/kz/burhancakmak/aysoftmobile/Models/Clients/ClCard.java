@@ -66,6 +66,10 @@ public class ClCard {
     private Integer OdemeSekli;
     private Integer DovizKayitNo;
     private String DovizIsareti;
+    private Integer siparisMiktar;
+    private Double siparisTutar;
+    private Integer kasaMiktar;
+    private Double kasaTutar;
 
     public ClCard() {
     }
@@ -540,5 +544,37 @@ public class ClCard {
 
     public void setDovizIsareti(String dovizIsareti) {
         DovizIsareti = dovizIsareti;
+    }
+
+    public Integer getSiparisMiktar() {
+        return siparisMiktar;
+    }
+
+    public void setSiparisMiktar(Integer siparisMiktar) {
+        this.siparisMiktar = siparisMiktar;
+    }
+
+    public Double getSiparisTutar() {
+        return siparisTutar;
+    }
+
+    public void setSiparisTutar(Double siparisTutar) {
+        this.siparisTutar = siparisTutar;
+    }
+
+    public Integer getKasaMiktar() {
+        return kasaMiktar;
+    }
+
+    public void setKasaMiktar(Integer kasaMiktar) {
+        this.kasaMiktar = kasaMiktar;
+    }
+
+    public Double getKasaTutar() {
+        return kasaTutar;
+    }
+
+    public void setKasaTutar(Double kasaTutar) {
+        this.kasaTutar = kasaTutar;
     }
 }

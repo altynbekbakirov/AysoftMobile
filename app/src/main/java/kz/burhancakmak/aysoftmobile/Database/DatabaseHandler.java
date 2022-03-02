@@ -1700,6 +1700,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cardList;
     }
 
+    public List<ClCard> selectAllClientsMain() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ClCard> cardList = new ArrayList<>();
+        String sql = "SELECT KayitNo, Kod, Unvani1, "
+                + "(SELECT count(Tutar) FROM AY_" + FIRMA_NO + "_Siparis WHERE client.KayitNo = CariKayitNo AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS siparis_miktar, "
+                + "(SELECT sum(Tutar) FROM AY_" + FIRMA_NO + "_Siparis WHERE client.KayitNo = CariKayitNo AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS siparis_tutar, "
+                + "(SELECT count(Tutar) FROM AY_" + FIRMA_NO + "_KasaIslemleri WHERE client.KayitNo = CariKayitNo AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS kasa_miktar, "
+                + "(SELECT sum(Tutar) FROM AY_" + FIRMA_NO + "_KasaIslemleri WHERE client.KayitNo = CariKayitNo AND (Tarih = strftime('%Y-%m-%d', datetime('now')))) AS kasa_tutar, "
+                + "Pazartesi, Sali, Carsamba, Persembe, Cuma, Cumartesi, Pazar "
+                + "FROM " + "AY_" + FIRMA_NO + "_ClCard" + " AS client "
+                + " ORDER BY client.KayitNo";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ClCard card = new ClCard();
+                card.setKayitNo(cursor.getInt(0));
+                card.setKod(cursor.getString(1));
+                card.setUnvani1(cursor.getString(2));
+                card.setSiparisMiktar(cursor.getInt(3));
+                card.setSiparisTutar(cursor.getDouble(4));
+                card.setKasaMiktar(cursor.getInt(5));
+                card.setKasaTutar(cursor.getDouble(6));
+                card.setPazartesi(cursor.getString(7));
+                card.setSali(cursor.getString(8));
+                card.setCarsamba(cursor.getString(9));
+                card.setPersembe(cursor.getString(10));
+                card.setCuma(cursor.getString(11));
+                card.setCumartesi(cursor.getString(12));
+                card.setPazar(cursor.getString(13));
+                cardList.add(card);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return cardList;
+    }
+
     public ClCard selectClientById(int kayitno) {
         SQLiteDatabase db = this.getReadableDatabase();
         ClCard card = new ClCard();
