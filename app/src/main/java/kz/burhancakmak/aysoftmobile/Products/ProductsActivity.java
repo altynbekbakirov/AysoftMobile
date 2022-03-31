@@ -200,7 +200,6 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         for (int i = 0; i < menuList.size(); i++) {
             if (menuList.get(i).getKayitNo() == item.getItemId()) {
                 navigationView.getMenu().getItem(i).setChecked(true);
@@ -498,7 +497,9 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 getString(R.string.products_info_stock_status),
                 getString(R.string.client_menu_extract),
                 getString(R.string.main_nav_dashboard),
-                getString(R.string.products_stock_documents)};
+                getString(R.string.products_stock_documents),
+                getString(R.string.products_stock_warehouse)
+        };
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.alertItemsStyle);
         builder.setTitle(productItemList.get(position).getStokAdi1());
         builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
@@ -548,7 +549,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         itemTaskList.add("Stogu 0 olanlar");
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         View view = getLayoutInflater().inflate(R.layout.item_filter_layout, null);
         builder.setView(view);
 

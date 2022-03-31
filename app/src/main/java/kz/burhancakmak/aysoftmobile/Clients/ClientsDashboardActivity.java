@@ -38,9 +38,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.JsonSyntaxException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,8 +139,8 @@ public class ClientsDashboardActivity extends AppCompatActivity {
 
         if (clientKayitNo != -1) {
             card = databaseHandler.selectClientById(clientKayitNo);
-            kurusHaneSayisiStok = parametreGetir("KurusHaneSayisiCari", "0");
-            CariDashBoardAylikSatisTahsilatGoster = parametreGetir("CariDashBoardAylikSatisTahsilatGoster", "0");
+            kurusHaneSayisiStok = parametreGetir("KurusHaneSayisiCari");
+            CariDashBoardAylikSatisTahsilatGoster = parametreGetir("CariDashBoardAylikSatisTahsilatGoster");
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -1183,8 +1181,8 @@ public class ClientsDashboardActivity extends AppCompatActivity {
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
-    private String parametreGetir(String param, String deger) {
-        String parametreDeger = deger;
+    private String parametreGetir(String param) {
+        String parametreDeger = "0";
         for (CihazlarFirmaParametreler parametreler : parametrelerList) {
             if (parametreler.getParametreAdi().equals(param)) {
                 parametreDeger = parametreler.getParametreDegeri();

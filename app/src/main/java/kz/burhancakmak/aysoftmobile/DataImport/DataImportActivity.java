@@ -57,6 +57,9 @@ import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarMenu;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarQuery;
 import kz.burhancakmak.aysoftmobile.Models.Firms.Doviz;
 import kz.burhancakmak.aysoftmobile.Models.Products.Items;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsDepoStokYerleri;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsDepolar;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsDepolarAdresler;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsItmunita;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsPrclist;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsQuery;
@@ -109,7 +112,6 @@ public class DataImportActivity extends AppCompatActivity {
         }
 
     }
-
 
     private void initViews() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -637,6 +639,21 @@ public class DataImportActivity extends AppCompatActivity {
                     } else {
                         databaseHandler.createItemsToplamTable(FIRMA_NO);
                     }
+                    if (databaseHandler.tableExists("AY_" + FIRMA_NO + "_Depolar")) {
+                        databaseHandler.deleteDepolar();
+                    } else {
+                        databaseHandler.createDepolarTable(FIRMA_NO);
+                    }
+                    if (databaseHandler.tableExists("AY_" + FIRMA_NO + "_DepolarAdresler")) {
+                        databaseHandler.deleteDepolarAdresler();
+                    } else {
+                        databaseHandler.createDepolarAdreslerTable(FIRMA_NO);
+                    }
+                    if (databaseHandler.tableExists("AY_" + FIRMA_NO + "_DepoStokYerleri")) {
+                        databaseHandler.deleteDepoStokYerleri();
+                    } else {
+                        databaseHandler.createDepoStokYerleriTable(FIRMA_NO);
+                    }
                     imagesList.clear();
                     ItemsQuery itemsQuery = response.body();
 
@@ -768,8 +785,52 @@ public class DataImportActivity extends AppCompatActivity {
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_toplamlar), itemsQuery.getItemsToplamlar().size() - 2));
                     }
+
+                    if (itemsQuery.getDepolar().size() > 2) {
+                        publishProgress(getString(R.string.data_import_progressbar_products_warehouse));
+                        for (int i = 2; i < itemsQuery.getDepolar().size(); i++) {
+                            String[] depo = itemsQuery.getDepolar().get(i).split("\\|");
+                            ItemsDepolar depolar = new ItemsDepolar();
+                            depolar.setSiraNo(Integer.parseInt(depo[0]));
+                            depolar.setDepoKayitNo(Integer.parseInt(depo[1]));
+                            depolar.setDepoNo(Integer.parseInt(depo[2]));
+                            depolar.setDepoAdi(depo[3]);
+                            databaseHandler.insertDepolar(depolar);
+                        }
+                        infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_warehouse), itemsQuery.getDepolar().size() - 2));
+                    }
+
+                    if (itemsQuery.getDepolarAdresler().size() > 2) {
+                        publishProgress(getString(R.string.data_import_progressbar_products_warehouse_addresses));
+                        for (int i = 2; i < itemsQuery.getDepolarAdresler().size(); i++) {
+                            String[] adresler = itemsQuery.getDepolarAdresler().get(i).split("\\|");
+                            ItemsDepolarAdresler depolarAdresler = new ItemsDepolarAdresler();
+                            depolarAdresler.setLokasyonKayitNo(Integer.parseInt(adresler[0]));
+                            depolarAdresler.setDepoNo(Integer.parseInt(adresler[1]));
+                            depolarAdresler.setLokasyonKodu(adresler[2]);
+                            depolarAdresler.setLokasyonAdi(adresler[3]);
+                            databaseHandler.insertDepolarAdresler(depolarAdresler);
+                        }
+                        infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_warehouse_addresses), itemsQuery.getDepolarAdresler().size() - 2));
+                    }
+
+                    if (itemsQuery.getDepoStokYerleri().size() > 2) {
+                        publishProgress(getString(R.string.data_import_progressbar_products_shelves));
+                        for (int i = 2; i < itemsQuery.getDepoStokYerleri().size(); i++) {
+                            String[] yerler = itemsQuery.getDepoStokYerleri().get(i).split("\\|");
+                            ItemsDepoStokYerleri stokYerleri = new ItemsDepoStokYerleri();
+                            stokYerleri.setDepoNo(Integer.parseInt(yerler[0]));
+                            stokYerleri.setDepoAdi(yerler[1]);
+                            stokYerleri.setStokKodu(yerler[2]);
+                            stokYerleri.setToplam(Integer.parseInt(yerler[3]));
+                            stokYerleri.setStokYeriKodu(yerler.length > 4 ? yerler[4] : "");
+                            databaseHandler.insertDepoStokYerleri(stokYerleri);
+                        }
+                        infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_shelves), itemsQuery.getDepoStokYerleri().size() - 2));
+                    }
+
                 }
-            } catch (NullPointerException | IllegalStateException | JsonSyntaxException | IOException e) {
+            } catch (Exception e) {
                 hata = e.getMessage();
             }
             return null;

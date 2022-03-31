@@ -31,6 +31,18 @@ public class ItemsQuery {
     @Expose
     private List<String> itemsToplamlar = null;
 
+    @SerializedName("Depolar")
+    @Expose
+    private List<String> Depolar = null;
+
+    @SerializedName("DepolarAdresler")
+    @Expose
+    private List<String> DepolarAdresler = null;
+
+    @SerializedName("DepoStokYerleri")
+    @Expose
+    private List<String> DepoStokYerleri = null;
+
     @SerializedName("200")
     @Expose
     private String _200;
@@ -38,7 +50,6 @@ public class ItemsQuery {
     public Boolean getHata() {
         return hata;
     }
-
 
     public List<String> getItems() {
         return items;
@@ -52,32 +63,28 @@ public class ItemsQuery {
         return itemsItmunita;
     }
 
-    public void setItemsItmunita(List<String> itemsItmunita) {
-        this.itemsItmunita = itemsItmunita;
-    }
-
     public List<String> getItemsUnitBarcode() {
         return itemsUnitBarcode;
-    }
-
-    public void setItemsUnitBarcode(List<String> itemsUnitBarcode) {
-        this.itemsUnitBarcode = itemsUnitBarcode;
     }
 
     public List<String> getItemsPrclist() {
         return itemsPrclist;
     }
 
-    public void setItemsPrclist(List<String> itemsPrclist) {
-        this.itemsPrclist = itemsPrclist;
-    }
-
     public List<String> getItemsToplamlar() {
         return itemsToplamlar;
     }
 
-    public void setItemsToplamlar(List<String> itemsToplamlar) {
-        this.itemsToplamlar = itemsToplamlar;
+    public List<String> getDepolar() {
+        return Depolar;
+    }
+
+    public List<String> getDepolarAdresler() {
+        return DepolarAdresler;
+    }
+
+    public List<String> getDepoStokYerleri() {
+        return DepoStokYerleri;
     }
 
     public String get200() {

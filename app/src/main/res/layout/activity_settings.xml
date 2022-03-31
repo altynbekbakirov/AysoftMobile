@@ -54,7 +54,7 @@
             android:hint="@string/settings_webService"
             android:inputType="textPersonName"
             android:padding="15dp"
-            android:text="http://89.163.142.197:34444/NewMobil/"
+            android:text="http://5.199.138.36:34444/NewMobil/"
             android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>

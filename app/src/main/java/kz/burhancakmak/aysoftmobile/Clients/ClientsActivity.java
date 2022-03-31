@@ -15,8 +15,6 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,6 +88,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
     private static String NAV_FILTER;
     private static String NAV_ORDER;
     List<CihazlarMenu> menuList = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     List<ClCard> cardList = new ArrayList<>();
     ClientsAdapter clientsAdapter;
     final int[] selectedItem = {0};
@@ -114,7 +113,8 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
             finish();
         } else {
             databaseHandler = DatabaseHandler.getInstance(this);
-            kurusHaneSayisiStok = parametreGetir(FIRMA_NO, "KurusHaneSayisiCari", "0");
+            parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+            kurusHaneSayisiStok = parametreGetir("KurusHaneSayisiCari");
             initViews();
         }
     }
@@ -610,7 +610,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
                 } else {
                     isSuccess = false;
                 }
-            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
+            } catch (Exception e) {
                 hata = e.getMessage();
             }
             return null;
@@ -707,7 +707,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
         clientTaskList.add(getString(R.string.client_alert_list_zero_debtors));
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setCancelable(false);
+        builder.setCancelable(true);
         View view = getLayoutInflater().inflate(R.layout.client_filter_layout, null);
         builder.setView(view);
 
@@ -957,13 +957,12 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
-    private String parametreGetir(String firmaNo, String parametre, String deger) {
-        List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
-        String parametreDeger;
-        if (parametrelerList.size() == 1) {
-            parametreDeger = parametrelerList.get(0).getParametreDegeri();
-        } else {
-            parametreDeger = deger;
+    private String parametreGetir(String param) {
+        String parametreDeger = "0";
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(param)) {
+                parametreDeger = parametreler.getParametreDegeri();
+            }
         }
         return parametreDeger;
     }

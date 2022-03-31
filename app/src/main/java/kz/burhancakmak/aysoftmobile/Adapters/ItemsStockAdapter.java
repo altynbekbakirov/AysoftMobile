@@ -19,11 +19,17 @@ import kz.burhancakmak.aysoftmobile.R;
 
 public class ItemsStockAdapter extends RecyclerView.Adapter<ItemsStockAdapter.StockHolder> {
     List<ItemsToplamlar> list;
+    private final ItemsStockListener itemsStockListener;
     int digit;
 
-    public ItemsStockAdapter(List<ItemsToplamlar> list, int digit) {
+    public interface ItemsStockListener {
+        void onItemClick(int position);
+    }
+
+    public ItemsStockAdapter(List<ItemsToplamlar> list, int digit, ItemsStockListener itemsStockListener) {
         this.list = list;
         this.digit = digit;
+        this.itemsStockListener = itemsStockListener;
     }
 
     public void setList(List<ItemsToplamlar> list) {
@@ -31,12 +37,17 @@ public class ItemsStockAdapter extends RecyclerView.Adapter<ItemsStockAdapter.St
         notifyDataSetChanged();
     }
 
+    public void updateItem(int position) {
+        list.set(position, list.get(position));
+        notifyItemChanged(position);
+    }
+
     @NonNull
     @NotNull
     @Override
     public StockHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.products_stock_recyclerview_layout, parent, false);
-        return new StockHolder(view);
+        return new StockHolder(view, itemsStockListener);
     }
 
     @Override
@@ -45,16 +56,15 @@ public class ItemsStockAdapter extends RecyclerView.Adapter<ItemsStockAdapter.St
         holder.stockAmbarNo.setText(String.valueOf(toplamlar.getDepoNo()));
         holder.stockAmbarAdi.setText(toplamlar.getDepoAdi());
         holder.stockFiiliStok.setText(String.format("%,." + digit + "f", toplamlar.getToplam()));
-        holder.stockGercekStok.setText(String.format("%,." + digit + "f", toplamlar.getToplam()));
         holder.stockYeriKodu.setText(toplamlar.getStokYeriKodu());
     }
 
     @Override
     public void onViewAttachedToWindow(@NonNull @NotNull StockHolder holder) {
         super.onViewAttachedToWindow(holder);
-        if ((holder.getLayoutPosition() % 2) == 0) {
+        /*if ((holder.getLayoutPosition() % 2) == 0) {
             holder.stockLayout.setBackgroundColor(Color.parseColor("#F5F5F5"));
-        }
+        }*/
     }
 
     @Override
@@ -62,20 +72,25 @@ public class ItemsStockAdapter extends RecyclerView.Adapter<ItemsStockAdapter.St
         return list.size();
     }
 
-    class StockHolder extends RecyclerView.ViewHolder {
-        TextView stockAmbarNo, stockAmbarAdi, stockFiiliStok, stockRezerver, stockGercekStok, stockBekleyenUretim, stockYeriKodu;
+    static class StockHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        TextView stockAmbarNo, stockAmbarAdi, stockFiiliStok, stockYeriKodu;
         LinearLayout stockLayout;
+        ItemsStockListener itemsStockListener;
 
-        public StockHolder(@NonNull @NotNull View itemView) {
+        public StockHolder(@NonNull @NotNull View itemView, ItemsStockListener itemsStockListener) {
             super(itemView);
+            this.itemsStockListener = itemsStockListener;
             stockAmbarNo = itemView.findViewById(R.id.stockAmbarNo);
             stockAmbarAdi = itemView.findViewById(R.id.stockAmbarAdi);
             stockFiiliStok = itemView.findViewById(R.id.stockFiiliStok);
-            stockRezerver = itemView.findViewById(R.id.stockRezerver);
-            stockGercekStok = itemView.findViewById(R.id.stockGercekStok);
-            stockBekleyenUretim = itemView.findViewById(R.id.stockBekleyenUretim);
             stockLayout = itemView.findViewById(R.id.stockLayout);
             stockYeriKodu = itemView.findViewById(R.id.stockYeriKodu);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            itemsStockListener.onItemClick(getAbsoluteAdapterPosition());
         }
     }
 }

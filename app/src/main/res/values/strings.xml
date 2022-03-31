@@ -356,6 +356,10 @@
     <string name="client_reports_credit_summary">Credits summary</string>
     <string name="client_reports_balance_summary">Balance summary</string>
     <string name="client_reports_debt_credit_balance">Debt, credit and balance summary</string>
+    <string name="products_stock_warehouse">Warehouse information</string>
+    <string name="data_import_progressbar_products_warehouse">Warehouses</string>
+    <string name="data_import_progressbar_products_warehouse_addresses">Warehouse addresses</string>
+    <string name="data_import_progressbar_products_shelves">Shelve places</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

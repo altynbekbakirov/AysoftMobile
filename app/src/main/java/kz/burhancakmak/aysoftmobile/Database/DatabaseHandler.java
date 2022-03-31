@@ -28,6 +28,9 @@ import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarMenu;
 import kz.burhancakmak.aysoftmobile.Models.Firms.Doviz;
 import kz.burhancakmak.aysoftmobile.Models.Products.Items;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsDepoStokYerleri;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsDepolar;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsDepolarAdresler;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsItmunita;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsPrclist;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsToplamlar;
@@ -56,6 +59,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_SIPARIS = "AY_" + FIRMA_NO + "_KasaIslemleri";
     private static final String TABLE_SEPET = "AY_" + FIRMA_NO + "_Sepet";
     private static final String TABLE_ZIYARET = "Ziyaret";
+    private static final String TABLE_DEPOLAR = "AY_" + FIRMA_NO + "_Depolar";
+    private static final String TABLE_DEPOLAR_ADRESLER = "AY_" + FIRMA_NO + "_DepolarAdresler";
+    private static final String TABLE_DEPO_STOK_YERLERI = "AY_" + FIRMA_NO + "_DepoStokYerleri";
 
     private DatabaseHandler(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -178,8 +184,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        /*db.execSQL("DROP TABLE IF EXISTS " + TABLE_CIHAZLAR_FIRMA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CIHAZLAR_MENU);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CIHAZLAR_FIRMA);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CIHAZLAR_FIRMA_PARAMETRELER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOVIZ);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CLIENTS);
@@ -193,7 +199,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SIPARIS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEPET);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ZIYARET);
-        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPOLAR);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPOLAR_ADRESLER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DEPO_STOK_YERLERI);
+        onCreate(db);*/
     }
 
     public void createCihazlarFirmaTable() {
@@ -614,6 +623,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void createDepolarTable(String firmNo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String table = "CREATE TABLE IF NOT EXISTS AY_" + firmNo + "_Depolar ( "
+                + "SiraNo INTEGER, "
+                + "DepoKayitNo INTEGER, "
+                + "DepoNo INTEGER, "
+                + "DepoAdi TEXT);";
+        db.execSQL(table);
+        db.close();
+    }
+
+    public void createDepolarAdreslerTable(String firmNo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String table = "CREATE TABLE IF NOT EXISTS AY_" + firmNo + "_DepolarAdresler ( "
+                + "LokasyonKayitNo INTEGER, "
+                + "DepoNo INTEGER, "
+                + "LokasyonKodu TEXT, "
+                + "LokasyonAdi TEXT);";
+        db.execSQL(table);
+        db.close();
+    }
+
+    public void createDepoStokYerleriTable(String firmNo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String table = "CREATE TABLE IF NOT EXISTS AY_" + firmNo + "_DepoStokYerleri ( "
+                + "DepoNo INTEGER, "
+                + "DepoAdi TEXT, "
+                + "StokKodu TEXT, "
+                + "Toplam INTEGER, "
+                + "StokYeriKodu TEXT);";
+        db.execSQL(table);
+        db.close();
+    }
+
     public void insertCihazlarFirma(CihazlarFirma firma) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -1028,6 +1071,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertDepolar(ItemsDepolar depolar) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("SiraNo", depolar.getSiraNo());
+        cv.put("DepoKayitNo", depolar.getDepoKayitNo());
+        cv.put("DepoNo", depolar.getDepoNo());
+        cv.put("DepoAdi", depolar.getDepoAdi());
+        db.insert("AY_" + FIRMA_NO + "_Depolar", null, cv);
+        db.close();
+    }
+
+    public void insertDepolarAdresler(ItemsDepolarAdresler depolar) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("LokasyonKayitNo", depolar.getLokasyonKayitNo());
+        cv.put("DepoNo", depolar.getDepoNo());
+        cv.put("LokasyonKodu", depolar.getLokasyonKodu());
+        cv.put("LokasyonAdi", depolar.getLokasyonAdi());
+        db.insert("AY_" + FIRMA_NO + "_DepolarAdresler", null, cv);
+        db.close();
+    }
+
+    public void insertDepoStokYerleri(ItemsDepoStokYerleri depolar) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("DepoNo", depolar.getDepoNo());
+        cv.put("DepoAdi", depolar.getDepoAdi());
+        cv.put("StokKodu", depolar.getStokKodu());
+        cv.put("Toplam", depolar.getToplam());
+        cv.put("StokYeriKodu", depolar.getStokYeriKodu());
+        db.insert("AY_" + FIRMA_NO + "_DepoStokYerleri", null, cv);
+        db.close();
+    }
+
     public void updateClientBalance(ClCard card, String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -1178,6 +1255,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateShelveName(ItemsToplamlar toplamlar, String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("StokYeriKodu", toplamlar.getStokYeriKodu());
+        db.update("AY_" + FIRMA_NO + "_ItemsToplamlar", cv, "KayitNo = ?", new String[]{id});
+        db.close();
+    }
+
     public void deleteSiparis(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("AY_" + FIRMA_NO + "_Siparis", "KayitNo = ?", new String[]{id});
@@ -1283,6 +1368,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteZiyaret() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_ZIYARET);
+        db.close();
+    }
+
+    public void deleteDepolar() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + "AY_" + FIRMA_NO + "_Depolar");
+        db.close();
+    }
+
+    public void deleteDepolarAdresler() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + "AY_" + FIRMA_NO + "_DepolarAdresler");
+        db.close();
+    }
+
+    public void deleteDepoStokYerleri() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + "AY_" + FIRMA_NO + "_DepoStokYerleri");
         db.close();
     }
 
@@ -1433,8 +1536,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<ItemsToplamlar> selectAllItemsByAmbar(int kayitno) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsToplamlar> toplamList = new ArrayList<>();
-        String sql = "SELECT KayitNo, StokKayitNo, DepoNo, DepoAdi, StokKodu, Toplam, StokYeriKodu "
-                + "FROM " + "AY_" + FIRMA_NO + "_ItemsToplamlar" + " WHERE StokKayitNo = " + kayitno;
+        String sql = "SELECT itemsToplamlar.KayitNo, itemsToplamlar.StokKayitNo, itemsToplamlar.DepoNo, itemsToplamlar.DepoAdi, "
+                + "itemsToplamlar.StokKodu, itemsToplamlar.Toplam, itemsToplamlar.StokYeriKodu, items.StokAdi1 "
+                + "FROM " + "AY_" + FIRMA_NO + "_ItemsToplamlar AS itemsToplamlar "
+                + "INNER JOIN AY_" + FIRMA_NO + "_Items AS items ON itemsToplamlar.StokKayitNo = items.KayitNo "
+                + "WHERE StokKayitNo = " + kayitno;
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             do {
@@ -1446,6 +1552,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 toplamlar.setStokKodu(cursor.getString(4));
                 toplamlar.setToplam(cursor.getDouble(5));
                 toplamlar.setStokYeriKodu(cursor.getString(6));
+                toplamlar.setStokAciklamasi(cursor.getString(7));
                 toplamList.add(toplamlar);
             } while (cursor.moveToNext());
         }
@@ -2327,6 +2434,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return firmaList;
     }
 
+    public List<ItemsDepolarAdresler> selectDepolarAdresler(int depono) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ItemsDepolarAdresler> adreslerList = new ArrayList<>();
+        String sql = "SELECT LokasyonKayitNo, DepoNo, LokasyonKodu, LokasyonAdi " +
+                "FROM AY_" + FIRMA_NO + "_DepolarAdresler WHERE DepoNo = " + depono;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ItemsDepolarAdresler adresler = new ItemsDepolarAdresler();
+                adresler.setLokasyonKayitNo(cursor.getInt(0));
+                adresler.setDepoNo(cursor.getInt(1));
+                adresler.setLokasyonKodu(cursor.getString(2));
+                adresler.setLokasyonAdi(cursor.getString(3));
+                adreslerList.add(adresler);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return adreslerList;
+    }
+
     public String selectItemCode(String barcode) {
         SQLiteDatabase db = this.getReadableDatabase();
         String result = "";
@@ -2422,6 +2550,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         if (!tableExists("AY_" + firmaNo + "_Sepet")) {
             createSepetTable(firmaNo);
+        }
+        if (!tableExists("AY_" + firmaNo + "_Depolar")) {
+            createDepolarTable(firmaNo);
+        }
+        if (!tableExists("AY_" + firmaNo + "_DepolarAdresler")) {
+            createDepolarAdreslerTable(firmaNo);
+        }
+        if (!tableExists("AY_" + firmaNo + "_DepoStokYerleri")) {
+            createDepoStokYerleriTable(firmaNo);
         }
     }
 

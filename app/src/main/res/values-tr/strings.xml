@@ -333,5 +333,9 @@
     <string name="client_reports_credit_summary">Cari hesap alacak özeti</string>
     <string name="client_reports_balance_summary">Cari hesap bakiye özeti</string>
     <string name="client_reports_debt_credit_balance">Cari hesap borc alacak bakiye özeti</string>
+    <string name="products_stock_warehouse">Depo bilgileri</string>
+    <string name="data_import_progressbar_products_warehouse">Ambarlar</string>
+    <string name="data_import_progressbar_products_warehouse_addresses">Ambar adresleri</string>
+    <string name="data_import_progressbar_products_shelves">Depo stok yerleri</string>
 
 </resources>

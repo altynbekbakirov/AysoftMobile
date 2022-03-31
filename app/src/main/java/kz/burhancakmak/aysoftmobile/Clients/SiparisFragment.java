@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -363,19 +362,19 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
 
     private void initViews() {
         parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
-        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
-        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
-        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi", "0");
-        CariIslemlerToptanSatisFaturasi = parametreGetir("CariIslemlerToptanSatisFaturasi", "0");
-        CariIslemlerToptanSatisIadeFaturasi = parametreGetir("CariIslemlerToptanSatisIadeFaturasi", "0");
-        CariIslemlerPerakendeSatisFaturasi = parametreGetir("CariIslemlerPerakendeSatisFaturasi", "0");
-        CariIslemlerPerakendeSatisIadeFaturasi = parametreGetir("CariIslemlerPerakendeSatisIadeFaturasi", "0");
-        CariIslemlerAlinanSiparis = parametreGetir("CariIslemlerAlinanSiparis", "0");
-        CariIslemlerVerilenSiparis = parametreGetir("CariIslemlerVerilenSiparis", "0");
-        CariIslemlerAlimFaturasi = parametreGetir("CariIslemlerAlimFaturasi", "0");
-        CariIslemlerAlimIadeFaturasi = parametreGetir("CariIslemlerAlimIadeFaturasi", "0");
-        CariIslemlerSayimFisi = parametreGetir("CariIslemlerSayimFisi", "0");
-        CariIslemlerTalepFisi = parametreGetir("CariIslemlerTalepFisi", "0");
+        KurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar");
+        KurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar");
+        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi");
+        CariIslemlerToptanSatisFaturasi = parametreGetir("CariIslemlerToptanSatisFaturasi");
+        CariIslemlerToptanSatisIadeFaturasi = parametreGetir("CariIslemlerToptanSatisIadeFaturasi");
+        CariIslemlerPerakendeSatisFaturasi = parametreGetir("CariIslemlerPerakendeSatisFaturasi");
+        CariIslemlerPerakendeSatisIadeFaturasi = parametreGetir("CariIslemlerPerakendeSatisIadeFaturasi");
+        CariIslemlerAlinanSiparis = parametreGetir("CariIslemlerAlinanSiparis");
+        CariIslemlerVerilenSiparis = parametreGetir("CariIslemlerVerilenSiparis");
+        CariIslemlerAlimFaturasi = parametreGetir("CariIslemlerAlimFaturasi");
+        CariIslemlerAlimIadeFaturasi = parametreGetir("CariIslemlerAlimIadeFaturasi");
+        CariIslemlerSayimFisi = parametreGetir("CariIslemlerSayimFisi");
+        CariIslemlerTalepFisi = parametreGetir("CariIslemlerTalepFisi");
 
         if (CariIslemlerToptanSatisFaturasi.equals("1")) {
             taskList.add(8);
@@ -723,8 +722,8 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
         builder.show();
     }
 
-    private String parametreGetir(String parametre, String deger) {
-        String parametreDeger = deger;
+    private String parametreGetir(String parametre) {
+        String parametreDeger = "0";
         for (CihazlarFirmaParametreler parametreler : parametrelerList) {
             if (parametreler.getParametreAdi().equals(parametre)) {
                 parametreDeger = parametreler.getParametreDegeri();

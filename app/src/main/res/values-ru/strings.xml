@@ -356,6 +356,10 @@
     <string name="client_reports_credit_summary">Сводный отчет по кредитам</string>
     <string name="client_reports_balance_summary">Сводный отчет по балансам</string>
     <string name="client_reports_debt_credit_balance">Сводный отчет по дебетам, кредитам и балансам</string>
+    <string name="products_stock_warehouse">Сведения об остатках</string>
+    <string name="data_import_progressbar_products_warehouse">Склады</string>
+    <string name="data_import_progressbar_products_warehouse_addresses">Адреса складов</string>
+    <string name="data_import_progressbar_products_shelves">Номера полок</string>
 
 
 </resources>

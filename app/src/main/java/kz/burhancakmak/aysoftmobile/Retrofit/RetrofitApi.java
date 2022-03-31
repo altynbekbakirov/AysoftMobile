@@ -64,6 +64,19 @@ public interface RetrofitApi {
             @Field("StokKod") String stokKod,
             @Field("StokKayitNo") int stokKayitNo);
 
+    @POST("StokYeriGuncelleme.php")
+    @FormUrlEncoded
+    Call<ItemsExtractQuery> updateStockShelvePlace(
+            @Field("CihazId") String cihazId,
+            @Field("FirmaNo") String firma,
+            @Field("DonemNo") String donem,
+            @Field("Login") String login,
+            @Field("Parola") String Parola,
+            @Field("StokKayitNo") String stokKayitNo,
+            @Field("StokKod") String stokKod,
+            @Field("DepoNo") String depoNo,
+            @Field("LokasyonKayitNo") String lokasyonKayitNo);
+
     @POST("CariListesi.php")
     @FormUrlEncoded
     Call<ClientsQuery> getClientList(

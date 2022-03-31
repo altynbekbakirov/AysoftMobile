@@ -15,6 +15,10 @@ public class ItemsExtractQuery {
     @Expose
     private List<String> stokekstre = null;
 
+    @SerializedName("hataMesaj")
+    @Expose
+    private String hataMesaj;
+
     @SerializedName("200")
     @Expose
     private String _200;
@@ -43,4 +47,7 @@ public class ItemsExtractQuery {
         this._200 = _200;
     }
 
+    public String getHataMesaj() {
+        return hataMesaj;
+    }
 }

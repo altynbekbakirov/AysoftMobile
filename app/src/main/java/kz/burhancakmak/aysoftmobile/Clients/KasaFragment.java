@@ -155,12 +155,12 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
 
     private void initViews() {
         parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
-        kurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
-        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi", "0");
-        CariIslemlerKasaTahsilatIslemi = parametreGetir("CariIslemlerKasaTahsilatIslemi", "0");
-        CariIslemlerKasaOdemeIslemi = parametreGetir("CariIslemlerKasaOdemeIslemi", "0");
-        CariIslemlerKasaMasrafTahsilatIslemi = parametreGetir("CariIslemlerKasaMasrafTahsilatIslemi", "0");
-        CariIslemlerKasaMasrafOdemeIslemi = parametreGetir("CariIslemlerKasaMasrafOdemeIslemi", "0");
+        kurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar");
+        ziyaretSistemiKullanimi = parametreGetir("ZiyaretSistemiKullanimi");
+        CariIslemlerKasaTahsilatIslemi = parametreGetir("CariIslemlerKasaTahsilatIslemi");
+        CariIslemlerKasaOdemeIslemi = parametreGetir("CariIslemlerKasaOdemeIslemi");
+        CariIslemlerKasaMasrafTahsilatIslemi = parametreGetir("CariIslemlerKasaMasrafTahsilatIslemi");
+        CariIslemlerKasaMasrafOdemeIslemi = parametreGetir("CariIslemlerKasaMasrafOdemeIslemi");
 
         if (CariIslemlerKasaTahsilatIslemi.equals("1")) {
             taskList.add(11);
@@ -384,7 +384,7 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
                         isFailed = true;
                     }
                 }
-            } catch (IllegalStateException | JsonSyntaxException | IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -821,8 +821,8 @@ public class KasaFragment extends Fragment implements KasaAdapter.OnKasaListener
         builder.show();
     }
 
-    private String parametreGetir(String parametre, String deger) {
-        String parametreDeger = deger;
+    private String parametreGetir(String parametre) {
+        String parametreDeger = "0";
         for (CihazlarFirmaParametreler parametreler : parametrelerList) {
             if (parametreler.getParametreAdi().equals(parametre)) {
                 parametreDeger = parametreler.getParametreDegeri();

@@ -14,6 +14,7 @@ public class ItemsToplamlar {
     private double Toplam;
     private String StokKodu;
     private String StokYeriKodu;
+    private String StokAciklamasi;
 
     public ItemsToplamlar() {
     }
@@ -72,5 +73,13 @@ public class ItemsToplamlar {
 
     public void setStokYeriKodu(String stokYeriKodu) {
         StokYeriKodu = stokYeriKodu;
+    }
+
+    public String getStokAciklamasi() {
+        return StokAciklamasi;
+    }
+
+    public void setStokAciklamasi(String stokAciklamasi) {
+        StokAciklamasi = stokAciklamasi;
     }
 }
