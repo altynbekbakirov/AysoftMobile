@@ -62,6 +62,11 @@
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".Products.ProductSearchActivity"
+            android:configChanges="orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Products.ProductsInfoActivity"
             android:configChanges="orientation"
             android:parentActivityName=".Products.ProductsActivity"

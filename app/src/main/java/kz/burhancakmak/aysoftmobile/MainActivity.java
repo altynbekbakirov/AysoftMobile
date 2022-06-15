@@ -5,14 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +43,7 @@ import kz.burhancakmak.aysoftmobile.Login.Spinner_Country;
 import kz.burhancakmak.aysoftmobile.Login.Spinner_Country_Adapter;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirma;
+import kz.burhancakmak.aysoftmobile.Products.ProductSearchActivity;
 import kz.burhancakmak.aysoftmobile.Products.ProductsActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -183,6 +181,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(MainActivity.this, DataImportActivity.class), 4);
+            }
+        });
+
+        mainReports.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, ProductSearchActivity.class), 1);
             }
         });
 

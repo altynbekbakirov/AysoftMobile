@@ -12,6 +12,7 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClientsSiparisResponse;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarQuery;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsExtractQuery;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsQuery;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsSearchQuery;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -48,6 +49,16 @@ public interface RetrofitApi {
             @Field("DonemNo") String donem,
             @Field("FirmaNo") String firma,
             @Field("Tip") Integer type);
+
+    @POST("PriceCheck.php")
+    @FormUrlEncoded
+    Call<ItemsSearchQuery> getStockSearch(
+            @Field("CihazId") String CihazId,
+            @Field("Login") String Login,
+            @Field("Password") String Parola,
+            @Field("FirmaNo") String firma,
+            @Field("DonemNo") String donem,
+            @Field("Aranan") String aranan);
 
     @POST("StokEkstre.php")
     @FormUrlEncoded

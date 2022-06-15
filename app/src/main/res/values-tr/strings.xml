@@ -337,5 +337,8 @@
     <string name="data_import_progressbar_products_warehouse">Ambarlar</string>
     <string name="data_import_progressbar_products_warehouse_addresses">Ambar adresleri</string>
     <string name="data_import_progressbar_products_shelves">Depo stok yerleri</string>
+    <string name="items_search_not_found">Malzeme bulunamadı</string>
+    <string name="items_search_sale_price">Satış fiyat</string>
+    <string name="items_search_daily_rate">Günlük kur</string>
 
 </resources>

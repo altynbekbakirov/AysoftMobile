@@ -360,6 +360,9 @@
     <string name="data_import_progressbar_products_warehouse">Склады</string>
     <string name="data_import_progressbar_products_warehouse_addresses">Адреса складов</string>
     <string name="data_import_progressbar_products_shelves">Номера полок</string>
+    <string name="items_search_not_found">Товар не найден</string>
+    <string name="items_search_sale_price">Отпускная цена</string>
+    <string name="items_search_daily_rate">Курс валют</string>
 
 
 </resources>

@@ -360,6 +360,9 @@
     <string name="data_import_progressbar_products_warehouse">Warehouses</string>
     <string name="data_import_progressbar_products_warehouse_addresses">Warehouse addresses</string>
     <string name="data_import_progressbar_products_shelves">Shelve places</string>
+    <string name="items_search_not_found">Item not found</string>
+    <string name="items_search_sale_price">Sale Price</string>
+    <string name="items_search_daily_rate">Daily rate</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 
