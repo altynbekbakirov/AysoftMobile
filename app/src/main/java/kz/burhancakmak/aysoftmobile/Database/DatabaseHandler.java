@@ -1647,7 +1647,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsPrclist> prclists = new ArrayList<>();
         String sql = "SELECT prc.Fiyat, prc.FiyatGrubu, prc.DovizIsareti, unt.Birim " +
-                "FROM AY_842_ItemsPrclist prc INNER JOIN AY_842_ItemsItmunita AS unt ON prc.BirimKayitNo = unt.KayitNo " +
+                "FROM AY_" + FIRMA_NO + "_ItemsPrclist prc INNER JOIN AY_" + FIRMA_NO + "_ItemsItmunita AS unt ON prc.BirimKayitNo = unt.KayitNo " +
                 "WHERE prc.StokKayitNo = " + kayitNo + " " +
                 "ORDER BY prc.StokKayitNo";
         Cursor cursor = db.rawQuery(sql, null);

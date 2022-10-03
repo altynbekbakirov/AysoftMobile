@@ -20,14 +20,14 @@ import kz.burhancakmak.aysoftmobile.R;
 
 public class PagedListAdapter extends RecyclerView.Adapter<PagedListAdapter.ItemsHolder> implements Filterable {
 
-    private List<ItemsWithPrices> items842List = new ArrayList<>();
+    private List<ItemsWithPrices> itemsList = new ArrayList<>();
     private List<ItemsWithPrices> itemsSearch = new ArrayList<>();
     private Activity activity;
 
-    public void setItemsList(Activity activity, List<ItemsWithPrices> items842List) {
+    public void setItemsList(Activity activity, List<ItemsWithPrices> itemsList) {
         this.activity = activity;
-        this.items842List = items842List;
-        itemsSearch = new ArrayList<>(items842List);
+        this.itemsList = itemsList;
+        itemsSearch = new ArrayList<>(itemsList);
         notifyDataSetChanged();
     }
 
@@ -40,15 +40,15 @@ public class PagedListAdapter extends RecyclerView.Adapter<PagedListAdapter.Item
 
     @Override
     public void onBindViewHolder(@NonNull ItemsHolder holder, int position) {
-        holder.StokKodu.setText(items842List.get(position).getStokKodu());
-        holder.StokAdi1.setText(items842List.get(position).getStokAdi1());
-        holder.Kalan1.setText(String.valueOf(items842List.get(position).getKalan1()) + " " + items842List.get(position).getBirim());
-        holder.Kalan2.setText(String.valueOf(items842List.get(position).getKalan2()) + " " + items842List.get(position).getBirim());
-        holder.Fiyat1.setText(String.valueOf(items842List.get(position).getFiyat1()) + " (" + items842List.get(position).getBirim() + ")");
-        holder.Fiyat2.setText(String.valueOf(items842List.get(position).getFiyat2()) + " (" + items842List.get(position).getBirim() + ")");
+        holder.StokKodu.setText(itemsList.get(position).getStokKodu());
+        holder.StokAdi1.setText(itemsList.get(position).getStokAdi1());
+        holder.Kalan1.setText(String.valueOf(itemsList.get(position).getKalan1()) + " " + itemsList.get(position).getBirim());
+        holder.Kalan2.setText(String.valueOf(itemsList.get(position).getKalan2()) + " " + itemsList.get(position).getBirim());
+        holder.Fiyat1.setText(String.valueOf(itemsList.get(position).getFiyat1()) + " (" + itemsList.get(position).getBirim() + ")");
+        holder.Fiyat2.setText(String.valueOf(itemsList.get(position).getFiyat2()) + " (" + itemsList.get(position).getBirim() + ")");
 
        /* Glide.with(activity)
-                .load("http://89.163.142.197:34444/NewMobil/Picture/" + items842List.get(position).getStokResim())
+                .load("http://89.163.142.197:34444/NewMobil/Picture/" + itemsList.get(position).getStokResim())
                 .placeholder(R.drawable.items_image)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.StokResim);*/
@@ -56,7 +56,7 @@ public class PagedListAdapter extends RecyclerView.Adapter<PagedListAdapter.Item
 
     @Override
     public int getItemCount() {
-        return items842List.size();
+        return itemsList.size();
     }
 
 
@@ -112,8 +112,8 @@ public class PagedListAdapter extends RecyclerView.Adapter<PagedListAdapter.Item
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            items842List.clear();
-            items842List.addAll((List)results.values);
+            itemsList.clear();
+            itemsList.addAll((List)results.values);
             notifyDataSetChanged();
         }
     };

@@ -254,10 +254,4 @@ public class ItemsWithPrices {
     public void setClientNo(Integer clientNo) {
         ClientNo = clientNo;
     }
-
-    /* @Embedded
-    public Items842 items842;
-
-    @Relation(parentColumn = "KayitNo", entityColumn = "StokKayitNo")
-    public List<ItemsPrclist842> prclist842;*/
 }

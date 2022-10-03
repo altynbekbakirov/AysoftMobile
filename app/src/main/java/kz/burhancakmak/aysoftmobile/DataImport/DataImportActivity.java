@@ -581,6 +581,7 @@ public class DataImportActivity extends AppCompatActivity {
         Call<ItemsQuery> queryList;
         RetrofitApi retrofitApi;
         String hata = null;
+        boolean addPrice = false;
 
         @Override
         protected void onProgressUpdate(String... values) {
@@ -757,14 +758,21 @@ public class DataImportActivity extends AppCompatActivity {
                             prclist.setBirimKayitNo(Integer.parseInt(prices[2]));
                             prclist.setFiyatGrubu(prices[3]);
                             prclist.setCariHesapKodu(prices[4]);
-                            prclist.setFiyat(Double.parseDouble(prices[5]));
                             prclist.setBaslangicTarih(prices[6]);
                             prclist.setBitisTarih(prices[7]);
                             prclist.setDovizTipiKayitNo(Integer.parseInt(prices[8]));
                             prclist.setDovizIsareti(prices[9]);
-                            databaseHandler.insertPrclist(prclist);
+                            if (prices[5] != null && Double.parseDouble(prices[5]) > 0) {
+                                prclist.setFiyat(Double.parseDouble(prices[5]));
+                                databaseHandler.insertPrclist(prclist);
+                                addPrice = true;
+                            } else {
+                                addPrice = false;
+                            }
                         }
-                        infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_prclist), itemsQuery.getItemsPrclist().size() - 2));
+                        if (addPrice) {
+                            infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_prclist), itemsQuery.getItemsPrclist().size() - 2));
+                        }
                     }
 
                     if (itemsQuery.getItemsToplamlar().size() > 2) {
@@ -778,9 +786,9 @@ public class DataImportActivity extends AppCompatActivity {
                             toplamlar.setDepoAdi(toplams[3]);
                             toplamlar.setToplam(Double.parseDouble(toplams[4]));
                             toplamlar.setStokKodu(toplams[5]);
-                            if (toplams.length > 6) {
+                            /*if (!toplams[6].isEmpty()) {
                                 toplamlar.setStokYeriKodu(toplams[6]);
-                            }
+                            }*/
                             databaseHandler.insertToplam(toplamlar);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_toplamlar), itemsQuery.getItemsToplamlar().size() - 2));
@@ -808,7 +816,9 @@ public class DataImportActivity extends AppCompatActivity {
                             depolarAdresler.setLokasyonKayitNo(Integer.parseInt(adresler[0]));
                             depolarAdresler.setDepoNo(Integer.parseInt(adresler[1]));
                             depolarAdresler.setLokasyonKodu(adresler[2]);
-                            depolarAdresler.setLokasyonAdi(adresler[3]);
+                            /*if (adresler[3] != null) {
+                                depolarAdresler.setLokasyonAdi(adresler[3]);
+                            }*/
                             databaseHandler.insertDepolarAdresler(depolarAdresler);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_warehouse_addresses), itemsQuery.getDepolarAdresler().size() - 2));
@@ -823,7 +833,9 @@ public class DataImportActivity extends AppCompatActivity {
                             stokYerleri.setDepoAdi(yerler[1]);
                             stokYerleri.setStokKodu(yerler[2]);
                             stokYerleri.setToplam(Integer.parseInt(yerler[3]));
-                            stokYerleri.setStokYeriKodu(yerler.length > 4 ? yerler[4] : "");
+                            /*if (yerler[4] != null) {
+                                stokYerleri.setStokYeriKodu(yerler[4]);
+                            }*/
                             databaseHandler.insertDepoStokYerleri(stokYerleri);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_shelves), itemsQuery.getDepoStokYerleri().size() - 2));
