@@ -310,19 +310,20 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
             }
 
             if (itemFilterSelected == 0) {
-                productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+                productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER);
             } else if (itemFilterSelected == 1) {
-                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, itemMin, itemMax);
+                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER, itemMin, itemMax);
             } else if (itemFilterSelected == 2) {
-                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, -itemMax, -itemMin);
+                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER, -itemMax, -itemMin);
             } else {
-                productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+                productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER);
             }
         }
     }
 
     private class GetDataFromDatabase extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+        String errorMessage = null;
 
         @Override
         protected void onPreExecute() {
@@ -333,13 +334,23 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
         @Override
         protected Void doInBackground(Void... items) {
-            productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+            try {
+                productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER);
+            } catch (Exception e) {
+                errorMessage = e.getMessage();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (errorMessage !=null) {
+                products_progressBar.setVisibility(View.GONE);
+                showFailDialog(errorMessage);
+                System.out.println(errorMessage);
+                return;
+            }
             itemsAdapter.setItemsList(
                     productItemList,
                     VIEW_TYPE,
@@ -353,6 +364,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
     private class GetDataFromDatabaseZero extends AsyncTask<Void, Void, Void> {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+        String errorMessage = null;
 
         @Override
         protected void onPreExecute() {
@@ -363,13 +375,22 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
         @Override
         protected Void doInBackground(Void... items) {
-            productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+            try {
+                productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER);
+            } catch (Exception e) {
+                errorMessage = e.getMessage();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (errorMessage !=null) {
+                products_progressBar.setVisibility(View.GONE);
+                showFailDialog(errorMessage);
+                return;
+            }
             itemsAdapter.setItemsList(
                     productItemList,
                     VIEW_TYPE,
@@ -383,6 +404,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
     private class GetDataFromDatabaseStock extends AsyncTask<Long, Void, Void> {
         RelativeLayout products_progressBar = findViewById(R.id.products_progressBar_layout);
+        String errorMessage = null;
 
         @Override
         protected void onPreExecute() {
@@ -393,13 +415,22 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
         @Override
         protected Void doInBackground(Long... items) {
-            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, items[0], items[1]);
+            try {
+                productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER, items[0], items[1]);
+            } catch (Exception e) {
+                errorMessage = e.getMessage();
+            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (errorMessage !=null) {
+                products_progressBar.setVisibility(View.GONE);
+                showFailDialog(errorMessage);
+                return;
+            }
             itemsAdapter.setItemsList(
                     productItemList,
                     VIEW_TYPE,
@@ -468,13 +499,13 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
 
                         productItemList.clear();
                         if (itemFilterSelected == 0) {
-                            productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+                            productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER);
                         } else if (itemFilterSelected == 1) {
-                            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, itemMin, itemMax);
+                            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER, itemMin, itemMax);
                         } else if (itemFilterSelected == 2) {
-                            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER, -itemMax, -itemMin);
+                            productItemList = databaseHandler.selectAllItemsByStock(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER, -itemMax, -itemMin);
                         } else {
-                            productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
+                            productItemList = databaseHandler.selectAllItemsZero(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER == null ? "" : NAV_FILTER);
                         }
                     }
                 }
@@ -742,6 +773,21 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
         resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
+    private void showFailDialog(String errorMessage) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.info_warning_title);
+        builder.setCancelable(true);
+        builder.setIcon(R.drawable.ic_dangerous);
+        builder.setMessage(errorMessage);
+        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
 }
