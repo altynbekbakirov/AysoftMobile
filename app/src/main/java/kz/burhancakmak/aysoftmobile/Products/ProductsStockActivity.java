@@ -252,11 +252,11 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
     }
 
     private void alertAddNewShelve(int position) {
-        List<ItemsDepolarAdresler> depolarAdreslers = databaseHandler.selectDepolarAdresler(toplamlarList.get(position).getDepoNo());
+        List<ItemsDepolarAdresler> addresses = databaseHandler.selectDepolarAdresler(toplamlarList.get(position).getDepoNo());
         List<String> shelveList = new ArrayList<>();
 
-        for (ItemsDepolarAdresler adres : depolarAdreslers) {
-            shelveList.add(adres.getLokasyonKayitNo() + " - " + adres.getLokasyonAdi());
+        for (ItemsDepolarAdresler address : addresses) {
+            shelveList.add(address.getLokasyonAdi());
         }
         shelveList.add(0, "");
 
@@ -268,13 +268,12 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
         ArrayAdapter<String> shelveAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_layout, shelveList);
         Spinner spinner = view.findViewById(R.id.items_stock_combo);
         shelveAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        shelveAdapter.notifyDataSetChanged();
         spinner.setAdapter(shelveAdapter);
+        shelveAdapter.notifyDataSetChanged();
 
         if (toplamlarList.get(position).getStokYeriKodu() != null) {
-            int value = Integer.parseInt(toplamlarList.get(position).getStokYeriKodu());
-            for (int i = 0; i < depolarAdreslers.size(); i++) {
-                if (depolarAdreslers.get(i).getLokasyonKayitNo() == value) {
+            for (int i = 0; i < addresses.size(); i++) {
+                if (addresses.get(i).getLokasyonKodu().equals(toplamlarList.get(position).getStokYeriKodu())) {
                     selectedItem = i;
                     spinner.setSelection(selectedItem + 1);
                     break;
@@ -287,7 +286,7 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedItem = i;
                 if (selectedItem > 0) {
-                    toplamlarList.get(position).setStokYeriKodu(String.valueOf(depolarAdreslers.get(selectedItem - 1).getLokasyonKayitNo()));
+                    toplamlarList.get(position).setStokYeriKodu(String.valueOf(addresses.get(selectedItem - 1).getLokasyonKayitNo()));
                 }
             }
 

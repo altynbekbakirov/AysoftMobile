@@ -27,6 +27,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
@@ -68,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.settings_button_save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!editTextId.getText().toString().isEmpty() && !editTextWeb.getText().toString().isEmpty()) {
+                if (!Objects.requireNonNull(editTextId.getText()).toString().isEmpty() && !Objects.requireNonNull(editTextWeb.getText()).toString().isEmpty()) {
                     session.removeKeyFirmaNo();
                     session.removeWebSettings();
                     session.createWebSettings(editTextId.getText().toString(), editTextWeb.getText().toString());

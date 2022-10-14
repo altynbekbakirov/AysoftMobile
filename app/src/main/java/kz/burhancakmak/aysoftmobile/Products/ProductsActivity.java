@@ -528,8 +528,8 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                 getString(R.string.products_info_stock_status),
                 getString(R.string.client_menu_extract),
                 getString(R.string.main_nav_dashboard),
-                getString(R.string.products_stock_documents),
-                getString(R.string.products_stock_warehouse)
+                getString(R.string.products_stock_documents)
+//                getString(R.string.products_stock_warehouse)
         };
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.alertItemsStyle);
         builder.setTitle(productItemList.get(position).getStokAdi1());

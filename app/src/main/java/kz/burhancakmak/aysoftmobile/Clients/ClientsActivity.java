@@ -317,7 +317,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
 
         @Override
         protected Void doInBackground(Void... items) {
-            cardList = databaseHandler.selectAllClients(NAV_FILTER, NAV_ORDER);
+            cardList = databaseHandler.selectAllClients(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER);
             return null;
         }
 
@@ -341,7 +341,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
 
         @Override
         protected Void doInBackground(Void... items) {
-            cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER, NAV_ORDER);
+            cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER);
             return null;
         }
 
@@ -365,7 +365,7 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
 
         @Override
         protected Void doInBackground(Long... items) {
-            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, items[0], items[1]);
+            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER, items[0], items[1]);
             return null;
         }
 
@@ -418,13 +418,13 @@ public class ClientsActivity extends AppCompatActivity implements NavigationView
 
                         cardList.clear();
                         if (clientFilterSelected == 0) {
-                            cardList = databaseHandler.selectAllClients(NAV_FILTER, NAV_ORDER);
+                            cardList = databaseHandler.selectAllClients(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER);
                         } else if (clientFilterSelected == 1) {
-                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, clientMin, clientMax);
+                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER, clientMin, clientMax);
                         } else if (clientFilterSelected == 2) {
-                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER, NAV_ORDER, -clientMax, -clientMin);
+                            cardList = databaseHandler.selectAllClientsByBalance(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER, -clientMax, -clientMin);
                         } else {
-                            cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER, NAV_ORDER);
+                            cardList = databaseHandler.selectAllClientsByBalanceZero(NAV_FILTER == null ? "" : NAV_FILTER, NAV_ORDER);
                         }
                     }
                 } else {

@@ -127,8 +127,8 @@ public class ProductSearchActivity extends AppCompatActivity {
             }
         });
 
-        kurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO, "kurusHaneSayisiStokMiktar", "0");
-        kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "kurusHaneSayisiStokTutar", "0");
+        kurusHaneSayisiStokMiktar = getParameters(FIRMA_NO, "kurusHaneSayisiStokMiktar", "0");
+        kurusHaneSayisiStokTutar = getParameters(FIRMA_NO, "kurusHaneSayisiStokTutar", "0");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -157,7 +157,7 @@ public class ProductSearchActivity extends AppCompatActivity {
         ProgressDialog pd;
         ItemsSearch itemsSearch;
         Call<ItemsSearchQuery> queryList;
-        String hata = null;
+        String errorMessage = null;
 
         @Override
         protected void onPreExecute() {
@@ -226,7 +226,7 @@ public class ProductSearchActivity extends AppCompatActivity {
                     }
                 }
             } catch (Exception e) {
-                hata = e.getMessage();
+                errorMessage = e.getMessage();
             }
             return null;
         }
@@ -236,8 +236,8 @@ public class ProductSearchActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             pd.dismiss();
 
-            if (hata != null) {
-                sendDataToServerFailDialog(hata);
+            if (errorMessage != null) {
+                sendDataToServerFailDialog(errorMessage);
                 return;
             }
 
@@ -359,15 +359,15 @@ public class ProductSearchActivity extends AppCompatActivity {
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
-    private String parametreGetir(String firmaNo, String parametre, String deger) {
+    private String getParameters(String firmaNo, String parametre, String deger) {
         List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
-        String parametreDeger;
+        String param;
         if (parametrelerList.size() == 1) {
-            parametreDeger = parametrelerList.get(0).getParametreDegeri();
+            param = parametrelerList.get(0).getParametreDegeri();
         } else {
-            parametreDeger = deger;
+            param = deger;
         }
-        return parametreDeger;
+        return param;
     }
 
     private String convertDateFormat(String tarih) {

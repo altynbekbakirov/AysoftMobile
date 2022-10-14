@@ -778,7 +778,7 @@ public class DataImportActivity extends AppCompatActivity {
                     if (itemsQuery.getItemsToplamlar().size() > 2) {
                         publishProgress(getString(R.string.data_import_progressbar_products_toplamlar));
                         for (int i = 2; i < itemsQuery.getItemsToplamlar().size(); i++) {
-                            String[] toplams = itemsQuery.getItemsToplamlar().get(i).split("\\|");
+                            String[] toplams = itemsQuery.getItemsToplamlar().get(i).split("\\|+");
                             ItemsToplamlar toplamlar = new ItemsToplamlar();
                             toplamlar.setKayitNo(Integer.parseInt(toplams[0]));
                             toplamlar.setStokKayitNo(Integer.parseInt(toplams[1]));
@@ -786,9 +786,11 @@ public class DataImportActivity extends AppCompatActivity {
                             toplamlar.setDepoAdi(toplams[3]);
                             toplamlar.setToplam(Double.parseDouble(toplams[4]));
                             toplamlar.setStokKodu(toplams[5]);
-                            /*if (!toplams[6].isEmpty()) {
+                            if (toplams.length <= 6) {
+                                toplamlar.setStokYeriKodu("");
+                            } else {
                                 toplamlar.setStokYeriKodu(toplams[6]);
-                            }*/
+                            }
                             databaseHandler.insertToplam(toplamlar);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_toplamlar), itemsQuery.getItemsToplamlar().size() - 2));
@@ -816,9 +818,11 @@ public class DataImportActivity extends AppCompatActivity {
                             depolarAdresler.setLokasyonKayitNo(Integer.parseInt(adresler[0]));
                             depolarAdresler.setDepoNo(Integer.parseInt(adresler[1]));
                             depolarAdresler.setLokasyonKodu(adresler[2]);
-                            /*if (adresler[3] != null) {
+                            if (adresler.length <= 3) {
+                                depolarAdresler.setLokasyonAdi("");
+                            } else {
                                 depolarAdresler.setLokasyonAdi(adresler[3]);
-                            }*/
+                            }
                             databaseHandler.insertDepolarAdresler(depolarAdresler);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_warehouse_addresses), itemsQuery.getDepolarAdresler().size() - 2));
@@ -833,9 +837,11 @@ public class DataImportActivity extends AppCompatActivity {
                             stokYerleri.setDepoAdi(yerler[1]);
                             stokYerleri.setStokKodu(yerler[2]);
                             stokYerleri.setToplam(Integer.parseInt(yerler[3]));
-                            /*if (yerler[4] != null) {
+                            if (yerler.length <=4) {
+                                stokYerleri.setStokYeriKodu("");
+                            } else {
                                 stokYerleri.setStokYeriKodu(yerler[4]);
-                            }*/
+                            }
                             databaseHandler.insertDepoStokYerleri(stokYerleri);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_shelves), itemsQuery.getDepoStokYerleri().size() - 2));
