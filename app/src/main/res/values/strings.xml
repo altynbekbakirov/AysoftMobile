@@ -156,9 +156,11 @@
     <string name="alert_siparis_sales">Sales order</string>
     <string name="clients_orders_menu_add">Add order</string>
     <string name="clients_orders_menu_save">Save</string>
+    <string name="clients_orders_menu_close">Close</string>
     <string name="clients_orders_menu_cancel">Cancel</string>
     <string name="alert_orders_cancel_message">Cancel all changes?</string>
     <string name="client_order_toolbar_title">New order</string>
+    <string name="client_order_add_items">Add Items</string>
     <string name="items_tutar_label">Sum</string>
     <string name="client_order_bottom_panel_discount">Discount</string>
     <string name="client_order_bottom_panel_net">Net</string>
@@ -169,6 +171,7 @@
     <string name="client_order_status_pending">Pending</string>
     <string name="client_order_no">Order no</string>
     <string name="client_order_status_sent">Sent</string>
+    <string name="client_order_status_info">Information</string>
     <string name="client_operation_type_label">Operation type</string>
     <string name="data_import_alert_info_title">Total downloaded</string>
     <string name="client_menu_balance_update">Balance update</string>
@@ -204,6 +207,7 @@
     <string name="info_warning_message">Record has already sent to server!</string>
     <string name="clients_orders_menu_change_order_info">Edit order information</string>
     <string name="main_nav_shipping_management">Shipping management</string>
+    <string name="main_nav_revision">Revision</string>
     <string name="client_order_shipping_address">Delivery address</string>
     <string name="client_order_shipping_delivery_date">Delivery date</string>
     <string name="client_order_shipping_payment_type">Payment type</string>
@@ -363,7 +367,7 @@
     <string name="items_search_not_found">Item not found</string>
     <string name="items_search_sale_price">Sale Price</string>
     <string name="items_search_daily_rate">Daily rate</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
 
 
 </resources>

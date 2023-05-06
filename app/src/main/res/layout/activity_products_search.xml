@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".Products.ProductSearchActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -21,7 +22,6 @@
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/toolbar"
         android:layout_margin="15dp"
         android:background="@drawable/search_view_bg"
         android:iconifiedByDefault="false"
@@ -34,7 +34,6 @@
         android:id="@+id/netScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/searchView"
         android:scrollbars="vertical"
         android:visibility="gone">
 
@@ -51,41 +50,11 @@
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text=""
+                android:text="@string/products_info_stock_specifications"
                 android:textAllCaps="true"
                 android:textColor="@color/blue"
                 android:textSize="12sp"
                 tools:ignore="RtlSymmetry" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:gravity="center"
-                android:padding="10dp">
-
-                <ImageView
-                    android:id="@+id/itemsImage"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:contentDescription="TODO"
-                    android:src="@drawable/aysoft_logo" />
-
-
-            </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/lightWhite"
-                android:fontFamily="@font/open_sans_bold"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/products_info_stock_specifications"
-                android:textAllCaps="true"
-                android:textColor="@color/blue"
-                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -524,207 +493,12 @@
 
             </LinearLayout>
 
-            <TextView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/lightWhite"
-                android:fontFamily="@font/open_sans_bold"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/data_import_progressbar_products_warehouse"
-                android:textAllCaps="true"
-                android:textColor="@color/blue"
-                android:textSize="12sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/products_stock_ambar_no"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarNo"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/products_stock_ambar_name"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarAdi"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/items_miktar_label"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarMiktar"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/products_info_unit"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarBirim"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="satilacakbirimcarpan"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarBirimCarpan"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/items_miktar_label"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarSatilacakMiktar"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/linearlayout_border_line"
-                android:orientation="horizontal"
-                android:paddingStart="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                tools:ignore="RtlSymmetry">
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:text="@string/client_popup_show_map"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/itemsAmbarLocation"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_condensed_bold"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
+                android:scrollbars="vertical"
+                tools:listitem="@layout/product_search_recyclerview_layout" />
 
         </LinearLayout>
 
@@ -734,11 +508,11 @@
         android:id="@+id/searchResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchView"
         android:gravity="center"
+        android:layout_marginTop="200dp"
         android:text="@string/items_search_not_found"
         android:textColor="@color/red"
         android:textSize="28sp"
         android:visibility="gone" />
 
-</RelativeLayout>
+</LinearLayout>

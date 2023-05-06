@@ -1,6 +1,5 @@
 package kz.burhancakmak.aysoftmobile.Products;
 
-
 import static kz.burhancakmak.aysoftmobile.MainActivity.DONEM_NO;
 import static kz.burhancakmak.aysoftmobile.MainActivity.FIRMA_NO;
 
@@ -15,27 +14,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
+import kz.burhancakmak.aysoftmobile.Adapters.ProductSearchAdapter;
 import kz.burhancakmak.aysoftmobile.Database.DatabaseHandler;
 import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsSearch;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsSearchWarehouses;
 import kz.burhancakmak.aysoftmobile.Models.Products.ItemsSearchQuery;
 import kz.burhancakmak.aysoftmobile.R;
 import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
@@ -49,15 +49,18 @@ public class ProductSearchActivity extends AppCompatActivity {
     HashMap<String, String> userSettingMap;
     HashMap<String, String> webSettingsMap;
     DatabaseHandler databaseHandler;
+    RecyclerView recyclerView;
     private static final String KEY_NAME = "name";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_LANG = "language";
     String kurusHaneSayisiStokMiktar, kurusHaneSayisiStokTutar;
+    List<ItemsSearchWarehouses> itemsSearchBalances = new ArrayList<>();
     Toolbar toolbar;
     SearchView searchView;
+    ProductSearchAdapter adapter;
     TextView itemsName, itemsNameRu, itemsCode, itemsBarcode, itemsCarpan1, itemsCarpan2, itemsUnit, itemsPrice, itemsPriceCevrim,
             itemsPriceEndDate, itemsFiyatBirimKod, itemsDovizKod, itemsSalePrice, itemsSalePriceUnit, itemsSalePriceUnitCarpan,
-            itemsDailyRate, searchResult, itemsAmbarNo, itemsAmbarAdi, itemsAmbarMiktar, itemsAmbarBirim, itemsAmbarBirimCarpan, itemsAmbarSatilacakMiktar, itemsAmbarLocation;
+            itemsDailyRate, searchResult;
     NestedScrollView netScroll;
     String aranan = "";
 
@@ -109,13 +112,15 @@ public class ProductSearchActivity extends AppCompatActivity {
         itemsSalePriceUnitCarpan = findViewById(R.id.itemsSalePriceUnitCarpan);
         itemsDailyRate = findViewById(R.id.itemsDailyRate);
         searchResult = findViewById(R.id.searchResult);
-        itemsAmbarNo = findViewById(R.id.itemsAmbarNo);
-        itemsAmbarAdi = findViewById(R.id.itemsAmbarAdi);
-        itemsAmbarMiktar = findViewById(R.id.itemsAmbarMiktar);
-        itemsAmbarBirim = findViewById(R.id.itemsAmbarBirim);
-        itemsAmbarBirimCarpan = findViewById(R.id.itemsAmbarBirimCarpan);
-        itemsAmbarSatilacakMiktar = findViewById(R.id.itemsAmbarSatilacakMiktar);
-        itemsAmbarLocation = findViewById(R.id.itemsAmbarLocation);
+
+        recyclerView = findViewById(R.id.recyclerViewSearch);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        adapter = new ProductSearchAdapter(itemsSearchBalances);
+        recyclerView.setAdapter(adapter);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -214,13 +219,15 @@ public class ProductSearchActivity extends AppCompatActivity {
                         if (query.get1().size() > 1) {
                             for (int i = 1; i < query.get1().size(); i++) {
                                 String[] items = query.get1().get(i).split("\\|");
-                                itemsSearch.setDepono(items[0]);
-                                itemsSearch.setDepoadi(items[1]);
-                                itemsSearch.setMiktar(Integer.parseInt(items[2]));
-                                itemsSearch.setSatilacakbirim(items[3]);
-                                itemsSearch.setSatilacakbirimcarpan(Integer.parseInt(items[4]));
-                                itemsSearch.setSatilacakmiktar(Integer.parseInt(items[5]));
-                                itemsSearch.setStoklokasyon(items[6]);
+                                ItemsSearchWarehouses balance = new ItemsSearchWarehouses();
+                                balance.setDepono(items[0]);
+                                balance.setDepoadi(items[1]);
+                                balance.setMiktar(Integer.parseInt(items[2]));
+                                balance.setSatilacakbirim(items[3]);
+                                balance.setSatilacakbirimcarpan(Integer.parseInt(items[4]));
+                                balance.setSatilacakmiktar(Integer.parseInt(items[5]));
+                                balance.setStoklokasyon(items[6]);
+                                itemsSearchBalances.add(balance);
                             }
                         }
                     }
@@ -289,25 +296,6 @@ public class ProductSearchActivity extends AppCompatActivity {
                 }
                 if (itemsSearch.getGunlukKur() != null) {
                     itemsDailyRate.setText(String.format("%,." + Integer.parseInt(kurusHaneSayisiStokTutar) + "f", itemsSearch.getGunlukKur()));
-                }
-                if (itemsSearch.getDepono() != null) itemsAmbarNo.setText(itemsSearch.getDepono());
-                if (itemsSearch.getDepoadi() != null) {
-                    itemsAmbarAdi.setText(itemsSearch.getDepoadi());
-                }
-                if (itemsSearch.getMiktar() != null) {
-                    itemsAmbarMiktar.setText(String.valueOf(itemsSearch.getMiktar()));
-                }
-                if (itemsSearch.getSatilacakbirim() != null) {
-                    itemsAmbarBirim.setText(itemsSearch.getSatilacakbirim());
-                }
-                if (itemsSearch.getSatilacakBirimCarpan() != null) {
-                    itemsAmbarBirimCarpan.setText(String.valueOf(itemsSearch.getSatilacakBirimCarpan()));
-                }
-                if (itemsSearch.getSatilacakmiktar() != null) {
-                    itemsAmbarSatilacakMiktar.setText(String.valueOf(itemsSearch.getSatilacakmiktar()));
-                }
-                if (itemsSearch.getStoklokasyon() != null) {
-                    itemsAmbarLocation.setText(itemsSearch.getStoklokasyon());
                 }
             } else {
                 netScroll.setVisibility(View.GONE);

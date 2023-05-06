@@ -254,4 +254,38 @@ public class ItemsWithPrices {
     public void setClientNo(Integer clientNo) {
         ClientNo = clientNo;
     }
+
+    @Override
+    public String toString() {
+        return "ItemsWithPrices{" +
+                "KayitNo=" + KayitNo +
+                ", StokKodu='" + StokKodu + '\'' +
+                ", StokAdi1='" + StokAdi1 + '\'' +
+                ", Kalan1=" + Kalan1 +
+                ", Kalan2=" + Kalan2 +
+                ", StokResim='" + StokResim + '\'' +
+                ", StokResim1='" + StokResim1 + '\'' +
+                ", StokResim2='" + StokResim2 + '\'' +
+                ", StokResim3='" + StokResim3 + '\'' +
+                ", Birim='" + Birim + '\'' +
+                ", Carpan2=" + Carpan2 +
+                ", Fiyat1=" + Fiyat1 +
+                ", Fiyat2=" + Fiyat2 +
+                ", Barkod='" + Barkod + '\'' +
+                ", Barkod2='" + Barkod2 + '\'' +
+                ", Miktar=" + Miktar +
+                ", ClientNo=" + ClientNo +
+                ", UreticiKodu='" + UreticiKodu + '\'' +
+                ", OzelKod1='" + OzelKod1 + '\'' +
+                ", OzelKod2='" + OzelKod2 + '\'' +
+                ", OzelKod3='" + OzelKod3 + '\'' +
+                ", OzelKod4='" + OzelKod4 + '\'' +
+                ", OzelKod5='" + OzelKod5 + '\'' +
+                ", Birim2='" + Birim2 + '\'' +
+                ", SiparisSatinalma=" + SiparisSatinalma +
+                ", SiparisSatis=" + SiparisSatis +
+                ", Doviz1='" + Doviz1 + '\'' +
+                ", Doviz2='" + Doviz2 + '\'' +
+                '}';
+    }
 }

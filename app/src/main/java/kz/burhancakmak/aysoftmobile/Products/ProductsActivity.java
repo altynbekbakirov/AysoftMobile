@@ -251,10 +251,10 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         databaseHandler = DatabaseHandler.getInstance(this);
         menuList = databaseHandler.selectCihazlarMenu(1, menuGrupKayitNo);
         parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
-        kurusHaneSayisiStokMiktar = parametreGetir("KurusHaneSayisiStokMiktar", "0");
-        kurusHaneSayisiStokTutar = parametreGetir("KurusHaneSayisiStokTutar", "0");
-        ikiFiyatKullanimi = parametreGetir("IkiFiyatKullanimi", "0");
-        ikiDepoKullanimi = parametreGetir("IkiDepoKullanimi", "0");
+        kurusHaneSayisiStokMiktar = parametreGetir(FIRMA_NO,"KurusHaneSayisiStokMiktar", "0");
+        kurusHaneSayisiStokTutar = parametreGetir(FIRMA_NO, "KurusHaneSayisiStokTutar", "0");
+        ikiFiyatKullanimi = parametreGetir(FIRMA_NO, "IkiFiyatKullanimi", "0");
+        ikiDepoKullanimi = parametreGetir(FIRMA_NO, "IkiDepoKullanimi", "0");
         productPricesList = databaseHandler.selectPrclist();
         priceList.add("");
         for (int i = 0; i < productPricesList.size(); i++) {
@@ -738,12 +738,13 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
         alertDialog.show();
     }
 
-    private String parametreGetir(String param, String deger) {
-        String parametreDeger = deger;
-        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
-            if (parametreler.getParametreAdi().equals(param)) {
-                parametreDeger = parametreler.getParametreDegeri();
-            }
+    private String parametreGetir(String firmaNo, String parametre, String deger) {
+        List<CihazlarFirmaParametreler> parametrelerList = databaseHandler.selectParametreGetir(firmaNo, parametre);
+        String parametreDeger;
+        if (parametrelerList.size() == 1) {
+            parametreDeger = parametrelerList.get(0).getParametreDegeri();
+        } else {
+            parametreDeger = deger;
         }
         return parametreDeger;
     }

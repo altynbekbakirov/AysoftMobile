@@ -6,6 +6,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,7 +23,6 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -44,6 +45,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.widget.SearchView;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -69,6 +73,7 @@ import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSepet;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClientSiparis;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
+import kz.burhancakmak.aysoftmobile.Models.Products.ItemsWithPrices;
 import kz.burhancakmak.aysoftmobile.R;
 
 public class SiparisIslemleriActivity extends AppCompatActivity implements SepetAdapter.OnOrderListener {
@@ -84,11 +89,15 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
     List<ClientSepet> sepetList = new ArrayList<>();
     List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     ClCard card;
+    SearchView searchView;
+    private static String NAV_FILTER;
     LinearLayout mainlayout, bottomPanelCollapsable;
     TextView bottomPanelTotal, bottomPanelSale, bottomPanelNet, bottomPanelRowCount, bottomPanelCount;
     ImageView bottomPanelImage;
-    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, Aciklama, SiparisTeslimTarihi, SiparisteFiyatDegistirebilir;
+    String KurusHaneSayisiStokMiktar, KurusHaneSayisiStokTutar, Aciklama, SiparisTeslimTarihi, SiparisteFiyatDegistirebilir, siparisteHizliEkledeSatirBirlestirilecek;
     private boolean isCount;
+    private int itemCount = 1;
+    private boolean isItemFound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +120,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.clients_orders_menu, menu);
             if (card.getAdres1().isEmpty()) {
-                menu.findItem(R.id.client_orders_change_data).setVisible(false);
+//                menu.findItem(R.id.client_orders_change_data).setVisible(false);
             }
         }
         return true;
@@ -133,6 +142,9 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
                 cartEmptyWarning();
             }
         }
+        if (item.getItemId() == R.id.client_orders_add_item) {
+            chooseAddItemProduct();
+        }
         if (item.getItemId() == R.id.client_orders_add) {
             Intent intent = new Intent(this, SiparisProductsActivity.class);
             intent.putExtra("KurusHaneSayisiStokMiktar", KurusHaneSayisiStokMiktar);
@@ -142,6 +154,9 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             }
             startActivityForResult(intent, 55);
         }
+        /*if (item.getItemId() == R.id.client_orders_info) {
+            System.out.println("client_orders_info");
+        }*/
         if (item.getItemId() == R.id.client_orders_save) {
             if (sepetList.size() > 0) {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -251,7 +266,8 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         KurusHaneSayisiStokTutar = intent.getStringExtra("KurusHaneSayisiStokTutar");
         card = databaseHandler.selectClientById(kayitNo);
         parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
-        SiparisteFiyatDegistirebilir = parametreGetir("SiparisteFiyatDegistirebilir", "0");
+        SiparisteFiyatDegistirebilir = parametreGetir("SiparisteFiyatDegistirebilir");
+        siparisteHizliEkledeSatirBirlestirilecek = parametreGetir("SiparisteHizliEkledeSatirBirlestirilecek");
         if (intent.getDoubleExtra("discountPercent", -1) != -1) {
             discountPercent = intent.getDoubleExtra("discountPercent", -1);
             if (discountPercent > 0) {
@@ -438,15 +454,16 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (!priceTypeValue.getText().toString().isEmpty()) {
-                    if (Double.parseDouble(priceTypeValue.getText().toString()) > 0) {
+                    double priceType = Double.parseDouble(priceTypeValue.getText().toString().split(",")[0]);
+                    if (priceType > 0) {
                         if (position == 0) {
-                            discountPercent = Double.parseDouble(priceTypeValue.getText().toString());
-                            discountTotal = Double.parseDouble(priceOrderTotal.getText().toString()) * (discountPercent / 100);
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            discountPercent = priceType;
+                            discountTotal = Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0]) * (discountPercent / 100);
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0]) - discountTotal));
                         } else if (position == 1) {
                             discountPercent = 0;
-                            discountTotal = Double.parseDouble(priceTypeValue.getText().toString());
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            discountTotal = priceType;
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0]) - discountTotal));
                         }
                     }
                 } else {
@@ -499,19 +516,19 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().isEmpty()) {
-                    if (Double.parseDouble(s.toString()) > 0) {
+                    if (Double.parseDouble(s.toString().split(",")[0]) > 0) {
                         if (priceTypeSpinner.getSelectedItemPosition() == 0) {
-                            discountPercent = Double.parseDouble(priceTypeValue.getText().toString());
-                            discountTotal = Double.parseDouble(priceOrderTotal.getText().toString()) * (discountPercent / 100);
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            discountPercent = Double.parseDouble(priceTypeValue.getText().toString().split(",")[0]);
+                            discountTotal = Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0]) * (discountPercent / 100);
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0]) - discountTotal));
                         } else if (priceTypeSpinner.getSelectedItemPosition() == 1) {
                             discountPercent = 0;
-                            discountTotal = Double.parseDouble(priceTypeValue.getText().toString());
-                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString()) - discountTotal));
+                            discountTotal = Double.parseDouble(priceTypeValue.getText().toString().split(",")[0]);
+                            priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0]) - discountTotal));
                         }
                     }
                 } else {
-                    priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString())));
+                    priceOrderNetTotal.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(priceOrderTotal.getText().toString().split(",")[0])));
                 }
             }
 
@@ -646,7 +663,7 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
 
         if (sepetList.get(position).getStokMiktar() != null) {
             editMiktar.setText(String.valueOf(sepetList.get(position).getStokMiktar()));
-            stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString())));
+//            stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
         }
 
         if (SiparisteFiyatDegistirebilir.equals("1")) {
@@ -809,6 +826,51 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         builder.show();
     }
 
+    private void chooseAddItemProduct() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this, R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog);
+        View view = getLayoutInflater().inflate(R.layout.siparis_products_add_item_layout, null);
+        builder.setCancelable(false);
+        builder.setView(view);
+        searchView = view.findViewById(R.id.searchView);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.trim().isEmpty()) {
+                    isItemFound = false;
+                    String[] items = query.trim().split("\\*");
+                    if (items.length > 1) {
+                        try {
+                            itemCount = Integer.parseInt(items[0]);
+                        } catch (Exception e) {
+                            itemCount = 1;
+                        }
+                        NAV_FILTER = items[1];
+                    } else {
+                        itemCount = 1;
+                        NAV_FILTER = query.trim();
+                    }
+                    new GetDataFromDatabase().execute();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        builder.setPositiveButton(R.string.clients_orders_menu_close, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
     private void confirmationCancel() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle(R.string.alert_kasa_delete_task_title);
@@ -836,8 +898,8 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
         builder.show();
     }
 
-    private String parametreGetir(String param, String deger) {
-        String parametreDeger = deger;
+    private String parametreGetir(String param) {
+        String parametreDeger = "0";
         for (CihazlarFirmaParametreler parametreler : parametrelerList) {
             if (parametreler.getParametreAdi().equals(param)) {
                 parametreDeger = parametreler.getParametreDegeri();
@@ -948,4 +1010,120 @@ public class SiparisIslemleriActivity extends AppCompatActivity implements Sepet
             bottomPanelCount.setText("0");
         }
     }
+
+    private class GetDataFromDatabase extends AsyncTask<Void, Void, Void> {
+        String errorMessage = null;
+        ItemsWithPrices item;
+        boolean isFound = false;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... items) {
+            try {
+                item = databaseHandler.selectItemByBarcode(card.getFiyatGrubu(), card.getFiyatGrubu(), NAV_FILTER);
+            } catch (Exception e) {
+                errorMessage = e.getMessage();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (item.getKayitNo() != null) {
+                isItemFound = true;
+                if (siparisteHizliEkledeSatirBirlestirilecek.equals("0")) {
+                    ClientSepet sepet = new ClientSepet();
+                    sepet.setStokKayitNo(item.getKayitNo());
+                    sepet.setStokKodu(item.getStokKodu());
+                    sepet.setStokAdi(item.getStokAdi1());
+                    sepet.setStokFiyat(item.getFiyat1());
+                    sepet.setStokBirim(item.getBirim());
+                    sepet.setStokMiktar(itemCount);
+                    sepet.setStokTutar(itemCount * item.getFiyat1());
+                    sepet.setSatirIndirimOrani(0.0);
+                    sepet.setSatirIndirimTutari(0.0);
+                    sepet.setGenelIndirimTutari(0.0);
+                    sepet.setNetTutar(itemCount * item.getFiyat1());
+                    sepet.setStokResim1(item.getStokResim());
+                    sepet.setStokResim2(item.getStokResim1());
+                    sepet.setStokResim3(item.getStokResim2());
+                    sepet.setStokResim4(item.getStokResim3());
+                    sepetList.add(sepet);
+                    adapter.setOrderList(sepetList);
+                    showBottomPanel(sepetList);
+                } else {
+                    if (sepetList == null) {
+                        ClientSepet sepet = new ClientSepet();
+                        sepet.setStokKayitNo(item.getKayitNo());
+                        sepet.setStokKodu(item.getStokKodu());
+                        sepet.setStokAdi(item.getStokAdi1());
+                        sepet.setStokFiyat(item.getFiyat1());
+                        sepet.setStokBirim(item.getBirim());
+                        sepet.setStokMiktar(itemCount);
+                        sepet.setStokTutar(itemCount * item.getFiyat1());
+                        sepet.setSatirIndirimOrani(0.0);
+                        sepet.setSatirIndirimTutari(0.0);
+                        sepet.setGenelIndirimTutari(0.0);
+                        sepet.setNetTutar(itemCount * item.getFiyat1());
+                        sepet.setStokResim1(item.getStokResim());
+                        sepet.setStokResim2(item.getStokResim1());
+                        sepet.setStokResim3(item.getStokResim2());
+                        sepet.setStokResim4(item.getStokResim3());
+                        sepetList.add(sepet);
+                    } else {
+                        for (int i = 0; i < sepetList.size(); i++) {
+                            if (sepetList.get(i).getStokKodu().equals(item.getStokKodu())) {
+                                sepetList.get(i).setStokMiktar(sepetList.get(i).getStokMiktar() + itemCount);
+                                sepetList.get(i).setStokFiyat(item.getFiyat1());
+                                sepetList.get(i).setStokTutar((sepetList.get(i).getStokMiktar() + itemCount) * item.getFiyat1());
+                                sepetList.get(i).setSatirIndirimOrani(0.0);
+                                sepetList.get(i).setSatirIndirimTutari(0.0);
+                                sepetList.get(i).setGenelIndirimTutari(0.0);
+                                sepetList.get(i).setNetTutar((sepetList.get(i).getStokMiktar() + itemCount) * item.getFiyat1());
+                                isFound = true;
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            ClientSepet sepet = new ClientSepet();
+                            sepet.setStokKayitNo(item.getKayitNo());
+                            sepet.setStokKodu(item.getStokKodu());
+                            sepet.setStokAdi(item.getStokAdi1());
+                            sepet.setStokFiyat(item.getFiyat1());
+                            sepet.setStokBirim(item.getBirim());
+                            sepet.setStokMiktar(itemCount);
+                            sepet.setStokTutar(itemCount * item.getFiyat1());
+                            sepet.setSatirIndirimOrani(0.0);
+                            sepet.setSatirIndirimTutari(0.0);
+                            sepet.setGenelIndirimTutari(0.0);
+                            sepet.setNetTutar(itemCount * item.getFiyat1());
+                            sepet.setStokResim1(item.getStokResim());
+                            sepet.setStokResim2(item.getStokResim1());
+                            sepet.setStokResim3(item.getStokResim2());
+                            sepet.setStokResim4(item.getStokResim3());
+                            sepetList.add(sepet);
+                        }
+                    }
+                    adapter.setOrderList(sepetList);
+                    showBottomPanel(sepetList);
+                }
+                if (isItemFound) {
+                    searchView.setQuery("", false);
+                    searchView.setIconified(true);
+                    searchView.requestFocus();
+                    InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                } else  {
+                    InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
+            }
+        }
+    }
+
 }

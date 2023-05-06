@@ -15,11 +15,20 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/client_orders_add_item"
+        android:icon="@drawable/ic_shopping_cart"
+        android:title="@string/client_order_add_items"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/client_orders_discount"
         android:title="@string/alert_kasa_menu_sale"
         app:showAsAction="never" />
 
-
+    <!--<item
+        android:id="@+id/client_orders_info"
+        android:title="@string/client_order_status_info"
+        app:showAsAction="never" />-->
 
     <item
         android:id="@+id/client_orders_cancel"

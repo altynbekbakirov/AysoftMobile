@@ -62,6 +62,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,7 +82,8 @@ import kz.burhancakmak.aysoftmobile.Models.Products.ItemsWithPrices;
 import kz.burhancakmak.aysoftmobile.Products.CameraCapture;
 import kz.burhancakmak.aysoftmobile.R;
 
-public class SiparisProductsActivity extends AppCompatActivity implements SiparisProductsAdapter.OnOrderClickListener, NavigationView.OnNavigationItemSelectedListener {
+public class SiparisProductsActivity extends AppCompatActivity
+        implements SiparisProductsAdapter.OnOrderClickListener, NavigationView.OnNavigationItemSelectedListener {
     SessionManagement session;
     HashMap<String, String> hashMap;
     DatabaseHandler databaseHandler;
@@ -139,7 +141,6 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
         }
         navigationView.getMenu().getItem(index).setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
-//        productItemList = databaseHandler.selectAllItems(ondegerFiyatGrubu1, ondegerFiyatGrubu2, NAV_FILTER);
         new GetDataFromDatabase().execute();
         return true;
     }
@@ -336,7 +337,7 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
             itemsAdapter.setItemsList(productItemList, VIEW_TYPE,
                     depo1Aciklama1 + " " + getString(R.string.items_kalan1_label),
                     depo2Aciklama1.isEmpty() ? "" : depo2Aciklama1 + " " + getString(R.string.items_kalan2_label),
-                    ondegerFiyatGrubu1.isEmpty() ? "" : ondegerFiyatGrubu1 + " " + getString(R.string.items_fiyat1_label),
+                    ondegerFiyatGrubu1.isEmpty() ? "" : card.getFiyatGrubu() + " " + getString(R.string.items_fiyat1_label),
                     ondegerFiyatGrubu2.isEmpty() ? "" : ondegerFiyatGrubu2 + " " + getString(R.string.items_fiyat2_label));
             products_progressBar.setVisibility(View.GONE);
         }
@@ -365,10 +366,19 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
 
         for (int i = 0; i < sepetList.size(); i++) {
             if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
-                editMiktar.setText(String.valueOf(sepetList.get(i).getStokMiktar()));
-                editFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
-                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString())));
-                break;
+                try {
+                    NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+                    Number number = format.parse(editFiyat.getText().toString());
+                    assert number != null;
+                    double price = number.doubleValue();
+                    editMiktar.setText(String.valueOf(sepetList.get(i).getStokMiktar()));
+                    editFiyat.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", items.getFiyat1()));
+                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Integer.parseInt(editMiktar.getText().toString()) * price));
+                    break;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+
             }
         }
 
@@ -400,9 +410,18 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
-                                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                            try {
+                                NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+                                Number number = format.parse(editFiyat.getText().toString());
+                                assert number != null;
+                                double price = number.doubleValue();
+                                if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * price));
+                                }
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
                             }
+
                         }
 
                         @Override
@@ -428,9 +447,18 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
-                                stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                            try {
+                                NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+                                Number number = format.parse(editFiyat.getText().toString());
+                                assert number != null;
+                                double price = number.doubleValue();
+                                if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * price));
+                                }
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
                             }
+
                         }
 
                         @Override
@@ -458,8 +486,16 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
-                    stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", "")) * Double.parseDouble(editFiyat.getText().toString().replaceAll("\\s+", "").replaceAll("\\.", ""))));
+                try {
+                    if (!editMiktar.getText().toString().isEmpty() && !editFiyat.getText().toString().isEmpty()) {
+                        NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+                        Number number = format.parse(editFiyat.getText().toString());
+                        assert number != null;
+                        double price = number.doubleValue();
+                        stokTutar.setText(String.format("%." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", Double.parseDouble(editMiktar.getText().toString()) * price));
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
 
@@ -505,63 +541,71 @@ public class SiparisProductsActivity extends AppCompatActivity implements Sipari
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!editMiktar.getText().toString().isEmpty()) {
-                    if (sepetList == null) {
-                        ClientSepet sepet = new ClientSepet();
-                        sepet.setStokKayitNo(productItemList.get(position).getKayitNo());
-                        sepet.setStokKodu(productItemList.get(position).getStokKodu());
-                        sepet.setStokAdi(productItemList.get(position).getStokAdi1());
-                        sepet.setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
-                        sepet.setStokBirim(productItemList.get(position).getBirim());
-                        sepet.setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                        sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
-                        sepet.setSatirIndirimOrani(0.0);
-                        sepet.setSatirIndirimTutari(0.0);
-                        sepet.setGenelIndirimTutari(0.0);
-                        sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
-                        sepet.setStokResim1(productItemList.get(position).getStokResim());
-                        sepet.setStokResim2(productItemList.get(position).getStokResim1());
-                        sepet.setStokResim3(productItemList.get(position).getStokResim2());
-                        sepet.setStokResim4(productItemList.get(position).getStokResim3());
-                        sepetList.add(sepet);
-                    } else {
-                        for (int i = 0; i < sepetList.size(); i++) {
-                            if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
-                                sepetList.get(i).setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                                sepetList.get(i).setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
-                                sepetList.get(i).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
-                                sepetList.get(i).setSatirIndirimOrani(0.0);
-                                sepetList.get(i).setSatirIndirimTutari(0.0);
-                                sepetList.get(i).setGenelIndirimTutari(0.0);
-                                sepetList.get(i).setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
-                                isFound = true;
-                                break;
-                            }
-                        }
-                        if (!isFound) {
+                try {
+                    if (!editMiktar.getText().toString().isEmpty()) {
+                        NumberFormat format = NumberFormat.getInstance(Locale.getDefault());
+                        Number number = format.parse(editFiyat.getText().toString());
+                        assert number != null;
+                        double price = number.doubleValue();
+                        if (sepetList == null) {
                             ClientSepet sepet = new ClientSepet();
                             sepet.setStokKayitNo(productItemList.get(position).getKayitNo());
                             sepet.setStokKodu(productItemList.get(position).getStokKodu());
                             sepet.setStokAdi(productItemList.get(position).getStokAdi1());
-                            sepet.setStokFiyat(Double.parseDouble(editFiyat.getText().toString()));
+                            sepet.setStokFiyat(price);
                             sepet.setStokBirim(productItemList.get(position).getBirim());
                             sepet.setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                            sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
+                            sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * price);
                             sepet.setSatirIndirimOrani(0.0);
                             sepet.setSatirIndirimTutari(0.0);
                             sepet.setGenelIndirimTutari(0.0);
-                            sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * Double.parseDouble(editFiyat.getText().toString()));
+                            sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * price);
                             sepet.setStokResim1(productItemList.get(position).getStokResim());
                             sepet.setStokResim2(productItemList.get(position).getStokResim1());
                             sepet.setStokResim3(productItemList.get(position).getStokResim2());
                             sepet.setStokResim4(productItemList.get(position).getStokResim3());
                             sepetList.add(sepet);
+                        } else {
+                            for (int i = 0; i < sepetList.size(); i++) {
+                                if (sepetList.get(i).getStokKodu().equals(productItemList.get(position).getStokKodu())) {
+                                    sepetList.get(i).setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
+                                    sepetList.get(i).setStokFiyat(price);
+                                    sepetList.get(i).setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * price);
+                                    sepetList.get(i).setSatirIndirimOrani(0.0);
+                                    sepetList.get(i).setSatirIndirimTutari(0.0);
+                                    sepetList.get(i).setGenelIndirimTutari(0.0);
+                                    sepetList.get(i).setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * price);
+                                    isFound = true;
+                                    break;
+                                }
+                            }
+                            if (!isFound) {
+                                ClientSepet sepet = new ClientSepet();
+                                sepet.setStokKayitNo(productItemList.get(position).getKayitNo());
+                                sepet.setStokKodu(productItemList.get(position).getStokKodu());
+                                sepet.setStokAdi(productItemList.get(position).getStokAdi1());
+                                sepet.setStokFiyat(price);
+                                sepet.setStokBirim(productItemList.get(position).getBirim());
+                                sepet.setStokMiktar(Integer.parseInt(editMiktar.getText().toString()));
+                                sepet.setStokTutar(Double.parseDouble(editMiktar.getText().toString()) * price);
+                                sepet.setSatirIndirimOrani(0.0);
+                                sepet.setSatirIndirimTutari(0.0);
+                                sepet.setGenelIndirimTutari(0.0);
+                                sepet.setNetTutar(Double.parseDouble(editMiktar.getText().toString()) * price);
+                                sepet.setStokResim1(productItemList.get(position).getStokResim());
+                                sepet.setStokResim2(productItemList.get(position).getStokResim1());
+                                sepet.setStokResim3(productItemList.get(position).getStokResim2());
+                                sepet.setStokResim4(productItemList.get(position).getStokResim3());
+                                sepetList.add(sepet);
+                            }
                         }
+                        productItemList.get(position).setMiktar(Integer.parseInt(editMiktar.getText().toString()));
+                        productItemList.get(position).setFiyat1(price);
+                        productItemList.get(position).setClientNo(clientKayitNo);
+                        itemsAdapter.notifyItemChanged(position);
                     }
-                    productItemList.get(position).setMiktar(Integer.parseInt(editMiktar.getText().toString()));
-                    productItemList.get(position).setFiyat1(Double.parseDouble(editFiyat.getText().toString()));
-                    productItemList.get(position).setClientNo(clientKayitNo);
-                    itemsAdapter.notifyItemChanged(position);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
         });

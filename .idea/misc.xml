@@ -99,9 +99,60 @@
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/clients_visit_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/main_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Professional/AndroidStudioProjects/AysoftMobile/app/src/main/res/menu/products_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/projects/Android/app/src/main/res/drawable/circle_green.xml" value="0.18425925925925926" />
+        <entry key="..\:/projects/Android/app/src/main/res/drawable/ic_import.xml" value="0.3651041666666667" />
+        <entry key="..\:/projects/Android/app/src/main/res/drawable/menu_ic_import1.xml" value="0.3651041666666667" />
+        <entry key="..\:/projects/Android/app/src/main/res/drawable/menu_ic_reports.xml" value="0.18425925925925926" />
+        <entry key="..\:/projects/Android/app/src/main/res/drawable/menu_ic_revision.xml" value="0.19722222222222222" />
+        <entry key="..\:/projects/Android/app/src/main/res/drawable/menu_ic_shipping.xml" value="0.19722222222222222" />
         <entry key="..\:/projects/Android/app/src/main/res/drawable/search_view_bg.xml" value="0.23541666666666666" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_clients.xml" value="0.2526041666666667" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_data_import.xml" value="0.3435897435897436" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_kasa_islemleri.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_main.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_products.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_products_dashboard.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_products_info.xml" value="0.3489583333333333" />
         <entry key="..\:/projects/Android/app/src/main/res/layout/activity_products_search.xml" value="0.21927083333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_revision.xml" value="0.25" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_revision_details.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_settings.xml" value="0.203125" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_siparis_islemleri.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/activity_siparis_products.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/alert_change_firm_layout.xml" value="0.203125" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/alert_change_price_layout.xml" value="0.203125" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/alert_kasa_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/alert_products_options_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/client_addnew_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/client_extract_filter_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/client_filter_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/client_orders_choose_discount_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/client_route_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/clients_extract_recyclerview_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/clients_recyclerview_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/data_export_filter_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/data_export_kasa_recyclerview_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/data_export_siparis_recyclerview_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/data_import_recyclerview_layout.xml" value="0.1" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/fragment_data_kasa.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/fragment_data_satis.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/fragment_data_siparis.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/fragment_info.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/fragment_kasa.xml" value="0.3489583333333333" />
         <entry key="..\:/projects/Android/app/src/main/res/layout/main_nav_header.xml" value="0.19114583333333332" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/product_search_recyclerview_layout.xml" value="0.26458333333333334" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/products_extract_recyclerview_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/sepet_recyclerview_layout.xml" value="0.203125" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/siparis_products_add_item_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/siparis_products_add_itemlayout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/siparis_products_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/layout/siparis_products_recyclerview_grid_layout.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/menu/clients_orders_menu.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/menu/clients_visit_menu.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/menu/items_menu.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/menu/main_nav_menu.xml" value="0.3489583333333333" />
+        <entry key="..\:/projects/Android/app/src/main/res/menu/revision_menu.xml" value="0.3609375" />
+        <entry key="..\:/projects/Android/app/src/main/res/menu/siparis_islemleri_menu.xml" value="0.3489583333333333" />
       </map>
     </option>
   </component>

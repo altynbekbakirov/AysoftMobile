@@ -39,6 +39,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Revision.RevisionDetailsActivity"
+            android:parentActivityName=".Revision.RevisionActivity"
+            android:screenOrientation="portrait"
+            android:exported="true" />
+        <activity
+            android:name=".Revision.RevisionActivity"
+            android:configChanges="orientation"
+            android:exported="true"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".Settings.SettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
@@ -132,6 +143,7 @@
         <activity
             android:name=".Clients.SiparisIslemleriActivity"
             android:configChanges="orientation"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Products.CameraCapture"

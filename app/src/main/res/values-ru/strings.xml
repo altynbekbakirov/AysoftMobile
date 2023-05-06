@@ -13,8 +13,8 @@
     <string name="main_nav_request">Talep</string>
     <string name="main_nav_distribution">Доставка</string>
     <string name="main_nav_reports">Отчеты</string>
-    <string name="main_nav_dataImport">Импорт данных</string>
-    <string name="main_nav_dataExport">Экспорт данных</string>
+    <string name="main_nav_dataImport">Обновить базу</string>
+    <string name="main_nav_dataExport">Отправить заказ</string>
     <string name="main_nav_settings">Настройки</string>
     <string name="main_nav_logout">Выход</string>
     <string name="navigation_drawer_open">Открыть меню</string>
@@ -156,9 +156,11 @@
     <string name="alert_siparis_sales">Заказы поставщикам</string>
     <string name="clients_orders_menu_add">Новый заказ</string>
     <string name="clients_orders_menu_save">Сохранить</string>
+    <string name="clients_orders_menu_close">Закрыть</string>
     <string name="clients_orders_menu_cancel">Отменить</string>
     <string name="alert_orders_cancel_message">Отменить все изменения?</string>
     <string name="client_order_toolbar_title">Новый заказ</string>
+    <string name="client_order_add_items">Добавить товар</string>
     <string name="items_tutar_label">Сумма</string>
     <string name="client_order_bottom_panel_discount">Скидки</string>
     <string name="client_order_bottom_panel_net">Чистая сумма</string>
@@ -169,6 +171,7 @@
     <string name="client_order_status_pending">В ожидании</string>
     <string name="client_order_no">№ заказа</string>
     <string name="client_order_status_sent">Выгружено</string>
+    <string name="client_order_status_info">Информация</string>
     <string name="client_operation_type_label">Вид операции</string>
     <string name="data_import_alert_info_title">Всего загружено</string>
     <string name="client_menu_balance_update">Обновить балансы</string>
@@ -204,6 +207,7 @@
     <string name="info_warning_message">Данные уже выгружены в сервер!</string>
     <string name="clients_orders_menu_change_order_info">Редактировать заказ</string>
     <string name="main_nav_shipping_management">Управление доставками</string>
+    <string name="main_nav_revision">Ревизия</string>
     <string name="client_order_shipping_address">Адрес доставки</string>
     <string name="client_order_shipping_delivery_date">Дата доставки</string>
     <string name="client_order_shipping_payment_type">Вид оплаты</string>

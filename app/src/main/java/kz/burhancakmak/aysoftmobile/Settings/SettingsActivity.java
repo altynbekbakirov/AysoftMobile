@@ -72,7 +72,8 @@ public class SettingsActivity extends AppCompatActivity {
                 if (!Objects.requireNonNull(editTextId.getText()).toString().isEmpty() && !Objects.requireNonNull(editTextWeb.getText()).toString().isEmpty()) {
                     session.removeKeyFirmaNo();
                     session.removeWebSettings();
-                    session.createWebSettings(editTextId.getText().toString(), editTextWeb.getText().toString());
+//                    session.createWebSettings(editTextId.getText().toString(), editTextWeb.getText().toString());
+                    session.createWebSettings("a6366da48e77623a", "http://5.199.138.36:34444/NewMobil/");
 //                    session.createWebSettings("869780039775405", "http://5.199.138.36:34444/NewMobil/");
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);

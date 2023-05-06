@@ -15,8 +15,17 @@ public class ItemsToplamlar {
     private String StokKodu;
     private String StokYeriKodu;
     private String StokAciklamasi;
+    private int StokYeriKayitno;
 
     public ItemsToplamlar() {
+    }
+
+    public int getStokYeriKayitno() {
+        return StokYeriKayitno;
+    }
+
+    public void setStokYeriKayitno(int stokYeriKayitno) {
+        StokYeriKayitno = stokYeriKayitno;
     }
 
     public String getStokKodu() {
@@ -81,5 +90,20 @@ public class ItemsToplamlar {
 
     public void setStokAciklamasi(String stokAciklamasi) {
         StokAciklamasi = stokAciklamasi;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemsToplamlar{" +
+                "KayitNo=" + KayitNo +
+                ", StokKayitNo=" + StokKayitNo +
+                ", DepoNo=" + DepoNo +
+                ", DepoAdi='" + DepoAdi + '\'' +
+                ", Toplam=" + Toplam +
+                ", StokKodu='" + StokKodu + '\'' +
+                ", StokYeriKodu='" + StokYeriKodu + '\'' +
+                ", StokAciklamasi='" + StokAciklamasi + '\'' +
+                ", StokYeriKayitno=" + StokYeriKayitno +
+                '}';
     }
 }

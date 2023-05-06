@@ -133,9 +133,11 @@
     <string name="alert_siparis_sales">Verilen sipariş</string>
     <string name="clients_orders_menu_add">Sipariş ekle</string>
     <string name="clients_orders_menu_save">Kaydet</string>
+    <string name="clients_orders_menu_close">Kapat</string>
     <string name="clients_orders_menu_cancel">İptal</string>
     <string name="alert_orders_cancel_message">Degişikler iptal edilsin mi?</string>
     <string name="client_order_toolbar_title">Yeni sipariş</string>
+    <string name="client_order_add_items">Hızlı stok ekle</string>
     <string name="items_tutar_label">Tutar</string>
     <string name="client_order_bottom_panel_discount">İndirim</string>
     <string name="client_order_bottom_panel_net">Net</string>
@@ -146,6 +148,7 @@
     <string name="client_order_status_pending">Beklemede</string>
     <string name="client_order_no">Sipariş No</string>
     <string name="client_order_status_sent">Gönderildi</string>
+    <string name="client_order_status_info">Bilgiler</string>
     <string name="client_operation_type_label">İşlem tipi</string>
     <string name="data_import_alert_info_title">Toplam indirilenler</string>
     <string name="client_menu_balance_update">Bakiyeleri güncelle</string>
@@ -181,6 +184,7 @@
     <string name="info_warning_message">Kayıt zaten servere gönderilmiş durumda!</string>
     <string name="clients_orders_menu_change_order_info">Sipariş bilgileri değiştir</string>
     <string name="main_nav_shipping_management">Sevkiyat yönetimi</string>
+    <string name="main_nav_revision">Sayım</string>
     <string name="client_order_shipping_address">Sevkiyat adresi</string>
     <string name="client_order_shipping_delivery_date">Teslim tarihi</string>
     <string name="client_order_shipping_payment_type">Ödeme şekli</string>

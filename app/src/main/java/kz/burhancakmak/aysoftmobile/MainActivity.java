@@ -1,11 +1,16 @@
 package kz.burhancakmak.aysoftmobile;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +31,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,10 +48,22 @@ import kz.burhancakmak.aysoftmobile.Login.LoginActivity;
 import kz.burhancakmak.aysoftmobile.Login.SessionManagement;
 import kz.burhancakmak.aysoftmobile.Login.Spinner_Country;
 import kz.burhancakmak.aysoftmobile.Login.Spinner_Country_Adapter;
+import kz.burhancakmak.aysoftmobile.Models.Clients.CihazlarFirmaDepolar;
+import kz.burhancakmak.aysoftmobile.Models.Clients.CihazlarFirmaOdemeSekli;
 import kz.burhancakmak.aysoftmobile.Models.Clients.ClCard;
 import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirma;
+import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarFirmaParametreler;
+import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarMenu;
+import kz.burhancakmak.aysoftmobile.Models.Firms.CihazlarQuery;
+import kz.burhancakmak.aysoftmobile.Models.Firms.Doviz;
 import kz.burhancakmak.aysoftmobile.Products.ProductSearchActivity;
 import kz.burhancakmak.aysoftmobile.Products.ProductsActivity;
+import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitApi;
+import kz.burhancakmak.aysoftmobile.Retrofit.RetrofitClient;
+import kz.burhancakmak.aysoftmobile.Revision.RevisionActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ArrayList<Spinner_Country> spinnerCountryList;
     private Spinner_Country_Adapter spinnerCountryAdapter;
     private static final String KEY_NAME = "name";
+    private static final String KEY_PASSWORD = "password";
     private static final String KEY_LANG = "language";
     public static String FIRMA_NO = null;
     public static String DONEM_NO = null;
@@ -68,10 +88,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     List<CihazlarFirma> firmaList = new ArrayList<>();
     List<String> firmaAlertList = new ArrayList<>();
     List<ClCard> clientList = new ArrayList<>();
+    List<CihazlarFirmaParametreler> parametrelerList = new ArrayList<>();
     CihazlarFirma firma;
     DatabaseHandler databaseHandler;
     TextView headerFirma, gidilecekToplam, gidilecekAlinan, gidilecekKalan, siparisMiktar, siparisTutar, kasaTahsilat;
-    CardView mainProducts, mainClients, mainImport, mainReports;
+    CardView mainProducts, mainClients, mainImport, mainReports, mainExport;
     final int[] selectedItem = {0};
     private long backPressedTime;
     private Toast backToast;
@@ -96,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             firmaList = databaseHandler.selectCihazlarFirma();
             initViews();
         }
+
     }
 
     @Override
@@ -103,6 +125,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_home:
 
+                break;
+            case R.id.nav_revision:
+                startActivity(new Intent(MainActivity.this, RevisionActivity.class));
                 break;
             case R.id.nav_products:
                 startActivityForResult(new Intent(MainActivity.this, ProductsActivity.class), 2);
@@ -162,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainClients = findViewById(R.id.mainClients);
         mainImport = findViewById(R.id.mainImport);
         mainReports = findViewById(R.id.mainReports);
+        mainExport = findViewById(R.id.mainExport);
 
         mainProducts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +217,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        mainExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(MainActivity.this, DataExportSiparisActivity.class), 4);
+            }
+        });
+
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -209,10 +242,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FIRMA_NO = firma.getFirmaNo();
             headerFirma.setText(firmaList.get(0).getFirmaNo() + " - " + firmaList.get(0).getFirmaAdi1());
             setDefaultValues();
-            getAnalytics();
+            databaseHandler.createTables(FIRMA_NO);
         } else {
             for (int i = 0; i < firmaList.size(); i++) {
                 firmaAlertList.add(firmaList.get(i).getFirmaNo() + "");
+                databaseHandler.createTables(FIRMA_NO);
             }
             if (session.getKeyFirmaNo().isEmpty()) {
                 firmaSelect();
@@ -225,7 +259,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             }
-            getAnalytics();
+        }
+        getAnalytics();
+
+        parametrelerList = databaseHandler.selectParametreList(FIRMA_NO);
+
+        if (parametreGetir("ProgramaGiristeSifreKontrolYontemi").equals("2")) {
+            loginCheck(hashMap.get(KEY_NAME), hashMap.get(KEY_PASSWORD));
         }
 
         headerFirma.setOnClickListener(new View.OnClickListener() {
@@ -529,6 +569,71 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Calendar calendar = Calendar.getInstance();
         return dayFormat.format(calendar.getTime());
 
+    }
+
+    private void loginCheck(String username, String password) {
+        HashMap<String, String> map = session.getWebSettings();
+        String webAddress = map.get("web");
+        String phoneId = map.get("uuid");
+        boolean isAllowed = true;
+
+        if (webAddress == null || webAddress.isEmpty()) {
+            Toast.makeText(this, R.string.login_web_url_undefined, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (phoneId == null || phoneId.isEmpty()) {
+            Toast.makeText(this, R.string.login_phoneid_is_not_defined, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isConnected(this)) {
+            RetrofitApi retrofitApi = RetrofitClient.getInstance(webAddress).create(RetrofitApi.class);
+            Call<CihazlarQuery> call = retrofitApi.getUser(phoneId, username, password);
+
+            call.enqueue(new Callback<CihazlarQuery>() {
+                @Override
+                public void onResponse(@NotNull Call<CihazlarQuery> call, @NotNull Response<CihazlarQuery> response) {
+
+                    if (response.isSuccessful() && response.body() != null) {
+                        CihazlarQuery cihazlarQuery = response.body();
+                        if (cihazlarQuery.getHata()) {
+                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                            finish();
+                        }
+
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CihazlarQuery> call, Throwable t) {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+                }
+            });
+        }
+
+    }
+
+    private boolean isConnected(MainActivity mainActivity) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) mainActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiConn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobileConn = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        return (wifiConn != null && wifiConn.isConnected()) || (mobileConn != null && mobileConn.isConnected());
+    }
+
+    private String parametreGetir(String param) {
+        String parametreDeger = "0";
+        for (CihazlarFirmaParametreler parametreler : parametrelerList) {
+            if (parametreler.getParametreAdi().equals(param)) {
+                parametreDeger = parametreler.getParametreDegeri();
+                break;
+            }
+        }
+        return parametreDeger;
     }
 
 }

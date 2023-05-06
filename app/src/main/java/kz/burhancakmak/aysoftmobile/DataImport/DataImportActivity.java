@@ -742,7 +742,11 @@ public class DataImportActivity extends AppCompatActivity {
                             unitBarcode.setItmunitaref(Integer.parseInt(barcodes[1]));
                             unitBarcode.setStokKayitNo(Integer.parseInt(barcodes[2]));
                             unitBarcode.setSatirNo(Integer.parseInt(barcodes[3]));
-                            unitBarcode.setBarkod(barcodes[4]);
+                            if (barcodes.length <= 4) {
+                                unitBarcode.setBarkod("");
+                            } else {
+                                unitBarcode.setBarkod(barcodes[4]);
+                            }
                             databaseHandler.insertBarkod(unitBarcode);
                         }
                         infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_barkod), itemsQuery.getItemsUnitBarcode().size() - 2));
@@ -770,9 +774,9 @@ public class DataImportActivity extends AppCompatActivity {
                                 addPrice = false;
                             }
                         }
-                        if (addPrice) {
-                            infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_prclist), itemsQuery.getItemsPrclist().size() - 2));
-                        }
+//                        if (addPrice) {
+                        infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_products_prclist), itemsQuery.getItemsPrclist().size() - 2));
+//                        }
                     }
 
                     if (itemsQuery.getItemsToplamlar().size() > 2) {
@@ -837,7 +841,7 @@ public class DataImportActivity extends AppCompatActivity {
                             stokYerleri.setDepoAdi(yerler[1]);
                             stokYerleri.setStokKodu(yerler[2]);
                             stokYerleri.setToplam(Integer.parseInt(yerler[3]));
-                            if (yerler.length <=4) {
+                            if (yerler.length <= 4) {
                                 stokYerleri.setStokYeriKodu("");
                             } else {
                                 stokYerleri.setStokYeriKodu(yerler[4]);
@@ -1069,8 +1073,8 @@ public class DataImportActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_images_download_count), counter));
             super.onPostExecute(aVoid);
+            infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_images_download_count), counter));
             progressDialog.dismiss();
             if (dataimport_pictures_not_existed.isChecked()) {
                 new DownloadNewImagesRetrofit().execute();
@@ -1105,7 +1109,7 @@ public class DataImportActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            progressDialog.setMessage(getString(R.string.data_import_progressbar_new_images_count) + ": " + values[0]);
+            progressDialog.setMessage(getString(R.string.data_import_progressbar_images_download_count) + ": " + values[0] + " / " + imagesList.size());
         }
 
         @Override
@@ -1137,6 +1141,7 @@ public class DataImportActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            infoList.add(new DataImportCount(getString(R.string.data_import_progressbar_images_download_count), counter));
             progressDialog.dismiss();
             showInfo();
         }

@@ -10,11 +10,11 @@ public class ItemsSearchQuery {
     @Expose
     private Boolean hata;
 
-    @SerializedName("0")
+    @SerializedName("StokFiyatlar")
     @Expose
     private List<String> _0 = null;
 
-    @SerializedName("1")
+    @SerializedName("StokBakiye")
     @Expose
     private List<String> _1 = null;
 

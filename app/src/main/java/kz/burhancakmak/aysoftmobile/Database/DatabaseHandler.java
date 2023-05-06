@@ -48,20 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_DOVIZ = "Doviz";
     private static final String TABLE_CIHAZLAR_FIRMA_ODEMESEKLI = "CihazlarFirmaOdemeSekli";
     private static final String TABLE_CIHAZLAR_FIRMA_DEPOLAR = "CihazlarFirmaDepolar";
-    private static final String TABLE_CLIENTS = "AY_" + FIRMA_NO + "_ClCard";
-    private static final String TABLE_ITEMS = "AY_" + FIRMA_NO + "_Items";
-    private static final String TABLE_ITEMS_ITMUNITA = "AY_" + FIRMA_NO + "_ItemsItmunita";
-    private static final String TABLE_ITEMS_PRCLIST = "AY_" + FIRMA_NO + "_ItemsPrclist";
-    private static final String TABLE_ITEMS_TOPLAMLAR = "AY_" + FIRMA_NO + "_ItemsToplamlar";
-    private static final String TABLE_ITEMS_BARCODE = "AY_" + FIRMA_NO + "_ItemsUnitBarcode";
-    private static final String TABLE_SHIP_INFO = "AY_" + FIRMA_NO + "_ShipInfo";
-    private static final String TABLE_KASA_ISLEMLERI = "AY_" + FIRMA_NO + "_KasaIslemleri";
-    private static final String TABLE_SIPARIS = "AY_" + FIRMA_NO + "_KasaIslemleri";
-    private static final String TABLE_SEPET = "AY_" + FIRMA_NO + "_Sepet";
     private static final String TABLE_ZIYARET = "Ziyaret";
-    private static final String TABLE_DEPOLAR = "AY_" + FIRMA_NO + "_Depolar";
-    private static final String TABLE_DEPOLAR_ADRESLER = "AY_" + FIRMA_NO + "_DepolarAdresler";
-    private static final String TABLE_DEPO_STOK_YERLERI = "AY_" + FIRMA_NO + "_DepoStokYerleri";
 
     private DatabaseHandler(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -653,6 +640,42 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "StokKodu TEXT, "
                 + "Toplam INTEGER, "
                 + "StokYeriKodu TEXT);";
+        db.execSQL(table);
+        db.close();
+    }
+
+    public void createSayimTable(String firmNo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String table = "CREATE TABLE IF NOT EXISTS AY_" + firmNo + "_Sayim ( "
+                + "KayitNo INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "Tarih TEXT, "
+                + "EklenmeSaati TEXT, "
+                + "DegisiklikSaati TEXT, "
+                + "Aciklama TEXT, "
+                + "IslemTipi  INTEGER, "
+                + "ErpGonderildi INTEGER DEFAULT 0, "
+                + "ErpKayitNo INTEGER DEFAULT 0, "
+                + "ErpSiparisFisNo TEXT, "
+                + "KordinatLatitute REAL, "
+                + "KordinatLongitude REAL, "
+                + "Tutar REAL );";
+        db.execSQL(table);
+        db.close();
+    }
+
+    public void createSayimSatirlariTable(String firmNo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String table = "CREATE TABLE IF NOT EXISTS AY_" + firmNo + "_SayimSatirlar ( "
+                + "KayitNo INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "SiparisKayitNo INTEGER, "
+                + "StokKayitNo INTEGER, "
+                + "VaryantKayitNo INTEGER, "
+                + "StokKodu TEXT, "
+                + "StokAdi TEXT, "
+                + "StokMiktar INTEGER, "
+                + "StokFiyat REAL, "
+                + "StokTutar REAL, "
+                + "StokBirim TEXT );";
         db.execSQL(table);
         db.close();
     }
@@ -1263,15 +1286,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteSiparis(String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("AY_" + FIRMA_NO + "_Siparis", "KayitNo = ?", new String[]{id});
-        db.close();
-    }
-
     public void deleteSepet(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("AY_" + FIRMA_NO + "_Sepet", "KayitNo = ?", new String[]{id});
+        db.close();
+    }
+
+    public void deleteSiparis(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("AY_" + FIRMA_NO + "_Siparis", "KayitNo = ?", new String[]{id});
         db.close();
     }
 
@@ -1365,12 +1388,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteZiyaret() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_ZIYARET);
-        db.close();
-    }
-
     public void deleteDepolar() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + "AY_" + FIRMA_NO + "_Depolar");
@@ -1409,8 +1426,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
-                "WHERE items.StokKodu <> '' " + filtre + " " +
-                "ORDER BY items.StokKodu";
+                "WHERE items.StokKodu <> '' ";
+        if (filtre != null) sql += filtre;
+        sql += " ORDER BY items.StokKodu";
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             do {
@@ -1457,7 +1475,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
-                "WHERE items.Kalan1 = 0 AND items.StokKodu <> '' " + filtre + " " +
+                "WHERE items.Kalan1 = 0 AND items.StokKodu <> '' ";
+        if (filtre != null) sql += filtre;
+        sql += " ORDER BY items.StokKodu";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                ItemsWithPrices items = new ItemsWithPrices();
+                items.setKayitNo(cursor.getInt(0));
+                items.setStokKodu(cursor.getString(1));
+                items.setStokAdi1(cursor.getString(2));
+                items.setKalan1(cursor.getDouble(3));
+                items.setKalan2(cursor.getDouble(4));
+                items.setStokResim(cursor.getString(5));
+                items.setStokResim1(cursor.getString(6));
+                items.setStokResim2(cursor.getString(7));
+                items.setStokResim3(cursor.getString(8));
+                items.setBirim(cursor.getString(9));
+                items.setFiyat1(cursor.getDouble(10));
+                items.setFiyat2(cursor.getDouble(11));
+                items.setDoviz1(cursor.getString(12));
+                items.setDoviz2(cursor.getString(13));
+                list.add(items);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return list;
+    }
+
+    public List<ItemsWithPrices> selectItemsByBarcode(String fiyat1, String fiyat2, String filter) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ItemsWithPrices> list = new ArrayList<>();
+        String sql = "SELECT items.KayitNo, items.StokKodu, " +
+                "items.StokAdi1 as StokAdi1, " +
+                "items.Kalan1, " +
+                "items.Kalan2, " +
+                "items.ResimDosyasiKucuk AS StokResim, " +
+                "items.ResimDosyasiBuyuk1 AS StokResim1, " +
+                "items.ResimDosyasiBuyuk2 AS StokResim2, " +
+                "items.ResimDosyasiBuyuk3 AS StokResim3, " +
+                "unt.Birim, " +
+                "prc1.Fiyat as Fiyat1, " +
+                "prc2.Fiyat as Fiyat2, " +
+                "prc1.DovizIsareti AS dov1, " +
+                "prc2.DovizIsareti AS dov2 " +
+                "FROM " + "AY_" + FIRMA_NO + "_Items" + " items " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
+                "WHERE items.KayitNo = (SELECT StokKayitNo FROM AY_" + FIRMA_NO + "_ItemsUnitBarcode WHERE Barkod = '"+ filter + "') " +
+                "OR items.StokKodu = '"+ filter + "' " +
                 "ORDER BY items.StokKodu";
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
@@ -1485,6 +1553,53 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    public ItemsWithPrices selectItemByBarcode(String fiyat1, String fiyat2, String filter) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ItemsWithPrices item = new ItemsWithPrices();
+        String sql = "SELECT items.KayitNo, items.StokKodu, " +
+                "items.StokAdi1 as StokAdi1, " +
+                "items.Kalan1, " +
+                "items.Kalan2, " +
+                "items.ResimDosyasiKucuk AS StokResim, " +
+                "items.ResimDosyasiBuyuk1 AS StokResim1, " +
+                "items.ResimDosyasiBuyuk2 AS StokResim2, " +
+                "items.ResimDosyasiBuyuk3 AS StokResim3, " +
+                "unt.Birim, " +
+                "prc1.Fiyat as Fiyat1, " +
+                "prc2.Fiyat as Fiyat2, " +
+                "prc1.DovizIsareti AS dov1, " +
+                "prc2.DovizIsareti AS dov2 " +
+                "FROM " + "AY_" + FIRMA_NO + "_Items" + " items " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
+                "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
+                "WHERE items.KayitNo = (SELECT StokKayitNo FROM AY_" + FIRMA_NO + "_ItemsUnitBarcode WHERE Barkod = '"+ filter + "') " +
+                "OR lower(items.StokKodu) = '"+ filter.toLowerCase() + "' " +
+                "ORDER BY items.StokKodu LIMIT 1";
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToNext()) {
+            do {
+                item.setKayitNo(cursor.getInt(0));
+                item.setStokKodu(cursor.getString(1));
+                item.setStokAdi1(cursor.getString(2));
+                item.setKalan1(cursor.getDouble(3));
+                item.setKalan2(cursor.getDouble(4));
+                item.setStokResim(cursor.getString(5));
+                item.setStokResim1(cursor.getString(6));
+                item.setStokResim2(cursor.getString(7));
+                item.setStokResim3(cursor.getString(8));
+                item.setBirim(cursor.getString(9));
+                item.setFiyat1(cursor.getDouble(10));
+                item.setFiyat2(cursor.getDouble(11));
+                item.setDoviz1(cursor.getString(12));
+                item.setDoviz2(cursor.getString(13));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return item;
+    }
+
     public List<ItemsWithPrices> selectAllItemsByStock(String fiyat1, String fiyat2, String filtre, long min, long max) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<ItemsWithPrices> list = new ArrayList<>();
@@ -1505,8 +1620,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsItmunita" + " AS unt ON unt.StokKayitNo = items.KayitNo AND unt.SiraNo = 1 " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc1 ON prc1.StokKayitNo = items.KayitNo AND prc1.FiyatGrubu = '" + fiyat1 + "' AND prc1.BirimKayitNo=unt.KayitNo " +
                 "LEFT OUTER JOIN " + "AY_" + FIRMA_NO + "_ItemsPrclist" + " AS prc2 ON prc2.StokKayitNo = items.KayitNo AND prc2.FiyatGrubu = '" + fiyat2 + "' AND prc2.BirimKayitNo=unt.KayitNo " +
-                "WHERE items.Kalan1 >= " + min + " AND items.Kalan1 <= " + max + "  AND items.StokKodu <> '' " + filtre + " " +
-                "ORDER BY items.StokKodu";
+                "WHERE items.Kalan1 >= " + min + " AND items.Kalan1 <= " + max + "  AND items.StokKodu <> '' ";
+        if (filtre != null) sql += filtre;
+        sql += " ORDER BY items.StokKodu";
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToNext()) {
             do {
@@ -2559,6 +2675,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         if (!tableExists("AY_" + firmaNo + "_DepoStokYerleri")) {
             createDepoStokYerleriTable(firmaNo);
+        }
+        if (!tableExists("AY_" + firmaNo + "_Sayim")) {
+            createSayimTable(firmaNo);
+        }
+        if (!tableExists("AY_" + firmaNo + "_SayimSatirlar")) {
+            createSayimSatirlariTable(firmaNo);
         }
     }
 

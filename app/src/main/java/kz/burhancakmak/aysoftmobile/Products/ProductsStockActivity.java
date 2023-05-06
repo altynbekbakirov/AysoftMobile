@@ -135,8 +135,10 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
                 total += toplamlarList.get(i).getToplam();
             }
             stockPhysical.setText(String.format("%,." + Integer.parseInt(KurusHaneSayisiStokTutar) + "f", total));
-            stockCode.setText(toplamlarList.get(0).getStokKodu());
-            stockName.setText(toplamlarList.get(0).getStokAciklamasi());
+            if (toplamlarList.size() > 0) {
+                stockCode.setText(toplamlarList.get(0).getStokKodu());
+                stockName.setText(toplamlarList.get(0).getStokAciklamasi());
+            }
             products_progressBar.setVisibility(View.GONE);
         }
     }
@@ -155,6 +157,9 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
         protected void onPreExecute() {
             super.onPreExecute();
             products_progressBar.setVisibility(View.VISIBLE);
+            for (ItemsToplamlar toplamlar : toplamlarList) {
+                System.out.println(toplamlar);
+            }
         }
 
         @Override
@@ -169,7 +174,7 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
                     String.valueOf(toplamlarList.get(Integer.parseInt(values[0])).getStokKayitNo()), // StokKayitNo
                     toplamlarList.get(Integer.parseInt(values[0])).getStokKodu(), // StokKodu
                     String.valueOf(toplamlarList.get(Integer.parseInt(values[0])).getDepoNo()), // DepoNo
-                    toplamlarList.get(Integer.parseInt(values[0])).getStokYeriKodu()// LokasyonKayitNo
+                    String.valueOf(toplamlarList.get(Integer.parseInt(values[0])).getStokYeriKayitno())// LokasyonKayitNo
             );
             try {
                 Response<ItemsExtractQuery> response = queryList.execute();
@@ -286,7 +291,8 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedItem = i;
                 if (selectedItem > 0) {
-                    toplamlarList.get(position).setStokYeriKodu(String.valueOf(addresses.get(selectedItem - 1).getLokasyonKayitNo()));
+                    toplamlarList.get(position).setStokYeriKayitno(addresses.get(selectedItem - 1).getLokasyonKayitNo());
+                    toplamlarList.get(position).setStokYeriKodu(addresses.get(selectedItem - 1).getLokasyonKodu());
                 }
             }
 
@@ -296,12 +302,9 @@ public class ProductsStockActivity extends AppCompatActivity implements ItemsSto
             }
         });
 
-        builder.setPositiveButton(R.string.alert_confirm_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (selectedItem > 0)
-                    new SendDataToWeb().execute(String.valueOf(position));
-            }
+        builder.setPositiveButton(R.string.alert_confirm_ok, (dialogInterface, i) -> {
+            if (selectedItem > 0)
+                new SendDataToWeb().execute(String.valueOf(position));
         });
         builder.show();
     }
