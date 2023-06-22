@@ -473,7 +473,7 @@ public class ProductsActivity extends AppCompatActivity implements NavigationVie
                     userSettingMap.get(KEY_PASSWORD),
                     DONEM_NO,
                     FIRMA_NO,
-                    2);
+                    0);
         }
 
         @Override

@@ -198,7 +198,6 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
             for (ClientSepet sepet : sepetList) {
                 satir
                         .append(sepet.getKayitNo()).append("|")
-//                        .append(siparisList.get(integers[0]).getKayitNo()).append("|")
                         .append(sepet.getStokKayitNo()).append("|")
                         .append(sepet.getStokKodu()).append("|")
                         .append(sepet.getStokAdi()).append("|")
@@ -224,29 +223,21 @@ public class SiparisFragment extends Fragment implements SiparisAdapter.OrderCli
                     siparisList.get(integers[0]).getCariKayitNo() + "|" +
                     siparisList.get(integers[0]).getCariKod() + "|" +
                     siparisList.get(integers[0]).getTarih() + "|" +
-//                    .append(siparisList.get(integers[0]).getOdemeSekli()).append("|")
                     0 + "|" +
-//                    .append(siparisList.get(integers[0]).getAciklama()).append("|")
                     "" + "|" +
                     siparisList.get(integers[0]).getKordinatLatitute() + "|" +
                     siparisList.get(integers[0]).getKordinatLongitude() + "|" +
-//                    .append(siparisList.get(integers[0]).getSiparisOncesiFoto1()).append("|")
                     "" + "|" +
-//                    .append(siparisList.get(integers[0]).getSiparisOncesiFoto2()).append("|")
                     "" + "|" +
-//                    .append(siparisList.get(integers[0]).getSiparisOncesiFoto3()).append("|")
                     "" + "|" +
                     siparisList.get(integers[0]).getTutar() + "|" +
                     siparisList.get(integers[0]).getGenelIndirimOrani() + "|" +
-//                    0 + "|" +
                     siparisList.get(integers[0]).getGenelIndirimTutari() + "|" +
-//                    0 + "|" +
-//                    siparisList.get(integers[0]).getSatirIndirimTutari() + "|" +
                     0 + "|" +
                     siparisList.get(integers[0]).getNetTutar()
                     + "|" + siparisList.get(integers[0]).getEklenmeSaati()
                     + "|" + siparisList.get(integers[0]).getDegisiklikSaati();
-//                    0;
+
             queryList = retrofitApi.siparisHareketleriGuncelle(
                     phoneId,
                     userSettingMap.get(KEY_NAME),
